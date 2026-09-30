@@ -66,7 +66,7 @@ An unsupported finding requires affirmative evidence within a defined scope. Abs
 
 Finding and mechanism are independent dimensions.
 
-Mechanism may be native, configured_native, adapter, external_controller, model_mediated, or_not_applicable.
+Mechanism may be native, configured_native, adapter, external_controller, model_mediated, or not_applicable.
 
 A product can therefore be available through an adapter without implying native support.
 
