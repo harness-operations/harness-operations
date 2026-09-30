@@ -1,6 +1,6 @@
 # Standards Landscape and Interoperability Boundaries
 
-**Status:** Harness Operations Reference Model 0.4, with post-v0.4 Code Mode additions (unreleased)
+**Status:** Harness Operations Reference Model 0.4
 
 **External-claim verification:** Existing standards last verified September 25, 2026; Code Mode section verified September 30, 2026
 
@@ -121,7 +121,7 @@ MCP is evolving quickly. These boundaries are time-sensitive and should shrink i
 
 ## Code Mode
 
-**Section verification:** September 30, 2026. Initially included in Reference Model 0.4; the Codex, Pi, and OpenAI API examples and exposure clarification below are post-v0.4 additions.
+**Section verification:** September 30, 2026.
 
 ### Scope
 

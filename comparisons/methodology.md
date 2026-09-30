@@ -1,6 +1,6 @@
 # Landscape Comparison Methodology
 
-**Status:** Applied Harness Operations v0.4, with post-v0.4 Code Mode review guidance (unreleased)
+**Status:** Applied Harness Operations v0.4
 
 ## Purpose
 
@@ -30,7 +30,7 @@ Unlike roles must not be presented as competing implementations of the same thin
 
 ### Cross-cutting patterns: Code Mode
 
-**Reference Model 0.4 clarification:** Code Mode is a tool-use pattern, not a product identity or a new architectural role. It describes code-mediated orchestration of tools or APIs. Compare the concrete systems that provide it, not a generic “Code Mode” row against Harness products.
+Code Mode is a tool-use pattern, not a product identity or a new architectural role. It describes code-mediated orchestration of tools or APIs. Compare the concrete systems that provide it, not a generic “Code Mode” row against Harness products.
 
 For a Code Mode observation, identify where the generated program actually executes and how its calls reach tools. Distinguish native or configured harness support, an adapter, a model-platform API, and a remote MCP server's execution facility. A client using that remote facility does not automatically gain native Code Mode support. Likewise, a model API feature does not establish support in a separate CLI or IDE surface from the same vendor.
 
