@@ -1,6 +1,6 @@
 # Pattern: Model-informed decisions, code-enforced consequences
 
-**Status:** Applied Harness Operations v0.4
+**Status:** Applied Harness Operations v0.5
 
 ## Problem
 
