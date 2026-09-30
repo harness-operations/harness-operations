@@ -1,6 +1,6 @@
 # Pattern: Stop, revoke, and recover
 
-**Status:** Applied Harness Operations v0.3
+**Status:** Applied Harness Operations v0.4
 
 ## Problem
 
