@@ -119,6 +119,58 @@ MCP does not by itself define the complete operational model for heterogeneous H
 
 MCP is evolving quickly. These boundaries are time-sensitive and should shrink if MCP absorbs them successfully.
 
+## Code Mode
+
+**Section verification:** September 30, 2026. Post-v0.3 addition; the published v0.3 snapshot is unchanged.
+
+### Scope
+
+**Code Mode** is a tool-use pattern in which a model writes executable code that calls tools or APIs, composes operations, and processes intermediate results before returning selected output to the model. Control flow such as loops, conditions, batching, and result filtering can run in code without another model inference for every underlying operation.
+
+Harness Operations uses **Code Mode** generically. It is not the name of a required vendor product, an additional Harness, or a new interoperability protocol. A general-purpose code interpreter, tool-search feature, or shell command alone does not establish this pattern; the relevant behavior is code-mediated orchestration of the tools or APIs available to the agent.
+
+### Origins and adoption
+
+Cloudflare publicly introduced its **Code Mode** framing and an Agents SDK implementation on **September 26, 2025**, describing generated TypeScript that calls MCP-backed APIs. We credit that named introduction rather than claiming Cloudflare invented every use of executable code as an agent action: earlier research, including **CodeAct (ICML 2024)**, already explored code-based action composition.
+
+- [Cloudflare: Code Mode, September 26, 2025](https://blog.cloudflare.com/code-mode/)
+- [CodeAct: Executable Code Actions Elicit Better LLM Agents, ICML 2024](https://proceedings.mlr.press/v235/wang24h.html)
+
+The pattern is no longer specific to Cloudflare. It appears across agent harnesses, model-platform interfaces, and MCP tooling, under Code Mode and related names such as programmatic tool calling. These first-party examples establish adoption at different surfaces, not universal native support in every product from a vendor:
+
+| Implementation example | Documented execution surface | Scope to preserve |
+| --- | --- | --- |
+| [Cloudflare Code Mode](https://developers.cloudflare.com/agents/tools/codemode/) | Generated code orchestrates configured tools in an execution environment; [MCP server variants](https://developers.cloudflare.com/agents/model-context-protocol/codemode/) expose code execution to clients. | Distinguish harness/client-side integration from execution owned by the MCP server. |
+| [Goose Code Mode](https://goose-docs.ai/docs/guides/managing-tools/code-mode/) | An enabled built-in extension supports on-demand discovery and programmatic calls to tools from other extensions. | This is a documented harness extension; availability and configuration belong to the reviewed build. |
+| [Anthropic programmatic tool calling](https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling) | Model-written Python invokes configured tools through a code-execution container and processes intermediate results. | This is a Claude API feature, not a blanket claim about every Claude Code CLI, SDK, or hosted surface. |
+| [FastMCP CodeMode](https://gofastmcp.com/servers/transforms/code-mode) | A server transform exposes discovery and sandboxed Python execution over existing tools. | This is server-side tooling; a connecting MCP client need not implement the code runtime itself. |
+
+These are documentation-backed examples, not Harness Operations live compatibility tests. Shared naming does not imply identical languages, discovery APIs, sandbox guarantees, approval handling, persistence, replay, or cancellation behavior. Maturity is implementation-specific; there is no single Code Mode protocol version to adopt.
+
+### Relationship to MCP and native interfaces
+
+Code Mode changes how an agent composes operations, not necessarily how those operations are transported or authorized. It can use MCP tools, native APIs, or application-provided functions. It neither requires nor replaces MCP. Where MCP is the actual boundary, its native tool, authorization, and lifecycle semantics remain relevant.
+
+A harness may implement Code Mode itself or consume a Code Mode service through an ordinary tool interface. Therefore, **using a Code Mode MCP server is not evidence that the client has native Code Mode support**. On-demand discovery is a common complement, but is distinct from executing a program that orchestrates calls.
+
+Reducing model round trips or filtering results can save context, but does not establish a universal performance improvement. For example, [Goose's implementation account](https://goose-docs.ai/blog/2025/12/21/code-mode-doesnt-replace-mcp/) describes discovery and code-generation overhead for simpler tasks. Cost and latency claims need workload-specific measurements.
+
+### Relationship to Harness Operations
+
+The operational concern is that **one outer code-execution request can contain many separately consequential actions**. Mapping that request as a single successful tool call can hide the authority, failures, resource use, and evidence of the operations inside it.
+
+An integration should distinguish:
+
+- **Execution identity and context:** correlate the generated program, its runtime and configuration, and underlying calls with the native Agent Session or broader Run. Do not create a new Run merely because code executed.
+- **Authority and enforcement:** apply the relevant scope, approval conditions, and revocation state at protected operations. Permission to start a program is not automatically permission for every call it can attempt. Keep isolation of generated code separate from authorization of downstream effects.
+- **Evidence and data handling:** retain enough provenance for material calls, decisions, targets, and outcomes to explain what happened. A final summary need not contain every intermediate result, but it should not be the only audit evidence. Minimize sensitive payload retention and disclose redaction or missing evidence.
+- **Limits and credentials:** identify the actual runtime and tool-call boundaries for time, memory, concurrency, call count, downstream consumption, credential access, and egress. A single outer request is not a meaningful limit on the number of inner operations.
+- **Partial completion and recovery:** distinguish stopping code from stopping already-issued calls. Record effects that completed before denial, expiry, cancellation, or disconnect. Retry and replay need operation-specific reconciliation or idempotency; neither rollback nor exactly-once effects follow from executing a program.
+
+Implementations may already provide some of these controls. For example, [Cloudflare's durable runtime](https://developers.cloudflare.com/agents/tools/codemode/durable-runtime/) documents execution history, approval pauses, replay-based continuation, and connector-dependent compensation; [FastMCP](https://gofastmcp.com/servers/transforms/code-mode#tool-call-limits) documents a separate bound on calls inside one execution. Preserve those native mechanisms rather than attributing their guarantees to Code Mode in general.
+
+Code Mode does not make model-generated choices correct, supply governance Authority, eliminate prompt injection or data-exfiltration risks, or make external systems deterministic. Typed interfaces and code-level control flow are not substitutes for independently enforced policy.
+
 ## Agent Client Protocol (ACP)
 
 ### Current scope
@@ -322,6 +374,7 @@ A faithful native capability is preferable to a lossy common abstraction when no
 | --- | --- | --- |
 | Broad production operation of AI agents | AgentOps / agent operations | Adjacent and overlapping emerging practice; no broadly adopted common specification identified in v0.1. |
 | AI application ↔ tools/context/services | MCP | Compose MCP primitives and extensions; do not redefine tool/resource/task semantics. |
+| Model-written program ↔ tool/API operations | Code Mode | Cross-cutting execution pattern; preserve nested-call authority, limits, evidence, and recovery semantics without assuming a shared runtime or protocol. |
 | Editor/client ↔ coding agent | ACP | Preserve ACP Session, permission, and update semantics. |
 | Independent agent system ↔ agent system | A2A | Preserve AgentCard, Task, Message, Artifact, and protocol lifecycle semantics. |
 | Agent workload execution / orchestration runtime | Agent Executor (AX) | Emerging open-source runtime prior art; preserve AX Task/Workspace/Gateway/Model semantics without turning its v1alpha1 API into universal Harness Operations requirements. |
@@ -359,6 +412,12 @@ ACP, Harness-native permission systems, MCP authorization, environment policy, a
 
 A low-level permission request becomes an Approval only when it carries governance meaning: attributable Authority, a defined decision scope, and operational effect.
 
+### Code execution and nested tool calls
+
+Code Mode is a pattern that an implementation can provide, not a competing product row or evidence that two systems interoperate. Record the actual executor, tool-call bridge, configuration, and reviewed interface when comparing implementations.
+
+An outer execution can complete while an inner operation fails or remains uncertain. Conversely, denying a later call does not undo earlier effects. Preserve these distinctions in execution state and evidence instead of flattening an entire program into one allow/deny or success/failure claim.
+
 ### Model decisions and enforcement
 
 Jev and other structured decision systems can provide validated decision inputs, but a typed model answer is not itself an Approval, Authority grant, Policy rule, or enforcement boundary.
@@ -384,6 +443,6 @@ Until those conditions exist, adapters and reference-model mappings are preferab
 
 This landscape is time-sensitive.
 
-MCP, ACP, A2A, Agent Executor, Jev/System One decision models, OpenTelemetry GenAI conventions, AgentOps practice, and adjacent standards will continue to evolve. Harness Operations should become smaller when another standard or established discipline successfully absorbs a concern rather than defending conceptual territory for its own sake.
+MCP, ACP, A2A, Agent Executor, Jev/System One decision models, Code Mode implementations, OpenTelemetry GenAI conventions, AgentOps practice, and adjacent standards will continue to evolve. Harness Operations should become smaller when another standard or established discipline successfully absorbs a concern rather than defending conceptual territory for its own sake.
 
 That is a feature of the project, not a failure.
