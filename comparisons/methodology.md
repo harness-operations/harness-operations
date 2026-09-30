@@ -1,6 +1,6 @@
 # Landscape Comparison Methodology
 
-**Status:** Applied Harness Operations v0.4
+**Status:** Applied Harness Operations v0.4, with post-v0.4 Code Mode review guidance (unreleased)
 
 ## Purpose
 
@@ -35,6 +35,14 @@ Unlike roles must not be presented as competing implementations of the same thin
 For a Code Mode observation, identify where the generated program actually executes and how its calls reach tools. Distinguish native or configured harness support, an adapter, a model-platform API, and a remote MCP server's execution facility. A client using that remote facility does not automatically gain native Code Mode support. Likewise, a model API feature does not establish support in a separate CLI or IDE surface from the same vendor.
 
 Record the implementation/version, execution language/runtime, discovery interface, tool-call bridge, and material configuration. Review nested-call authorization, cancellation, limits, evidence, and replay separately; do not infer them from the ability to run code. A general shell, interpreter, or tool-search feature alone is insufficient evidence of this pattern.
+
+The [Code Mode prior art](../reference/landscape.md#code-mode) motivates additional review questions, not new conformance requirements:
+
+- **Exposure and reachability:** Which tools are directly declared, discoverable, or callable from generated code? Record the effective configuration, activation prerequisites, and adapter revision where applicable. A missing declaration is not proof of unreachability. Check that native direct-only or excluded tools cannot be reached through a prohibited nested path.
+- **Dispatch and outcomes:** Do nested calls pass through the applicable validation, permission, approval, and revocation mechanisms? Preserve parent/child correlation and distinguish a thrown failure, a structured error result, and an uncertain or already-completed effect. A successful outer program is not evidence that every inner operation succeeded.
+- **Evidence and limits:** What inner-call records and material model-call usage are retained, under which bounds? Identify redaction, truncation, omitted payloads, and completeness indicators separately. Check call-count, concurrency, and resource limits at the inner boundary rather than treating one program as one operation.
+
+When tests are performed, include negative cases for prohibited invocation paths and a partial-outcome case, not only discovery or happy-path execution. Record documentation/source findings separately when these behaviors have not been exercised.
 
 A test that starts the executor or discovers a tool establishes only that operation. It does not establish approval enforcement or safe retry for the operations inside a program. Shared Code Mode terminology is not an interoperability test.
 

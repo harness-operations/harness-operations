@@ -1,6 +1,6 @@
 # Standards Landscape and Interoperability Boundaries
 
-**Status:** Harness Operations Reference Model 0.4
+**Status:** Harness Operations Reference Model 0.4, with post-v0.4 Code Mode additions (unreleased)
 
 **External-claim verification:** Existing standards last verified September 25, 2026; Code Mode section verified September 30, 2026
 
@@ -121,7 +121,7 @@ MCP is evolving quickly. These boundaries are time-sensitive and should shrink i
 
 ## Code Mode
 
-**Section verification:** September 30, 2026. Added after v0.3 and included in Reference Model 0.4.
+**Section verification:** September 30, 2026. Initially included in Reference Model 0.4; the Codex, Pi, and OpenAI API examples and exposure clarification below are post-v0.4 additions.
 
 ### Scope
 
@@ -142,16 +142,21 @@ The pattern is no longer specific to Cloudflare. It appears across agent harness
 | --- | --- | --- |
 | [Cloudflare Code Mode](https://developers.cloudflare.com/agents/tools/codemode/) | Generated code orchestrates configured tools in an execution environment; [MCP server variants](https://developers.cloudflare.com/agents/model-context-protocol/codemode/) expose code execution to clients. | Distinguish harness/client-side integration from execution owned by the MCP server. |
 | [Goose Code Mode](https://goose-docs.ai/docs/guides/managing-tools/code-mode/) | An enabled built-in extension supports on-demand discovery and programmatic calls to tools from other extensions. | This is a documented harness extension; availability and configuration belong to the reviewed build. |
+| [Codex code-mode tool adaptation](https://github.com/openai/codex/blob/67727e7cf114cf3e1b71db368d74b24e32f6cb12/codex-rs/tools/src/code_mode.rs) | Inspected revision `67727e7` adapts function, freeform, and namespaced tool definitions for the code-mode runtime. | Source-backed harness integration, not a live compatibility test. The [configuration reference](https://developers.openai.com/codex/config-reference/) describes `features.code_mode.enabled` as under development and off by default; do not infer availability across all Codex surfaces. |
+| [Pi MCP and Code Mode](https://pi.dev/docs/latest/mcp) | The built-in integration, introduced in [Pi 0.99.0 on September 29, 2026](https://pi.dev/changelog), runs model-written JavaScript in QuickJS and makes MCP tools callable from scripts. | Review the built-in integration and its configuration; replacement extensions or SDK embeddings can expose different behavior. |
 | [Anthropic programmatic tool calling](https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling) | Model-written Python invokes configured tools through a code-execution container and processes intermediate results. | This is a Claude API feature, not a blanket claim about every Claude Code CLI, SDK, or hosted surface. |
+| [OpenAI API programmatic tool calling](https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling) | Hosted JavaScript orchestrates eligible tools in an isolated V8 runtime. | This is a model-platform API surface, separate from Codex. In the Responses API, `allowed_callers` controls invocation paths; the application still executes client-owned function calls. |
 | [FastMCP CodeMode](https://gofastmcp.com/servers/transforms/code-mode) | A server transform exposes discovery and sandboxed Python execution over existing tools. | This is server-side tooling; a connecting MCP client need not implement the code runtime itself. |
 
-These are documentation-backed examples, not Harness Operations live compatibility tests. Shared naming does not imply identical languages, discovery APIs, sandbox guarantees, approval handling, persistence, replay, or cancellation behavior. Maturity is implementation-specific; there is no single Code Mode protocol version to adopt.
+These are documentation- or source-backed examples, not Harness Operations live compatibility tests. Shared naming does not imply identical languages, discovery APIs, sandbox guarantees, approval handling, persistence, replay, or cancellation behavior. Maturity is implementation-specific; there is no single Code Mode protocol version to adopt.
 
 ### Relationship to MCP and native interfaces
 
 Code Mode changes how an agent composes operations, not necessarily how those operations are transported or authorized. It can use MCP tools, native APIs, or application-provided functions. It neither requires nor replaces MCP. Where MCP is the actual boundary, its native tool, authorization, and lifecycle semantics remain relevant.
 
 A harness may implement Code Mode itself or consume a Code Mode service through an ordinary tool interface. Therefore, **using a Code Mode MCP server is not evidence that the client has native Code Mode support**. On-demand discovery is a common complement, but is distinct from executing a program that orchestrates calls.
+
+Pi illustrates automatic tool adaptation rather than server conversion. Its [built-in MCP configuration](https://pi.dev/docs/latest/mcp#control-tool-exposure) defaults to `codemode` exposure and activates code mode when a server with that exposure connects, unless `autoEnableCodemode` is disabled. Tools registered as `mcp__<server>__<tool>` become discoverable and callable from scripts through the MCP integration. The server still speaks MCP; automatic exposure does not grant additional downstream Authority.
 
 Reducing model round trips or filtering results can save context, but does not establish a universal performance improvement. For example, [Goose's implementation account](https://goose-docs.ai/blog/2025/12/21/code-mode-doesnt-replace-mcp/) describes discovery and code-generation overhead for simpler tasks. Cost and latency claims need workload-specific measurements.
 
@@ -162,12 +167,19 @@ The operational concern is that **one outer code-execution request can contain m
 An integration should distinguish:
 
 - **Execution identity and context:** correlate the generated program, its runtime and configuration, and underlying calls with the native Agent Session or broader Run. Do not create a new Run merely because code executed.
+- **Discovery and invocation exposure:** distinguish direct model declarations, discovery, and code-callable tools. Preserve native direct-only, excluded, or other invocation restrictions at the callable boundary. Absence from current model declarations is not evidence of revocation; presence in a program's tool interface does not grant Authority for each attempted action.
 - **Authority and enforcement:** apply the relevant scope, approval conditions, and revocation state at protected operations. Permission to start a program is not automatically permission for every call it can attempt. Keep isolation of generated code separate from authorization of downstream effects.
 - **Evidence and data handling:** retain enough provenance for material calls, decisions, targets, and outcomes to explain what happened. A final summary need not contain every intermediate result, but it should not be the only audit evidence. Minimize sensitive payload retention and disclose redaction or missing evidence.
 - **Limits and credentials:** identify the actual runtime and tool-call boundaries for time, memory, concurrency, call count, downstream consumption, credential access, and egress. A single outer request is not a meaningful limit on the number of inner operations.
 - **Partial completion and recovery:** distinguish stopping code from stopping already-issued calls. Record effects that completed before denial, expiry, cancellation, or disconnect. Retry and replay need operation-specific reconciliation or idempotency; neither rollback nor exactly-once effects follow from executing a program.
 
+Native exposure controls differ. [Codex configuration](https://developers.openai.com/codex/config-reference/) distinguishes direct-only and excluded namespaces; the [OpenAI API](https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling) distinguishes direct and programmatic callers; [Pi extensions](https://pi.dev/docs/latest/extensions#tool-exposure) can mark a tool `model-only`, excluding nested invocation. These illustrate separate invocation paths, not equivalent policy models.
+
 Implementations may already provide some of these controls. For example, [Cloudflare's durable runtime](https://developers.cloudflare.com/agents/tools/codemode/durable-runtime/) documents execution history, approval pauses, replay-based continuation, and connector-dependent compensation; [FastMCP](https://gofastmcp.com/servers/transforms/code-mode#tool-call-limits) documents a separate bound on calls inside one execution. Preserve those native mechanisms rather than attributing their guarantees to Code Mode in general.
+
+Pi's [MCP permissions documentation](https://pi.dev/docs/latest/mcp#permissions) describes a shared extension tool pipeline, including configured permission handlers, and `parentToolCallId` correlation for code-mode calls. Its [extension contract](https://pi.dev/docs/latest/extensions#tools) permits `isError` results that still supply structured data to scripts, and stores bounded `nestedCalls` records without returned result payloads; `complete: false` marks omitted record information. These mechanisms illustrate why inner outcomes and evidence completeness remain distinct from outer program completion. They do not establish complete auditing or a universal authorization policy.
+
+Programs can also invoke decision models. [Pi's introduction](https://earendil.com/posts/you-said-no-mcp/) combines MCP access and Jev classification. Treat such results as [model-informed decision inputs](../patterns/model-informed-decisions.md), not Authority. Code-level control flow does not make a classifier's judgment correct or deterministic; material model calls and their resource use belong in the program's operational evidence alongside tool calls.
 
 Code Mode does not make model-generated choices correct, supply governance Authority, eliminate prompt injection or data-exfiltration risks, or make external systems deterministic. Typed interfaces and code-level control flow are not substitutes for independently enforced policy.
 
