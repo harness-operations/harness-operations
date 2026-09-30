@@ -2,7 +2,7 @@
 
 This repository is the canonical home of the emerging **Harness Operations Reference Model**.
 
-**Status:** Harness Operations Reference Model 0.3.
+**Status:** Harness Operations Reference Model 0.4.
 
 > **Harness engineering makes agents effective. Harness Operations enables them to work at scale.**
 
@@ -12,7 +12,7 @@ Harness Operations is a vendor-neutral, implementation-neutral, **harness-centri
 
 The project intentionally starts with a reference model rather than a new wire protocol. Existing standards, established operational disciplines, and native Harness capabilities should be composed where they already solve the problem.
 
-## Reference Model 0.3
+## Reference Model 0.4
 
 Canonical reference material lives under [`reference/`](reference/):
 
@@ -26,7 +26,7 @@ Shared scope and vocabulary are maintained in [Scope and Terminology](reference/
 
 ## Scope
 
-Reference Model 0.3 is descriptive. It does **not** define:
+Reference Model 0.4 is descriptive. It does **not** define:
 
 - a Harness Operations wire protocol;
 - a common Harness or Agent Session lifecycle;
@@ -41,12 +41,12 @@ The reference model should become smaller when an existing standard or establish
 
 Substantive design work begins in GitHub Issues and canonical reference material changes through Pull Requests.
 
-- [Reference Model v0.3 applied milestone](https://github.com/harness-operations/specification/issues/24)
+- [Reference Model v0.4 release](https://github.com/harness-operations/specification/issues/48)
 - [Reference Model v0.1 release](https://github.com/harness-operations/specification/releases/tag/v0.1)
 - [Contribution guide](CONTRIBUTING.md)
 - [Proposals](proposals/)
 
-The five foundational documents form the stable reference-model core. Reference Model 0.2 adds reviewed landscape mappings and prior art without introducing a Harness Operations wire protocol or new conformance requirements.
+The five foundational documents form the stable reference-model core. Reference Model 0.4 adds Code Mode as generic cross-cutting tool-use prior art and preserves the project's no-new-protocol and no-conformance posture.
 
 ## License
 
