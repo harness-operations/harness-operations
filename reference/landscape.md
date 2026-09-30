@@ -1,8 +1,8 @@
 # Standards Landscape and Interoperability Boundaries
 
-**Status:** Harness Operations Reference Model 0.3
+**Status:** Harness Operations Reference Model 0.4
 
-**External-claim verification:** September 25, 2026
+**External-claim verification:** Existing standards last verified September 25, 2026; Code Mode section verified September 30, 2026
 
 ## Purpose
 
@@ -121,7 +121,7 @@ MCP is evolving quickly. These boundaries are time-sensitive and should shrink i
 
 ## Code Mode
 
-**Section verification:** September 30, 2026. Post-v0.3 addition; the published v0.3 snapshot is unchanged.
+**Section verification:** September 30, 2026. Added after v0.3 and included in Reference Model 0.4.
 
 ### Scope
 
