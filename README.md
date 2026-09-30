@@ -46,7 +46,7 @@ Substantive design work begins in GitHub Issues and canonical reference material
 - [Contribution guide](CONTRIBUTING.md)
 - [Proposals](proposals/)
 
-The five foundational documents form the stable reference-model core. Reference Model 0.5 expands Code Mode examples and clarifies discovery, invocation exposure, and execution authority and preserves the project's no-new-protocol and no-conformance posture.
+The five foundational documents form the stable reference-model core. Reference Model 0.5 expands Code Mode examples and clarifies discovery, invocation exposure, and execution authority. It preserves the project's no-new-protocol and no-conformance posture.
 
 ## License
 
