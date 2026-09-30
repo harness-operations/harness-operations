@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1",
-  "reference_model": "v0.4",
+  "reference_model": "v0.5",
   "capabilities": [
     {
       "id": "access.interactive",

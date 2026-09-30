@@ -1,6 +1,6 @@
 # Operational Patterns
 
-**Status:** Applied Harness Operations v0.4
+**Status:** Applied Harness Operations v0.5
 
 These patterns turn the Harness Operations reference model into practical operational guidance.
 

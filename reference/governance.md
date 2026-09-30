@@ -1,6 +1,6 @@
 # Governance of Harness Operations Systems
 
-**Status:** Harness Operations Reference Model 0.4
+**Status:** Harness Operations Reference Model 0.5
 
 ## Purpose
 

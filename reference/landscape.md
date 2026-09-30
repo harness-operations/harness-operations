@@ -1,6 +1,6 @@
 # Standards Landscape and Interoperability Boundaries
 
-**Status:** Harness Operations Reference Model 0.4
+**Status:** Harness Operations Reference Model 0.5
 
 **External-claim verification:** Existing standards last verified September 25, 2026; Code Mode section verified September 30, 2026
 
