@@ -1,6 +1,6 @@
 # Harness Operations Principles
 
-**Status:** Harness Operations Reference Model 0.3
+**Status:** Harness Operations Reference Model 0.4
 
 These principles guide the design and evaluation of Harness Operations systems. They are descriptive architectural guidance, not protocol-conformance requirements.
 
