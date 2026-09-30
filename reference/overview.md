@@ -1,6 +1,6 @@
 # What is Harness Operations?
 
-**Status:** Harness Operations Reference Model 0.3
+**Status:** Harness Operations Reference Model 0.4
 
 ## The shift
 
@@ -144,7 +144,7 @@ The reference model should reuse those practices rather than rename them. Its na
 
 ### Not a new protocol by default
 
-Reference Model 0.3 intentionally does not define a Harness Operations wire protocol.
+Reference Model 0.4 intentionally does not define a Harness Operations wire protocol.
 
 Existing standards already address important boundaries in the ecosystem. For example, MCP addresses tool and context integration, ACP defines a client/coding-agent interaction boundary, A2A defines communication between independent agent systems, and OpenTelemetry provides common observability foundations.
 
@@ -154,7 +154,7 @@ The detailed boundary analysis belongs in the Standards Landscape document.
 
 ## A reference-model lens
 
-Harness Operations 0.3 organizes operational state into three broad categories.
+Harness Operations 0.4 organizes operational state into three broad categories.
 
 ```text
 DEFINITION          EXECUTION          EVIDENCE
@@ -185,7 +185,7 @@ Normalization is useful only where the semantics are genuinely shared. Elsewhere
 
 ## Relationship to the rest of the reference model
 
-This document introduces the discipline and its scope. The remaining Reference Model 0.3 documents define the details:
+This document introduces the discipline and its scope. The remaining Reference Model 0.4 documents define the details:
 
 - **Principles** — design principles for operating heterogeneous harness systems;
 - **Reference Model** — core concepts and relationships;

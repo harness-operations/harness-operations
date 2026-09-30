@@ -1,6 +1,6 @@
 # Scope and Terminology
 
-**Status:** Harness Operations Reference Model 0.3
+**Status:** Harness Operations Reference Model 0.4
 
 This document establishes the working scope, boundaries, and shared vocabulary used by the Harness Operations Reference Model. It is intentionally descriptive rather than a protocol or conformance specification.
 
