@@ -1,0 +1,122 @@
+name: Prepare v0.5 release once
+on:
+  push:
+    branches: [release/v0.5-preparation]
+    paths: [.github/workflows/prepare-v0.5-once.yml]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    if: github.repository == 'harness-operations/specification'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Prepare only canonical version metadata and release notes
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          base = 'bead6a93cb84b227339554b3225a23668236c7cd'
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD^'], text=True).strip() == base
+          assert json.loads(Path('RELEASE.json').read_text())['version'] == 'v0.4'
+          references = ['overview', 'principles', 'model', 'governance', 'landscape', 'terminology']
+          patterns = ['README', 'approval-valid-at-execution-time', 'stop-revoke-and-recover', 'model-informed-decisions']
+          docs = [Path(f'reference/{name}.md') for name in references]
+          docs += [Path(f'patterns/{name}.md') for name in patterns]
+          docs += [Path('comparisons/methodology.md')]
+          for path in docs:
+              body = path.read_text()
+              assert '**Status:**' in body and '0.4' in body, path
+              updated = body.replace('Reference Model 0.4', 'Reference Model 0.5')
+              updated = updated.replace('Harness Operations 0.4', 'Harness Operations 0.5')
+              updated = updated.replace('Applied Harness Operations v0.4', 'Applied Harness Operations v0.5')
+              assert updated != body, path
+              assert 'post-v0.4' not in updated and '(unreleased)' not in updated, path
+              path.write_text(updated)
+
+          readme = Path('README.md')
+          body = readme.read_text().replace('Reference Model 0.4', 'Reference Model 0.5')
+          body = body.replace('[Reference Model v0.4 release](https://github.com/harness-operations/specification/issues/48)', '[Reference Model v0.5 release](https://github.com/harness-operations/specification/issues/53)')
+          old = 'Reference Model 0.5 adds Code Mode as generic cross-cutting tool-use prior art'
+          new = 'Reference Model 0.5 expands Code Mode examples and clarifies discovery, invocation exposure, and execution authority'
+          assert old in body
+          readme.write_text(body.replace(old, new))
+
+          path = Path('comparisons/data/landscape.json')
+          body = path.read_text()
+          before = json.loads(body)
+          assert before['reference_model'] == 'v0.4'
+          assert body.count('"reference_model": "v0.4"') == 1
+          updated = body.replace('"reference_model": "v0.4"', '"reference_model": "v0.5"')
+          after = json.loads(updated)
+          after['reference_model'] = 'v0.4'
+          assert after == before, 'Comparison observations changed'
+          path.write_text(updated)
+
+          Path('RELEASE.json').write_text(json.dumps({'version': 'v0.5', 'title': 'Harness Operations Reference Model 0.5', 'notes_file': 'releases/v0.5.md'}, indent=2) + '\n')
+          notes = Path('releases/v0.5.md')
+          assert not notes.exists()
+          notes.write_text('''# Harness Operations Reference Model 0.5
+
+          Reference Model 0.5 expands Code Mode prior art and clarifies tool discovery, invocation exposure, and execution authority.
+
+          ## Added and clarified
+
+          - Revision-pinned Codex code-mode tool adaptation, with configuration and maturity qualifications.
+          - Pi's built-in MCP/QuickJS integration: automatic exposure of existing MCP tools to code mode, not conversion of the MCP server or replacement of the protocol.
+          - OpenAI API programmatic tool calling, explicitly separate from Codex.
+          - Direct model declarations, discovery, and programmatic callability distinguished from downstream authority.
+          - Pi's nested-call correlation, structured error results, and bounded evidence used as qualified operational examples.
+          - Decision-model composition linked to the existing model-informed decisions pattern; typed classifier output is not authority or enforcement.
+          - Comparison review questions covering prohibited invocation paths and partial outcomes without changing product findings.
+          - Canonical headings and status lines without post-version or unreleased qualifiers; release history stays in Git and release notes.
+
+          ## Evidence and scope
+
+          These are documentation- and source-backed additions, not live Codex/Pi/API compatibility results. Existing comparison observations, evidence dates, and findings are unchanged. Release verification reruns the repository's comparison validator, applied handoff example, and exact-version interface smoke checks; those checks do not establish new Code Mode interoperability claims.
+
+          No new protocol, conformance program, runtime requirement, or universal sandboxing, approval, performance, replay, or exactly-once guarantee is introduced.
+
+          Tracking: https://github.com/harness-operations/specification/issues/53
+          Content: https://github.com/harness-operations/specification/pull/52
+          '''.replace('\n          ', '\n'))
+
+          Path('.github/workflows/prepare-v0.5-once.yml').unlink()
+          allowed = {str(p) for p in docs} | {'README.md', 'RELEASE.json', 'comparisons/data/landscape.json', 'releases/v0.5.md'}
+          subprocess.run(['git', 'add', '-A'], check=True)
+          changed = set(subprocess.check_output(['git', 'diff', '--cached', '--name-only', base], text=True).splitlines())
+          assert changed == allowed, (changed - allowed, allowed - changed)
+          subprocess.run(['git', 'diff', '--cached', '--check'], check=True)
+          print(f'Prepared {len(changed)} files; comparison observations and evidence are unchanged.')
+          PY
+      - name: Validate comparison data
+        run: |
+          python -m pip install 'jsonschema>=4.23,<5'
+          python comparisons/validate.py
+      - name: Run applied example checks
+        working-directory: examples/approved-artifact-handoff
+        run: |
+          python -m unittest -v
+          python demo.py
+      - name: Run exact-version interface smoke
+        run: bash mappings/tests/interface-smoke.sh
+      - name: Commit verified release preparation to this branch only
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = release/v0.5-preparation
+          test "$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | cut -f1)" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'release: prepare Harness Operations Reference Model 0.5'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+          echo "Prepared commit: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
