@@ -28,6 +28,18 @@ Initial roles:
 
 Unlike roles must not be presented as competing implementations of the same thing.
 
+### Cross-cutting patterns: Code Mode
+
+**Post-v0.3 clarification:** Code Mode is a tool-use pattern, not a product identity or a new architectural role. It describes code-mediated orchestration of tools or APIs. Compare the concrete systems that provide it, not a generic “Code Mode” row against Harness products.
+
+For a Code Mode observation, identify where the generated program actually executes and how its calls reach tools. Distinguish native or configured harness support, an adapter, a model-platform API, and a remote MCP server's execution facility. A client using that remote facility does not automatically gain native Code Mode support. Likewise, a model API feature does not establish support in a separate CLI or IDE surface from the same vendor.
+
+Record the implementation/version, execution language/runtime, discovery interface, tool-call bridge, and material configuration. Review nested-call authorization, cancellation, limits, evidence, and replay separately; do not infer them from the ability to run code. A general shell, interpreter, or tool-search feature alone is insufficient evidence of this pattern.
+
+A test that starts the executor or discovers a tool establishes only that operation. It does not establish approval enforcement or safe retry for the operations inside a program. Shared Code Mode terminology is not an interoperability test.
+
+This clarification adds no product observations or automatic capability findings. A future dedicated capability definition needs reviewed, scoped evidence for its cells; existing versioned observations should not silently inherit support.
+
 ## Observation scope
 
 Every substantive observation identifies enough scope to avoid statements such as “Product X supports cancellation” without qualification.
@@ -54,7 +66,7 @@ An unsupported finding requires affirmative evidence within a defined scope. Abs
 
 Finding and mechanism are independent dimensions.
 
-Mechanism may be native, configured_native, adapter, external_controller, model_mediated, or not_applicable.
+Mechanism may be native, configured_native, adapter, external_controller, model_mediated, or_not_applicable.
 
 A product can therefore be available through an adapter without implying native support.
 
