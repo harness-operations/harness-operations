@@ -1,6 +1,4 @@
 {
-  "schema_version": "0.1",
-  "reference_model": "v0.5",
   "capabilities": [
     {
       "id": "access.interactive",
@@ -2806,7 +2804,7 @@
       "finding": "partial",
       "reviewed_at": "2026-09-25",
       "limitations": [
-        "Adapter is implemented in Paseo v0.9.2 source, but Harness Operations has not independently live-tested this product pair in v0.3."
+        "Adapter is implemented in Paseo v0.9.2 source, but Harness Operations has not independently live-tested this product pair."
       ],
       "evidence": [
         {
@@ -2844,7 +2842,7 @@
       "finding": "partial",
       "reviewed_at": "2026-09-25",
       "limitations": [
-        "Adapter is implemented in Paseo v0.9.2 source, but Harness Operations has not independently live-tested this product pair in v0.3."
+        "Adapter is implemented in Paseo v0.9.2 source, but Harness Operations has not independently live-tested this product pair."
       ],
       "evidence": [
         {
@@ -2882,7 +2880,7 @@
       "finding": "partial",
       "reviewed_at": "2026-09-25",
       "limitations": [
-        "Adapter is implemented in Paseo v0.9.2 source, but Harness Operations has not independently live-tested this product pair in v0.3."
+        "Adapter is implemented in Paseo v0.9.2 source, but Harness Operations has not independently live-tested this product pair."
       ],
       "evidence": [
         {
@@ -2920,7 +2918,7 @@
       "finding": "partial",
       "reviewed_at": "2026-09-25",
       "limitations": [
-        "Adapter is implemented in Paseo v0.9.2 source, but Harness Operations has not independently live-tested this product pair in v0.3."
+        "Adapter is implemented in Paseo v0.9.2 source, but Harness Operations has not independently live-tested this product pair."
       ],
       "evidence": [
         {

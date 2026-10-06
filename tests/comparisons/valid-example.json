@@ -1,6 +1,4 @@
 {
-  "schema_version": "0.1",
-  "reference_model": "v0.2",
   "capabilities": [
     {
       "id": "lifecycle.cancel",
@@ -17,7 +15,7 @@
         "harness"
       ],
       "homepage": "https://example.invalid/harness",
-      "notes": "Fictional schema-validation fixture. Never render as a landscape claim."
+      "notes": "Fictional schema-validation validation case. Never render as a product claim."
     },
     {
       "id": "example-control",
@@ -26,7 +24,7 @@
         "control_layer"
       ],
       "homepage": "https://example.invalid/control",
-      "notes": "Fictional schema-validation fixture. Never render as a landscape claim."
+      "notes": "Fictional schema-validation validation case. Never render as a product claim."
     }
   ],
   "observations": [
@@ -37,21 +35,21 @@
       "scope": {
         "interface": "Example API",
         "version": "1.0",
-        "deployment_mode": "local fixture"
+        "deployment_mode": "local validation case"
       },
       "finding": "available",
       "mechanism": "native",
       "reviewed_at": "2026-09-25",
       "prerequisites": [
-        "Fictional fixture only"
+        "Fictional validation case only"
       ],
       "limitations": [
         "Does not represent a real product or compatibility claim."
       ],
       "evidence": [
         {
-          "type": "fixture_test",
-          "title": "Fictional cancellation fixture",
+          "type": "synthetic_test",
+          "title": "Fictional cancellation validation test",
           "result": "pass",
           "notes": "Exercises the comparison data shape only."
         }
@@ -65,28 +63,28 @@
         "system_id": "example-control",
         "interface": "Example Controller API",
         "version": "1.0",
-        "deployment_mode": "local fixture"
+        "deployment_mode": "local validation case"
       },
       "target": {
         "system_id": "example-harness",
         "interface": "Example API",
         "version": "1.0",
-        "deployment_mode": "local fixture"
+        "deployment_mode": "local validation case"
       },
       "operation": "request cancellation",
-      "boundary": "fictional native API",
+      "boundary": "fictional validation boundary",
       "finding": "demonstrated",
       "reviewed_at": "2026-09-25",
       "prerequisites": [
-        "Fictional fixture only"
+        "Fictional validation case only"
       ],
       "limitations": [
         "Demonstrates schema shape, not real interoperability."
       ],
       "evidence": [
         {
-          "type": "fixture_test",
-          "title": "Fictional directed integration fixture",
+          "type": "synthetic_test",
+          "title": "Fictional directed integration validation test",
           "result": "pass",
           "notes": "Never surface as live-test evidence."
         }

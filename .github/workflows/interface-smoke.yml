@@ -3,15 +3,15 @@ name: Harness interface smoke
 on:
   pull_request:
     paths:
-      - 'mappings/tests/**'
-      - 'comparisons/data/landscape.json'
+      - 'tests/interface-smoke.*'
+      - 'comparisons/data/systems.json'
       - '.github/workflows/interface-smoke.yml'
   push:
     branches:
       - main
     paths:
-      - 'mappings/tests/**'
-      - 'comparisons/data/landscape.json'
+      - 'tests/interface-smoke.*'
+      - 'comparisons/data/systems.json'
       - '.github/workflows/interface-smoke.yml'
 
 permissions:
@@ -30,4 +30,4 @@ jobs:
           node-version: 22
 
       - name: Run exact-version interface smoke tests
-        run: bash mappings/tests/interface-smoke.sh
+        run: bash tests/interface-smoke.sh

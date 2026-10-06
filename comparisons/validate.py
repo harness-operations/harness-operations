@@ -8,8 +8,8 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parent
 SCHEMA_PATH = ROOT / "schema.json"
-CANONICAL_PATH = ROOT / "data" / "landscape.json"
-FIXTURES = sorted((ROOT / "fixtures").glob("*.json"))
+CANONICAL_PATH = ROOT / "data" / "systems.json"
+VALIDATION_CASES = sorted((ROOT.parent / "tests" / "comparisons").glob("*.json"))
 
 URL_REQUIRED_EVIDENCE = {
     "primary_documentation",
@@ -18,7 +18,7 @@ URL_REQUIRED_EVIDENCE = {
     "live_test",
     "operator_report",
 }
-EXECUTED_EVIDENCE = {"live_test", "fixture_test"}
+EXECUTED_EVIDENCE = {"live_test", "synthetic_test"}
 
 
 def load(path):
@@ -40,6 +40,9 @@ def scope_key(observation):
         scope["interface"],
         scope["version"],
         scope["deployment_mode"],
+        scope.get("platform"),
+        scope.get("plan"),
+        scope.get("configuration"),
     )
 
 
@@ -120,7 +123,7 @@ def validate_references(data, path):
         missing = sorted(capability_ids - observed_capabilities)
         extra = sorted(observed_capabilities - capability_ids)
         if missing or extra:
-            system_id, interface, version, deployment_mode = key
+            system_id, interface, version, deployment_mode, platform, plan, configuration = key
             details = []
             if missing:
                 details.append(f"missing capabilities: {', '.join(missing)}")
@@ -128,7 +131,8 @@ def validate_references(data, path):
                 details.append(f"unknown capabilities: {', '.join(extra)}")
             raise ValueError(
                 f"{path}: incomplete comparison row for {system_id} / {interface} / "
-                f"{version} / {deployment_mode}: {'; '.join(details)}"
+                f"{version} / {deployment_mode} / platform={platform!r} / "
+                f"plan={plan!r} / configuration={configuration!r}: {'; '.join(details)}"
             )
 
     for integration in data["integrations"]:
@@ -146,7 +150,7 @@ def main():
     schema = load(SCHEMA_PATH)
     validator = Draft202012Validator(schema, format_checker=FormatChecker())
 
-    targets = [CANONICAL_PATH, *FIXTURES]
+    targets = [CANONICAL_PATH, *VALIDATION_CASES]
     failed = False
 
     for path in targets:

@@ -1,17 +1,35 @@
-# Landscape Comparison Methodology
-
-**Status:** Applied Harness Operations v0.5
+# System Comparison Methodology
 
 ## Purpose
 
-The Harness Operations landscape comparison exists to make operational differences inspectable, not to rank products.
+The Harness Operations system comparison exists to make operational differences inspectable, not to rank products.
 
-It answers two separate questions:
+The canonical reference has two complementary layers:
+
+1. **Systems reference entries** describe a concrete subject in its native terms: what it is, what work it serves, where execution and state live, how it operates independently or relates to other systems, and what the evidence does and does not establish.
+2. **Structured comparisons** record scoped capability and interoperability observations using the canonical comparison dataset.
+
+A Systems reference entry may be useful without a complete comparison row. Publication of a reference entry does not imply that every canonical capability has been assessed.
+
+The structured comparison answers two separate questions:
 
 1. **Capability:** What can a specific product/interface/version do, by what mechanism, under what prerequisites, and with what evidence?
 2. **Interoperability:** Which specific source and target interfaces have been shown to work together for a defined operation, through what boundary, and with what observed limitations?
 
 A common protocol label, product category, or marketing claim is not sufficient evidence for either question.
+
+## Keep different evaluation questions separate
+
+The reference intentionally distinguishes:
+
+- **task/model quality** — how well a model or agent system performs a workload;
+- **operational capability** — what a scoped interface can do and how it is controlled;
+- **requirements coverage** — whether a scoped composition satisfies a separately defined requirement/profile;
+- **benchmark evidence** — what happened over executable scenarios and repeated trials.
+
+A strong model benchmark does not establish Harness permissions, recovery, or evidence semantics. A long capability list does not establish task quality.
+
+Likewise, **testing software with agents** is not the same activity as **evaluating agents**. Playwright Test Agents are a software-testing specialization; an evaluation framework such as Inspect can instead run and score agents as systems under test.
 
 ## Scope and architectural roles
 
@@ -28,6 +46,16 @@ Initial roles:
 
 Unlike roles must not be presented as competing implementations of the same thing.
 
+The current structured role set is intentionally narrower than the broader Systems reference. A broader Systems reference entry may accurately describe a model, application, skill package, tool service, domain-specific specification, or other subject without forcing it into one of these comparison roles. Expanding the structured taxonomy requires a reviewed schema change; prose must not mislabel a subject merely to make it fit the current enum.
+
+### Relationships are not interoperability
+
+A Systems reference entry may record a source-backed relationship such as one system hosting, invoking, configuring, supplying tools to, or consuming artifacts from another.
+
+That relationship is not a compatibility result.
+
+A demonstrated interoperability observation still requires a specific source interface, target interface, operation, boundary, configuration, and observed evidence. Shared protocol support, a documented integration path, or installability alone does not establish all lifecycle, authority, failure, or evidence semantics across the boundary.
+
 ### Cross-cutting patterns: Code Mode
 
 Code Mode is a tool-use pattern, not a product identity or a new architectural role. It describes code-mediated orchestration of tools or APIs. Compare the concrete systems that provide it, not a generic “Code Mode” row against Harness products.
@@ -36,7 +64,7 @@ For a Code Mode observation, identify where the generated program actually execu
 
 Record the implementation/version, execution language/runtime, discovery interface, tool-call bridge, and material configuration. Review nested-call authorization, cancellation, limits, evidence, and replay separately; do not infer them from the ability to run code. A general shell, interpreter, or tool-search feature alone is insufficient evidence of this pattern.
 
-The [Code Mode prior art](../reference/landscape.md#code-mode) motivates additional review questions, not new conformance requirements:
+The [Code Mode prior art](../reference/standards.md#code-mode) motivates additional review questions, not new conformance requirements:
 
 - **Exposure and reachability:** Which tools are directly declared, discoverable, or callable from generated code? Record the effective configuration, activation prerequisites, and adapter revision where applicable. A missing declaration is not proof of unreachability. Check that native direct-only or excluded tools cannot be reached through a prohibited nested path.
 - **Dispatch and outcomes:** Do nested calls pass through the applicable validation, permission, approval, and revocation mechanisms? Preserve parent/child correlation and distinguish a thrown failure, a structured error result, and an uncertain or already-completed effect. A successful outer program is not evidence that every inner operation succeeded.
@@ -86,12 +114,12 @@ Evidence items use one of these types:
 - source_code;
 - release_note;
 - live_test;
-- fixture_test;
+- synthetic_test;
 - operator_report.
 
 Documented behavior and observed behavior remain separate. If a live test contradicts documentation, retain both and explain the discrepancy.
 
-Fixture evidence must never be surfaced as live compatibility evidence.
+Synthetic validation evidence must never be surfaced as live compatibility evidence.
 
 ## Tested observations
 

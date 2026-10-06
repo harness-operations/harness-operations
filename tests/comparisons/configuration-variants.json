@@ -1,0 +1,63 @@
+{
+  "capabilities": [
+    {
+      "id": "lifecycle.cancel",
+      "group": "Identity and lifecycle",
+      "name": "Cancellation or interruption",
+      "definition": "Provides a defined mechanism to request or cause interruption of in-progress agent execution, with observable semantics."
+    }
+  ],
+  "systems": [
+    {
+      "id": "example-harness",
+      "name": "Example Harness",
+      "roles": ["harness"],
+      "homepage": "https://example.invalid/harness"
+    }
+  ],
+  "observations": [
+    {
+      "id": "example.cancel.strict",
+      "system_id": "example-harness",
+      "capability_id": "lifecycle.cancel",
+      "scope": {
+        "interface": "Example API",
+        "version": "1.0",
+        "deployment_mode": "hosted",
+        "configuration": "approval_mode=strict"
+      },
+      "finding": "available",
+      "mechanism": "native",
+      "reviewed_at": "2026-10-05",
+      "evidence": [
+        {
+          "type": "synthetic_test",
+          "title": "Strict configuration validation case",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "id": "example.cancel.permissive",
+      "system_id": "example-harness",
+      "capability_id": "lifecycle.cancel",
+      "scope": {
+        "interface": "Example API",
+        "version": "1.0",
+        "deployment_mode": "hosted",
+        "configuration": "approval_mode=permissive"
+      },
+      "finding": "partial",
+      "mechanism": "native",
+      "reviewed_at": "2026-10-05",
+      "evidence": [
+        {
+          "type": "synthetic_test",
+          "title": "Permissive configuration validation case",
+          "result": "pass"
+        }
+      ]
+    }
+  ],
+  "integrations": []
+}

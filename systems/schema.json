@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness Operations systems index",
+  "type": "object",
+  "required": [
+    "subjects",
+    "relationships"
+  ],
+  "properties": {
+    "subjects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/subject"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    }
+  },
+  "$defs": {
+    "subject_kind": {
+      "enum": [
+        "harness",
+        "model",
+        "client",
+        "application",
+        "framework",
+        "agent_definition",
+        "skill_package",
+        "tool_interface",
+        "tool_service",
+        "execution_runtime",
+        "control_layer",
+        "decision_service",
+        "domain_specification",
+        "other"
+      ]
+    },
+    "arrangement": {
+      "enum": [
+        "standalone_bounded",
+        "interactive_supervised",
+        "embedded_specialization",
+        "agent_as_tool",
+        "artifact_handoff",
+        "coordinator_worker_threads",
+        "shared_state_workers",
+        "independent_services"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "interface",
+        "deployment_mode"
+      ],
+      "properties": {
+        "interface": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "deployment_mode": {
+          "type": "string"
+        },
+        "configuration": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "type",
+        "title",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "primary_documentation",
+            "source_code",
+            "release_note",
+            "technical_report"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "additionalProperties": false
+    },
+    "subject": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "kinds",
+        "scope",
+        "reviewed_at",
+        "document_path",
+        "sources"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_.-]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "workloads": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "homepage": {
+          "type": "string",
+          "format": "uri"
+        },
+        "operating_arrangements": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/arrangement"
+          },
+          "description": "Operating arrangements the subject materially participates in or explicitly describes. For models, definitions, and specifications this does not imply that the subject itself is an executable runtime."
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "kinds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/subject_kind"
+          }
+        },
+        "comparison_scope": {
+          "$ref": "#/$defs/comparison_ref"
+        },
+        "document_path": {
+          "type": "string",
+          "pattern": "^systems/[^/]+\\.md$"
+        },
+        "operational_characteristics": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "workloads"
+          ]
+        },
+        {
+          "required": [
+            "operational_characteristics"
+          ]
+        }
+      ]
+    },
+    "relationship": {
+      "type": "object",
+      "required": [
+        "id",
+        "source_id",
+        "target_id",
+        "target_scope",
+        "source_scope",
+        "type",
+        "description",
+        "reviewed_at",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_.-]+$"
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "target_id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "uses_model",
+            "hosts_definition",
+            "invokes",
+            "supplies_tools_to",
+            "produces_artifact_for",
+            "consumes_artifact_from",
+            "configured_by",
+            "describes",
+            "evaluates"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_scope": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "comparison_ref": {
+      "type": "object",
+      "required": [
+        "system_id",
+        "interface",
+        "version",
+        "deployment_mode"
+      ],
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_.-]+$"
+        },
+        "interface": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "deployment_mode": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "plan": {
+          "type": "string"
+        },
+        "configuration": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

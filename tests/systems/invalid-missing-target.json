@@ -1,0 +1,49 @@
+{
+  "subjects": [
+    {
+      "id": "example-host",
+      "name": "Example Host",
+      "workloads": [
+        "validation case"
+      ],
+      "scope": {
+        "interface": "Example",
+        "version": "1.0",
+        "deployment_mode": "validation case"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://example.invalid/host",
+      "operating_arrangements": [],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Fictional docs",
+          "url": "https://example.invalid/host"
+        }
+      ],
+      "kinds": [
+        "harness"
+      ],
+      "document_path": "systems/README.md"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "broken-relationship",
+      "source_id": "example-host",
+      "target_id": "missing-subject",
+      "type": "invokes",
+      "description": "Must fail unknown target.",
+      "reviewed_at": "2026-09-30",
+      "evidence": [
+        {
+          "type": "primary_documentation",
+          "title": "Fictional docs",
+          "url": "https://example.invalid/relation"
+        }
+      ],
+      "source_scope": "validation-case source scope",
+      "target_scope": "validation-case target scope"
+    }
+  ]
+}

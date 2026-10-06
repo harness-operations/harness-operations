@@ -1,6 +1,5 @@
-# Anthropic Claude Code CLI mapping
+# Anthropic Claude Code CLI
 
-**Status:** documentation-backed first pass for Applied Harness Operations v0.3
 
 ## Scope
 
@@ -13,7 +12,7 @@
 - **Reviewed at:** September 25, 2026
 - **Evidence status:** first-party documentation and release notes; live Harness Operations tests pending
 
-Claude Agent SDK, Claude Desktop, hosted/cloud sessions, remote-control-specific behavior, and IDE-specific behavior are distinct surfaces and are not silently folded into this row.
+Claude Agent SDK, Claude Desktop, hosted/cloud sessions, remote-control-specific behavior, IDE-specific behavior, and the redesigned Claude Projects beta are distinct surfaces and are not silently folded into this row. See [Claude Projects (beta)](claude-projects.md) for the coordinator/thread orchestration surface.
 
 ## Primary sources
 
@@ -50,7 +49,7 @@ The current release also has explicit current-turn interruption behavior. Interr
 
 Claude Code supports native subagents for isolated delegated work. Agent teams provide a broader multi-session coordination model with peer-to-peer communication and shared task coordination, but Anthropic documents them as experimental and disabled by default.
 
-This mapping treats native subagent delegation as available without claiming A2A or cross-vendor handoff compatibility.
+This reference entry treats native subagent delegation as available without claiming A2A or cross-vendor handoff compatibility.
 
 ## Governance and enforcement
 
@@ -64,7 +63,7 @@ The scoped public docs do not establish durable named-human Principal attributio
 
 Claude Code documents optional OS-level sandboxing for shell execution on supported platforms. Permission modes and sandboxing are distinct controls.
 
-Credential mediation remains unknown under the matrix's strong definition. Claude Code supports several authentication/credential configuration paths, but Anthropic also warns that a tool reading a credential file or printing a secret can cause that value to appear in session history. That is not sufficient evidence to claim credentials are consistently brokered away from model/tool context.
+Credential mediation remains unknown under the comparison definition's strong definition. Claude Code supports several authentication/credential configuration paths, but Anthropic also warns that a tool reading a credential file or printing a secret can cause that value to appear in session history. That is not sufficient evidence to claim credentials are consistently brokered away from model/tool context.
 
 ## Resources
 
@@ -78,7 +77,7 @@ Claude Code persists session transcripts unless configured otherwise and exports
 
 This is useful operational evidence but not enough to claim a complete Harness Operations Audit Record for all policy, identity, credential, environment, and external side-effect facts. Resolved execution facts are therefore partial.
 
-## Current capability summary
+## Capability summary
 
 Documentation-backed available findings:
 
@@ -104,11 +103,9 @@ Unknown:
 
 - credential mediation under the stronger comparison definition.
 
-## Live-test plan
+## Further validation
 
-Issue #28 remains open until selected behaviors are tested against Claude Code 2.1.282 or an explicitly documented replacement version.
-
-Initial tests should cover:
+Useful live tests include:
 
 1. start session and capture session ID;
 2. resume the same session and verify continuity;
@@ -122,4 +119,4 @@ Live-test evidence must be added separately from documentation evidence.
 
 ## Limitations
 
-This mapping is descriptive, not certification or endorsement. Current documentation can be superseded by later Claude Code releases. A successful live test proves only the tested version/interface/configuration and operation.
+This reference entry is descriptive, not certification or endorsement. Current documentation can be superseded by later Claude Code releases. A successful live test proves only the tested version/interface/configuration and operation.

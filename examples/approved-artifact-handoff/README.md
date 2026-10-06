@@ -60,4 +60,4 @@ The reviewer decision is supplied as a deterministic Review object. A future liv
 
 ## Next integrations
 
-Issue #26 will use this fixture as the stable baseline. Codex and Claude Code mappings/tests are developed separately in #27 and #28 so passing this fixture can never be mistaken for real Harness compatibility.
+This synthetic example is a stable baseline for the pattern itself. Codex and Claude Code reference entries and interface smoke tests are separate evidence, so passing this example can never be mistaken for real Harness compatibility.
