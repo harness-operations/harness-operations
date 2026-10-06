@@ -1,7 +1,5 @@
 # Harness Operations Reference Model
 
-**Status:** Harness Operations Reference Model 0.5
-
 ## Purpose
 
 This document defines the smallest useful conceptual model for operating agent harnesses across heterogeneous environments without prescribing a product architecture, storage schema, transport, orchestration engine, or control-plane topology.
@@ -404,4 +402,4 @@ Those may become subjects of later proposals only when implementation experience
 - [Scope and Terminology](terminology.md)
 - [Principles](principles.md)
 - [Governance](governance.md)
-- [Standards Landscape](landscape.md)
+- [Standards and Boundaries](standards.md)

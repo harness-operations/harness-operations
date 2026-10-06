@@ -1,25 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://harness-operations.com/comparisons/schema.json",
-  "title": "Harness Operations landscape comparison dataset",
+  "title": "Harness Operations system comparison dataset",
   "type": "object",
   "required": [
-    "schema_version",
-    "reference_model",
     "capabilities",
     "systems",
     "observations",
     "integrations"
   ],
   "properties": {
-    "schema_version": {
-      "type": "string",
-      "pattern": "^0\\.[0-9]+$"
-    },
-    "reference_model": {
-      "type": "string",
-      "pattern": "^v[0-9]+\\.[0-9]+$"
-    },
     "capabilities": {
       "type": "array",
       "items": {
@@ -81,7 +70,7 @@
         "source_code",
         "release_note",
         "live_test",
-        "fixture_test",
+        "synthetic_test",
         "operator_report"
       ]
     },

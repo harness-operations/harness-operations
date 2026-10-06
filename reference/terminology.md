@@ -1,16 +1,14 @@
 # Scope and Terminology
 
-**Status:** Harness Operations Reference Model 0.5
-
-This document establishes the working scope, boundaries, and shared vocabulary used by the Harness Operations Reference Model. It is intentionally descriptive rather than a protocol or conformance specification.
+This document establishes working scope, boundaries, and shared vocabulary for Harness Operations. The Reference Model is descriptive rather than a protocol or conformance specification.
 
 ## Definition
 
-**Harness Operations** is the practice of operating one or more agent harnesses as a coherent system across their lifecycles, environments, work, and authorities. It covers observation, coordination, security, governance, resource and usage controls, human intervention, and auditability while preserving each harness's native semantics.
+**Harness Operations** is the discipline of operating agent harnesses in real systems—individually or together—while preserving native semantics that materially affect execution, authority, state, evidence, and failure behavior.
 
-Harness Operations is an operational discipline and reference model. It does not require a central control plane, a particular deployment architecture, or a new wire protocol.
+It includes standalone as well as cooperative use. It does not require multiple Harnesses, a central control plane, a particular deployment architecture, or a new wire protocol.
 
-Harness Operations is deliberately **harness-centric**. It uses the Harness as an operational unit because the Harness is where agent-session lifecycle, context, tools, permissions, execution, persistence, and other native semantics are concretely mediated.
+Harness Operations is deliberately **harness-centric**, but not every subject in Systems is a Harness. Models, skills, clients, tool services, applications, runtimes, control layers, and domain-specific specifications may be included when they clarify how agent work is executed or operated.
 
 ## Boundary with adjacent disciplines
 
@@ -24,7 +22,7 @@ Harness Operations concerns the ongoing operation of harnesses and their executi
 
 `AgentOps` and `agent operations` are emerging umbrella terms for practices and products concerned with deploying, observing, evaluating, securing, governing, and managing AI agents in production. Usage is not uniform: some definitions center observability and testing, while others include lifecycle, governance, cost, security, and fleet management.
 
-The v0.1 prior-art review did **not** identify a broadly adopted common AgentOps specification or reference model. Harness Operations therefore does not treat AgentOps as a parent specification or standardized taxonomy.
+The initial prior-art review did **not** identify a broadly adopted common AgentOps specification or reference model. Harness Operations therefore does not treat AgentOps as a parent specification or standardized taxonomy.
 
 Harness Operations is **adjacent to and overlapping with** broader AgentOps / agent-operations practice, but it addresses a more specific systems problem: operating one or more Harnesses—with potentially different session, capability, permission, context, execution, governance, and persistence semantics—coherently without flattening those differences.
 
@@ -44,7 +42,7 @@ Harness Operations should reuse established operational practices rather than re
 
 ## Organizing lens
 
-Reference Model 0.1 distinguishes three kinds of operational state.
+The Reference Model distinguishes three kinds of operational state.
 
 ### Definition
 
@@ -168,17 +166,17 @@ A reusable or durable definition of coordinated work, stages, roles, dependencie
 
 A Workflow is useful but not universal. A Run does not need to originate from a Workflow.
 
-## Deferred as a first-class v0.1 concept
+## Deferred as a first-class concept
 
 ### Work
 
-"Work" remains useful explanatory language for objectives and activity but is intentionally not defined as a required first-class reference-model object in v0.1. The model should introduce a stronger concept only if the later reference work demonstrates a cross-harness operational need for it.
+"Work" remains useful explanatory language for objectives and activity but is intentionally not defined as a required first-class reference-model object in the current model. The model should introduce a stronger concept only if the later reference work demonstrates a cross-harness operational need for it.
 
 ## Normative language
 
-Reference Model 0.1 does not use RFC 2119 or RFC 8174 `MUST`, `SHOULD`, or similar keywords as conformance requirements.
+The Reference Model does not use RFC 2119 or RFC 8174 `MUST`, `SHOULD`, or similar keywords as conformance requirements.
 
-The reference model may state design invariants or recommendations in ordinary language, but v0.1 does not define protocol conformance, certification, or mandatory implementation behavior.
+The Reference Model may state design invariants or recommendations in ordinary language, but it does not define protocol conformance, certification, or mandatory implementation behavior.
 
 ## Scope rule
 

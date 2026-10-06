@@ -1,7 +1,5 @@
 # Harness Operations Principles
 
-**Status:** Harness Operations Reference Model 0.5
-
 These principles guide the design and evaluation of Harness Operations systems. They are descriptive architectural guidance, not protocol-conformance requirements.
 
 ## 1. Harnesses are independent systems
@@ -126,4 +124,4 @@ Portability and interoperability are valuable when they preserve meaningful diff
 
 The [Scope and Terminology](terminology.md) document defines the shared vocabulary used by these principles.
 
-The Reference Model applies these principles to concepts and relationships. Governance expands the authority, policy, delegation, approval, exception, and accountability model. The Standards Landscape evaluates where existing standards already provide applicable semantics or interoperability boundaries.
+The Reference Model applies these principles to concepts and relationships. Governance expands the authority, policy, delegation, approval, exception, and accountability model. Standards and Boundaries evaluates where existing standards already provide applicable semantics or interoperability boundaries.

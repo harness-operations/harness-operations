@@ -15,7 +15,7 @@ Initial patterns:
 The patterns are grounded in:
 
 - the deterministic [approved-artifact handoff example](../examples/approved-artifact-handoff/README.md);
-- the versioned [Codex App Server 0.157.0 mapping](../mappings/codex-app-server-0.157.0.md);
-- the versioned [Claude Code CLI 2.1.282 mapping](../mappings/claude-code-cli-2.1.282.md).
+- the reviewed [OpenAI Codex entry](../systems/openai-codex.md);
+- the reviewed [Anthropic Claude Code entry](../systems/anthropic-claude-code.md).
 
 Implementation-specific mechanisms remain native to those systems. The patterns describe the operational properties to preserve, not a common wire format.

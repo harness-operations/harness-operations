@@ -1,0 +1,683 @@
+{
+  "subjects": [
+    {
+      "id": "openai-codex",
+      "name": "OpenAI Codex App Server",
+      "workloads": [
+        "coding",
+        "software engineering"
+      ],
+      "scope": {
+        "interface": "Codex App Server",
+        "version": "0.157.0",
+        "deployment_mode": "local App Server process / client-driven interface"
+      },
+      "reviewed_at": "2026-09-25",
+      "homepage": "https://github.com/openai/codex",
+      "operating_arrangements": [
+        "standalone_bounded"
+      ],
+      "sources": [
+        {
+          "type": "release_note",
+          "title": "Codex 0.157.0 release",
+          "url": "https://github.com/openai/codex/releases/tag/rust-v0.157.0"
+        }
+      ],
+      "notes": "Detailed Systems entry for the reviewed Codex App Server surface.",
+      "kinds": [
+        "harness"
+      ],
+      "comparison_scope": {
+        "system_id": "openai-codex",
+        "interface": "Codex App Server",
+        "version": "0.157.0",
+        "deployment_mode": "local App Server process"
+      },
+      "document_path": "systems/openai-codex.md"
+    },
+    {
+      "id": "anthropic-claude-code",
+      "name": "Anthropic Claude Code CLI",
+      "workloads": [
+        "coding",
+        "software engineering"
+      ],
+      "scope": {
+        "interface": "Claude Code CLI",
+        "version": "2.1.282",
+        "deployment_mode": "local CLI process"
+      },
+      "reviewed_at": "2026-09-25",
+      "homepage": "https://github.com/anthropics/claude-code",
+      "operating_arrangements": [
+        "standalone_bounded",
+        "interactive_supervised"
+      ],
+      "sources": [
+        {
+          "type": "release_note",
+          "title": "Claude Code 2.1.282 release",
+          "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.282"
+        }
+      ],
+      "notes": "Detailed Systems entry for the reviewed Claude Code CLI surface.",
+      "kinds": [
+        "harness"
+      ],
+      "comparison_scope": {
+        "system_id": "anthropic-claude-code",
+        "interface": "Claude Code CLI",
+        "version": "2.1.282",
+        "deployment_mode": "local CLI process"
+      },
+      "document_path": "systems/anthropic-claude-code.md"
+    },
+    {
+      "id": "cisco-antares-models",
+      "name": "Cisco Antares models",
+      "workloads": [
+        "software security",
+        "vulnerability localization"
+      ],
+      "scope": {
+        "interface": "Antares family / Antares-1B model card",
+        "deployment_mode": "model weights consumed by surrounding inference/runtime",
+        "revision": "Antares-1B model card and arXiv 2608.02407"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://huggingface.co/fdtn-ai/antares-1b",
+      "operating_arrangements": [
+        "embedded_specialization"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Antares-1B model card",
+          "url": "https://huggingface.co/fdtn-ai/antares-1b"
+        },
+        {
+          "type": "technical_report",
+          "title": "Antares technical report",
+          "url": "https://arxiv.org/abs/2608.02407"
+        }
+      ],
+      "kinds": [
+        "model"
+      ],
+      "document_path": "systems/antares-models.md"
+    },
+    {
+      "id": "cisco-antares-cli",
+      "name": "Cisco Antares CLI",
+      "workloads": [
+        "software security",
+        "vulnerability localization"
+      ],
+      "scope": {
+        "interface": "Companion Antares CLI",
+        "deployment_mode": "CLI over read-only repository snapshot and configured OpenAI-compatible inference endpoint"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://huggingface.co/fdtn-ai/antares-1b",
+      "operating_arrangements": [
+        "standalone_bounded",
+        "artifact_handoff"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Antares-1B model card: companion CLI",
+          "url": "https://huggingface.co/fdtn-ai/antares-1b"
+        }
+      ],
+      "notes": "The public model card describes the CLI but does not expose a stable standalone CLI version in the cited text.",
+      "kinds": [
+        "harness"
+      ],
+      "document_path": "systems/antares-cli.md"
+    },
+    {
+      "id": "cisco-foundry-security-spec",
+      "name": "Cisco Foundry Security Spec",
+      "workloads": [
+        "software security",
+        "security evaluation"
+      ],
+      "scope": {
+        "interface": "Seed specification and constitution",
+        "version": "Seed spec 0.1.0; constitution 0.2.0",
+        "deployment_mode": "design blueprint; no executable implementation in repository",
+        "revision": "c770bf7764265dda188d9a270b1105a4bb62759b"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://github.com/CiscoDevNet/foundry-security-spec",
+      "operating_arrangements": [
+        "artifact_handoff",
+        "shared_state_workers"
+      ],
+      "sources": [
+        {
+          "type": "source_code",
+          "title": "Foundry repository at reviewed revision",
+          "url": "https://github.com/CiscoDevNet/foundry-security-spec/tree/c770bf7764265dda188d9a270b1105a4bb62759b"
+        }
+      ],
+      "kinds": [
+        "domain_specification"
+      ],
+      "document_path": "systems/cisco-foundry-security-spec.md"
+    },
+    {
+      "id": "playwright-test-agents",
+      "name": "Playwright Test Agents",
+      "workloads": [
+        "software testing",
+        "test generation",
+        "test repair"
+      ],
+      "scope": {
+        "interface": "planner / generator / healer definitions",
+        "deployment_mode": "generated definitions hosted by selected agentic loop"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://playwright.dev/docs/test-agents",
+      "operating_arrangements": [
+        "embedded_specialization",
+        "artifact_handoff"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Playwright Test Agents",
+          "url": "https://playwright.dev/docs/test-agents"
+        },
+        {
+          "type": "release_note",
+          "title": "Playwright release notes",
+          "url": "https://playwright.dev/docs/release-notes"
+        }
+      ],
+      "kinds": [
+        "agent_definition"
+      ],
+      "document_path": "systems/playwright-test-agents.md"
+    },
+    {
+      "id": "firered-openstoryline",
+      "name": "FireRed-OpenStoryline",
+      "workloads": [
+        "creative video",
+        "video editing"
+      ],
+      "scope": {
+        "interface": "OpenStoryline application / CLI / web / Agent Skills",
+        "deployment_mode": "self-hosted application with configured external services",
+        "revision": "c9e945215586f45c12a61c1951ee9a8e9c43a027"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://github.com/FireRedTeam/FireRed-OpenStoryline",
+      "operating_arrangements": [
+        "interactive_supervised",
+        "embedded_specialization",
+        "artifact_handoff"
+      ],
+      "sources": [
+        {
+          "type": "source_code",
+          "title": "FireRed-OpenStoryline at reviewed revision",
+          "url": "https://github.com/FireRedTeam/FireRed-OpenStoryline/tree/c9e945215586f45c12a61c1951ee9a8e9c43a027"
+        }
+      ],
+      "kinds": [
+        "application"
+      ],
+      "document_path": "systems/firered-openstoryline.md"
+    },
+    {
+      "id": "browser-use-python-agent",
+      "name": "Browser Use Python Agent",
+      "workloads": [
+        "browser automation",
+        "web tasks"
+      ],
+      "scope": {
+        "interface": "open-source Python Agent",
+        "deployment_mode": "application-embedded agent with local or cloud browser",
+        "revision": "4cbe921673b48a488f5415d9159249afd12a625b"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://github.com/browser-use/browser-use",
+      "operating_arrangements": [
+        "standalone_bounded",
+        "agent_as_tool"
+      ],
+      "sources": [
+        {
+          "type": "source_code",
+          "title": "Browser Use at reviewed revision",
+          "url": "https://github.com/browser-use/browser-use/tree/4cbe921673b48a488f5415d9159249afd12a625b"
+        }
+      ],
+      "kinds": [
+        "harness"
+      ],
+      "document_path": "systems/browser-use.md"
+    },
+    {
+      "id": "browser-use-hosted-agent",
+      "name": "Browser Use Hosted Agent",
+      "workloads": [
+        "browser automation",
+        "web tasks"
+      ],
+      "scope": {
+        "interface": "fully hosted Cloud agent path",
+        "deployment_mode": "Browser Use runs agent and browser infrastructure"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://browser-use.com",
+      "operating_arrangements": [
+        "standalone_bounded",
+        "agent_as_tool"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Browser Use product map",
+          "url": "https://github.com/browser-use/browser-use/blob/4cbe921673b48a488f5415d9159249afd12a625b/README.md"
+        }
+      ],
+      "kinds": [
+        "harness"
+      ],
+      "document_path": "systems/browser-use.md"
+    },
+    {
+      "id": "browser-use-browser-harness",
+      "name": "Browser Harness",
+      "workloads": [
+        "browser automation",
+        "web tasks"
+      ],
+      "scope": {
+        "interface": "Browser Harness Skill / CDP helpers / MCP server",
+        "deployment_mode": "browser capability supplied to an existing agent",
+        "revision": "afbcc381b963040c19627d788e40c7e7663171ee"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://github.com/browser-use/browser-harness",
+      "operating_arrangements": [
+        "embedded_specialization"
+      ],
+      "sources": [
+        {
+          "type": "source_code",
+          "title": "Browser Harness at reviewed revision",
+          "url": "https://github.com/browser-use/browser-harness/tree/afbcc381b963040c19627d788e40c7e7663171ee"
+        }
+      ],
+      "kinds": [
+        "tool_service"
+      ],
+      "document_path": "systems/browser-use.md"
+    },
+    {
+      "id": "openai-computer-use-api",
+      "name": "OpenAI API Computer Use",
+      "workloads": [
+        "computer use",
+        "desktop automation",
+        "browser automation"
+      ],
+      "scope": {
+        "interface": "OpenAI API Computer Use",
+        "deployment_mode": "application-provided browser/desktop environment; application executes model-requested actions"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://developers.openai.com/api/docs/guides/tools-computer-use",
+      "operating_arrangements": [
+        "embedded_specialization"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "OpenAI API: Computer use",
+          "url": "https://developers.openai.com/api/docs/guides/tools-computer-use"
+        }
+      ],
+      "notes": "Client/application execution boundary; distinct from the OpenAI-hosted browser surface documented by the Agents API.",
+      "kinds": [
+        "tool_interface"
+      ],
+      "document_path": "systems/computer-use.md"
+    },
+    {
+      "id": "anthropic-computer-use-toolset",
+      "name": "Anthropic Computer Use toolset",
+      "workloads": [
+        "computer use",
+        "desktop automation"
+      ],
+      "scope": {
+        "interface": "computer_toolset_20260801",
+        "version": "computer_toolset_20260801",
+        "deployment_mode": "client-executed toolset in an application-controlled desktop environment"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool",
+      "operating_arrangements": [
+        "embedded_specialization"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Anthropic Computer use tool",
+          "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool"
+        }
+      ],
+      "kinds": [
+        "tool_interface"
+      ],
+      "document_path": "systems/computer-use.md"
+    },
+    {
+      "id": "browser-use-macos-harness",
+      "name": "Browser Use macOS Harness",
+      "workloads": [
+        "computer use",
+        "desktop automation"
+      ],
+      "scope": {
+        "interface": "macOS Harness CLI / persistent Python capability process",
+        "deployment_mode": "local macOS capability/runtime layer installed into an outer agent",
+        "revision": "b88e4d77403bbcac35752eef4f4dd72db3663fd6"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://github.com/browser-use/macos-harness",
+      "operating_arrangements": [
+        "embedded_specialization"
+      ],
+      "sources": [
+        {
+          "type": "source_code",
+          "title": "macOS Harness at reviewed revision",
+          "url": "https://github.com/browser-use/macos-harness/tree/b88e4d77403bbcac35752eef4f4dd72db3663fd6"
+        }
+      ],
+      "notes": "The repository calls the product a Harness; the systems index records by reviewed operational role, where Codex/Claude Code remain the outer agent loop.",
+      "kinds": [
+        "tool_service",
+        "execution_runtime"
+      ],
+      "document_path": "systems/computer-use.md"
+    },
+    {
+      "id": "openai-agents-api-computer-use",
+      "name": "OpenAI Agents API Computer Use",
+      "kinds": [
+        "harness",
+        "execution_runtime"
+      ],
+      "workloads": [
+        "computer use",
+        "browser automation",
+        "web tasks"
+      ],
+      "scope": {
+        "interface": "Agents API computer_use",
+        "deployment_mode": "OpenAI-hosted agent session and browser environment"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use",
+      "operating_arrangements": [
+        "standalone_bounded"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "OpenAI Agents API: Computer use",
+          "url": "https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use"
+        }
+      ],
+      "notes": "Distinct hosted Harness/environment surface; do not inherit claims from the client-executed OpenAI API Computer Use integration.",
+      "document_path": "systems/computer-use.md"
+    },
+    {
+      "id": "openai-realtime-api",
+      "name": "OpenAI Realtime API",
+      "kinds": [
+        "execution_runtime"
+      ],
+      "workloads": [
+        "realtime voice",
+        "multimodal conversation"
+      ],
+      "scope": {
+        "interface": "Realtime API / RealtimeSession voice-agent surface",
+        "deployment_mode": "OpenAI-hosted realtime session over WebRTC or WebSocket"
+      },
+      "reviewed_at": "2026-10-05",
+      "document_path": "systems/realtime-voice.md",
+      "homepage": "https://developers.openai.com/api/docs/guides/realtime",
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "OpenAI Realtime API",
+          "url": "https://developers.openai.com/api/docs/guides/realtime"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "OpenAI Realtime with tools",
+          "url": "https://developers.openai.com/api/docs/guides/realtime-mcp"
+        }
+      ],
+      "notes": "Stateful hosted realtime session surface. Function-tool execution can remain application-owned while remote MCP tools can be invoked by the Realtime API.",
+      "operational_characteristics": [
+        "realtime",
+        "streaming",
+        "interruptible"
+      ]
+    },
+    {
+      "id": "pipecat",
+      "name": "Pipecat",
+      "kinds": [
+        "framework",
+        "execution_runtime"
+      ],
+      "workloads": [
+        "realtime voice",
+        "multimodal conversation"
+      ],
+      "scope": {
+        "interface": "Pipecat pipelines, processors, services, and transports",
+        "deployment_mode": "application-hosted Python realtime agent runtime with pluggable providers",
+        "revision": "baf1f16896f2914207abebd794233166cd031c59"
+      },
+      "reviewed_at": "2026-10-01",
+      "document_path": "systems/realtime-voice.md",
+      "homepage": "https://github.com/pipecat-ai/pipecat",
+      "sources": [
+        {
+          "type": "source_code",
+          "title": "Pipecat repository at reviewed revision",
+          "url": "https://github.com/pipecat-ai/pipecat/tree/baf1f16896f2914207abebd794233166cd031c59"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Pipecat documentation",
+          "url": "https://docs.pipecat.ai/"
+        }
+      ],
+      "notes": "Framework/runtime behavior depends materially on configured transports, AI services, processors, and deployment environment.",
+      "operational_characteristics": [
+        "realtime",
+        "streaming",
+        "interruptible"
+      ]
+    },
+    {
+      "id": "openai-responses-api",
+      "name": "OpenAI Responses API (Background Mode)",
+      "kinds": [
+        "execution_runtime"
+      ],
+      "scope": {
+        "interface": "Responses API background mode",
+        "deployment_mode": "OpenAI-hosted asynchronous response execution with polling, cancellation, and optional resumable streaming"
+      },
+      "reviewed_at": "2026-10-05",
+      "document_path": "systems/background-execution.md",
+      "homepage": "https://developers.openai.com/api/docs/guides/background",
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "OpenAI Background mode",
+          "url": "https://developers.openai.com/api/docs/guides/background"
+        }
+      ],
+      "notes": "Reviewed Responses API surface focused on background execution. Background Mode is an execution characteristic of the API, not a standalone workflow system or complete Harness architecture.",
+      "operational_characteristics": [
+        "background",
+        "long-running",
+        "asynchronous",
+        "resumable observation"
+      ]
+    },
+    {
+      "id": "inspect-ai",
+      "name": "Inspect AI",
+      "kinds": [
+        "framework",
+        "execution_runtime"
+      ],
+      "workloads": [
+        "agent evaluation",
+        "model evaluation",
+        "benchmarking"
+      ],
+      "scope": {
+        "interface": "Inspect evaluation runtime / Agent Bridge",
+        "deployment_mode": "evaluator-managed local or sandboxed agent execution",
+        "revision": "6bea9cd4f6981bf50703284e1595710e8dec6ad4"
+      },
+      "reviewed_at": "2026-10-05",
+      "document_path": "systems/agent-evaluation.md",
+      "homepage": "https://inspect.aisi.org.uk/",
+      "sources": [
+        {
+          "type": "source_code",
+          "title": "Inspect AI repository at reviewed revision",
+          "url": "https://github.com/UKGovernmentBEIS/inspect_ai/tree/6bea9cd4f6981bf50703284e1595710e8dec6ad4"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Inspect: Using Agents",
+          "url": "https://inspect.aisi.org.uk/agents.html"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Inspect: Agent Bridge",
+          "url": "https://inspect.aisi.org.uk/agent-bridge.html"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Inspect: Agent Checkpointing",
+          "url": "https://inspect.aisi.org.uk/checkpointing.html"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Inspect: Agent Intervention",
+          "url": "https://inspect.aisi.org.uk/intervention.html"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Inspect: Tool Approval",
+          "url": "https://inspect.aisi.org.uk/approval.html"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Inspect: Tool Result Review",
+          "url": "https://inspect.aisi.org.uk/review.html"
+        }
+      ],
+      "notes": "Evaluation framework/runtime. Results apply to the evaluated composition, including evaluator configuration, agent, model/provider, sandbox, tools, and scorer."
+    },
+    {
+      "id": "anthropic-claude-projects",
+      "name": "Claude Projects (redesigned beta)",
+      "kinds": [
+        "application",
+        "control_layer"
+      ],
+      "workloads": [
+        "coding",
+        "long-running project work"
+      ],
+      "operational_characteristics": [
+        "coordinated",
+        "parallel",
+        "threaded",
+        "long-running",
+        "shared-memory",
+        "configurable-execution-placement"
+      ],
+      "scope": {
+        "interface": "Redesigned Projects beta in Claude Code",
+        "deployment_mode": "Anthropic-hosted project coordinator with worker threads that can run in the cloud or on a user's machine through Remote Control"
+      },
+      "reviewed_at": "2026-10-05",
+      "document_path": "systems/claude-projects.md",
+      "homepage": "https://claude.com/blog/projects-redesigned",
+      "operating_arrangements": [
+        "coordinator_worker_threads"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Claude Code: Projects",
+          "url": "https://code.claude.com/docs/en/claude-projects"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Projects redesigned: from folder to conversation",
+          "url": "https://claude.com/blog/projects-redesigned"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Claude Help Center: What are projects?",
+          "url": "https://support.claude.com/en/articles/9517075-what-are-projects"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Claude Code: Features overview",
+          "url": "https://code.claude.com/docs/en/features-overview"
+        }
+      ],
+      "notes": "Redesigned Projects beta. Worker threads are Claude Code sessions whose execution placement can be cloud or a user's machine via Remote Control; those placements have different tools, context, permissions, network reachability, and lifetime."
+    }
+  ],
+  "relationships": [
+    {
+      "id": "antares-cli-uses-antares-models",
+      "source_id": "cisco-antares-cli",
+      "target_id": "cisco-antares-models",
+      "type": "uses_model",
+      "description": "The companion CLI packages the Antares loop and calls a user-configured OpenAI-compatible endpoint serving an Antares model.",
+      "reviewed_at": "2026-09-30",
+      "evidence": [
+        {
+          "type": "primary_documentation",
+          "title": "Antares-1B model card",
+          "url": "https://huggingface.co/fdtn-ai/antares-1b"
+        }
+      ],
+      "limitations": [
+        "Documented structural relationship, not a Harness Operations live integration test."
+      ],
+      "source_scope": "Companion Antares CLI described by the Antares-1B model card observed 2026-09-30",
+      "target_scope": "Antares model family / Antares-1B model card and 2026 technical report"
+    }
+  ]
+}

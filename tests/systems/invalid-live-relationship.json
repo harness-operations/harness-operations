@@ -1,0 +1,71 @@
+{
+  "subjects": [
+    {
+      "id": "a",
+      "name": "A",
+      "workloads": [
+        "validation case"
+      ],
+      "scope": {
+        "interface": "A",
+        "version": "1",
+        "deployment_mode": "validation case"
+      },
+      "reviewed_at": "2026-09-30",
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Docs",
+          "url": "https://example.invalid/a"
+        }
+      ],
+      "kinds": [
+        "harness"
+      ],
+      "document_path": "systems/README.md"
+    },
+    {
+      "id": "b",
+      "name": "B",
+      "workloads": [
+        "validation case"
+      ],
+      "scope": {
+        "interface": "B",
+        "version": "1",
+        "deployment_mode": "validation case"
+      },
+      "reviewed_at": "2026-09-30",
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Docs",
+          "url": "https://example.invalid/b"
+        }
+      ],
+      "kinds": [
+        "harness"
+      ],
+      "document_path": "systems/README.md"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "a-to-b",
+      "source_id": "a",
+      "target_id": "b",
+      "type": "invokes",
+      "description": "Must fail because system relationships are documentary, not live-test records.",
+      "reviewed_at": "2026-09-30",
+      "evidence": [
+        {
+          "type": "live_test",
+          "title": "Wrong evidence location",
+          "url": "https://example.invalid/test"
+        }
+      ],
+      "source_scope": "validation-case source scope",
+      "target_scope": "validation-case target scope"
+    }
+  ]
+}

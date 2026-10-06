@@ -1,0 +1,79 @@
+{
+  "subjects": [
+    {
+      "id": "example-host",
+      "name": "Example Host",
+      "workloads": [
+        "fictional validation case"
+      ],
+      "scope": {
+        "interface": "Example API",
+        "version": "1.0",
+        "deployment_mode": "validation case"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://example.invalid/host",
+      "operating_arrangements": [
+        "embedded_specialization"
+      ],
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Fictional source",
+          "url": "https://example.invalid/host"
+        }
+      ],
+      "kinds": [
+        "harness"
+      ],
+      "document_path": "systems/README.md"
+    },
+    {
+      "id": "example-definition",
+      "name": "Example Definition",
+      "workloads": [
+        "fictional validation case"
+      ],
+      "scope": {
+        "interface": "Example definition",
+        "version": "1.0",
+        "deployment_mode": "hosted validation case"
+      },
+      "reviewed_at": "2026-09-30",
+      "homepage": "https://example.invalid/definition",
+      "operating_arrangements": [
+        "embedded_specialization"
+      ],
+      "sources": [
+        {
+          "type": "source_code",
+          "title": "Fictional source",
+          "url": "https://example.invalid/definition"
+        }
+      ],
+      "kinds": [
+        "agent_definition"
+      ],
+      "document_path": "systems/README.md"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "example-hosts-definition",
+      "source_id": "example-host",
+      "target_id": "example-definition",
+      "type": "hosts_definition",
+      "description": "Fictional relationship.",
+      "reviewed_at": "2026-09-30",
+      "evidence": [
+        {
+          "type": "primary_documentation",
+          "title": "Fictional docs",
+          "url": "https://example.invalid/relationship"
+        }
+      ],
+      "source_scope": "validation-case source scope",
+      "target_scope": "validation-case target scope"
+    }
+  ]
+}

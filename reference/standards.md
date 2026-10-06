@@ -1,12 +1,10 @@
-# Standards Landscape and Interoperability Boundaries
-
-**Status:** Harness Operations Reference Model 0.5
+# Standards and Interoperability Boundaries
 
 **External-claim verification:** Existing standards last verified September 25, 2026; Code Mode section verified September 30, 2026
 
 ## Purpose
 
-Harness Operations does not begin from an empty standards or operational landscape.
+Harness Operations does not begin from an empty standards or operational ecosystem.
 
 Existing protocols already define important boundaries around AI applications, coding agents, independent agent systems, tools, context, tasks, artifacts, permissions, and telemetry. Existing operational disciplines already cover many production concerns. Harness Operations should compose those standards and practices rather than rename or replace them.
 
@@ -14,11 +12,11 @@ This document asks a narrower question:
 
 > **Which existing standards and adjacent disciplines already define relevant boundaries, and what harness-specific operational problem remains?**
 
-The landscape is intentionally selective. It is not a catalog of agent frameworks, products, or every protocol related to AI systems.
+This reference is intentionally selective. It is not a catalog of agent frameworks, products, or every protocol related to AI systems.
 
 ### Implementation prior-art inclusion rule
 
-A concrete implementation or product belongs in this landscape only when its public interface or design materially clarifies a cross-harness operational boundary that the reference model needs to reason about.
+A concrete implementation or product belongs in this reference only when its public interface or design materially clarifies a cross-harness operational boundary that the reference model needs to reason about.
 
 Inclusion:
 - does **not** imply endorsement, recommendation, or required compatibility;
@@ -38,7 +36,7 @@ Harness Operations should prefer this order:
 4. adapt between different native or standardized semantics without erasing meaningful differences;
 5. propose new interoperability semantics only when a demonstrated cross-harness gap remains.
 
-Reference Model 0.1 therefore does not define a Harness Operations wire protocol.
+The Reference Model therefore does not define a Harness Operations wire protocol.
 
 ## Boundary map
 
@@ -86,7 +84,7 @@ Background:
 
 ### Relationship to Harness Operations
 
-The v0.1 prior-art review did **not** identify a broadly adopted common AgentOps specification or reference model. Harness Operations therefore does not treat AgentOps as a parent specification, standardized taxonomy, or authoritative model that Harness Operations must fit inside.
+The initial prior-art review did **not** identify a broadly adopted common AgentOps specification or reference model. Harness Operations therefore does not treat AgentOps as a parent specification, standardized taxonomy, or authoritative model that Harness Operations must fit inside.
 
 Harness Operations is **adjacent to and overlapping with** broader AgentOps / agent-operations practice while addressing a more specific systems problem.
 
@@ -300,7 +298,7 @@ Authoritative background:
 
 ### Maturity
 
-Jev is currently **early access**, and the public TypeSafe API is version **0.2.0** as of this landscape update.
+Jev is currently **early access**, and the public TypeSafe API is version **0.2.0** as of this reference update.
 
 Harness Operations should therefore treat Jev and the broader System One framing as emerging decision-model prior art rather than a stable cross-vendor decision protocol.
 
@@ -384,7 +382,7 @@ A faithful native capability is preferable to a lossy common abstraction when no
 
 | Boundary or concern | Existing standard / discipline / surface | Harness Operations relationship |
 | --- | --- | --- |
-| Broad production operation of AI agents | AgentOps / agent operations | Adjacent and overlapping emerging practice; no broadly adopted common specification identified in v0.1. |
+| Broad production operation of AI agents | AgentOps / agent operations | Adjacent and overlapping emerging practice; no broadly adopted common specification identified in the initial review. |
 | AI application ↔ tools/context/services | MCP | Compose MCP primitives and extensions; do not redefine tool/resource/task semantics. |
 | Model-written program ↔ tool/API operations | Code Mode | Cross-cutting execution pattern; preserve nested-call authority, limits, evidence, and recovery semantics without assuming a shared runtime or protocol. |
 | Editor/client ↔ coding agent | ACP | Preserve ACP Session, permission, and update semantics. |
@@ -394,7 +392,7 @@ A faithful native capability is preferable to a lossy common abstraction when no
 | Telemetry representation | OpenTelemetry | Prefer OTel signals and GenAI conventions; do not create a competing generic telemetry protocol. |
 | Telemetry/data-collection agent fleet management | OpAMP | Adjacent operational prior art; reuse lessons, not names by assumption. |
 | Harness-specific lifecycle/capabilities | Native Harness interfaces | Preserve native semantics and adapt rather than flatten. |
-| Cross-harness lifecycle, governance, routing, limits, human intervention, and evidence | No broadly adopted common model identified in v0.1 | Described by Harness Operations; protocol work remains deferred unless a concrete interoperability gap is demonstrated. |
+| Cross-harness lifecycle, governance, routing, limits, human intervention, and evidence | No broadly adopted common model identified in the initial review | Described by Harness Operations; protocol work remains deferred unless a concrete interoperability gap is demonstrated. |
 
 ## Areas of overlap that require care
 
@@ -453,7 +451,7 @@ Until those conditions exist, adapters and reference-model mappings are preferab
 
 ## Standards and disciplines change over time
 
-This landscape is time-sensitive.
+This reference is time-sensitive.
 
 MCP, ACP, A2A, Agent Executor, Jev/System One decision models, Code Mode implementations, OpenTelemetry GenAI conventions, AgentOps practice, and adjacent standards will continue to evolve. Harness Operations should become smaller when another standard or established discipline successfully absorbs a concern rather than defending conceptual territory for its own sake.
 

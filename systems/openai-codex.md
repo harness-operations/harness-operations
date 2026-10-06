@@ -1,6 +1,5 @@
-# OpenAI Codex App Server mapping
+# OpenAI Codex App Server
 
-**Status:** documentation-backed first pass for Applied Harness Operations v0.3
 
 ## Scope
 
@@ -13,7 +12,7 @@
 - **Reviewed at:** September 25, 2026
 - **Evidence status:** primary documentation and tagged public source documentation; live Harness Operations integration tests pending
 
-This mapping does not combine Codex Web, Agents API, IDE behavior, the interactive TUI, or other Codex surfaces into the App Server row.
+This reference entry does not combine Codex Web, Agents API, IDE behavior, the interactive TUI, or other Codex surfaces into the App Server row.
 
 ## Primary sources
 
@@ -50,13 +49,13 @@ Sandbox selection is a separate enforcement mechanism. Approval intent and sandb
 
 App Server exposes structured lifecycle notifications and persists thread history. The SDK exposes turn status, timing, items, final response, and token usage.
 
-This is strong operational evidence, but not enough to claim a complete Audit Record for every resolved policy, credential, environment, and authority fact. The matrix therefore marks resolved execution facts as partial.
+This is strong operational evidence, but not enough to claim a complete Audit Record for every resolved policy, credential, environment, and authority fact. The comparison dataset therefore marks resolved execution facts as partial.
 
-## Current capability summary
+## Capability summary
 
-The canonical capability observations live in comparisons/data/landscape.json.
+The canonical capability observations live in [System Comparisons](../comparisons/data/systems.json).
 
-Documentation-backed available findings in this first pass:
+Documentation-backed available findings:
 
 - machine control surface;
 - stable session identity;
@@ -73,7 +72,7 @@ Partial:
 - attributable decision;
 - resolved execution facts.
 
-Unknown pending additional review/live tests:
+Unknown based on current evidence:
 
 - stable delegation/handoff contract for the scoped App Server interface;
 - credential mediation under the stronger matrix definition;
@@ -81,11 +80,9 @@ Unknown pending additional review/live tests:
 
 Interactive operation is not applicable to the App Server row because interactive Codex UIs are separate surfaces.
 
-## Live-test plan
+## Further validation
 
-Issue #27 remains open until selected behaviors are tested against the exact 0.157.0 runtime or an explicitly documented later replacement.
-
-Initial live tests should cover:
+Useful live tests include:
 
 1. start thread → start turn → collect structured events;
 2. resume by thread ID and verify continuity;
@@ -94,8 +91,8 @@ Initial live tests should cover:
 5. run a workspace-write sandbox test against a disposable target;
 6. compare documented and observed usage/evidence fields.
 
-Any later runtime version receives new scoped observations rather than silently inheriting these results.
+A later runtime version should receive new scoped observations rather than silently inheriting these results.
 
 ## Limitations
 
-This mapping is descriptive, not certification or endorsement. Documentation-backed findings can be corrected by live test results, and a passing live test establishes only the exact operation/configuration tested.
+This reference entry is descriptive, not certification or endorsement. Documentation-backed findings can be corrected by live test results, and a passing live test establishes only the exact operation/configuration tested.

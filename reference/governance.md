@@ -1,7 +1,5 @@
 # Governance of Harness Operations Systems
 
-**Status:** Harness Operations Reference Model 0.5
-
 ## Purpose
 
 Harness Operations is not only a coordination and observability problem. As agent harnesses gain the ability to access data, modify systems, spend resources, communicate externally, delegate work, and act without continuous human input, operating them becomes a problem of authority and accountability.
@@ -54,7 +52,7 @@ Examples include:
 
 These mechanisms provide different assurance. A prompt instruction stating that an agent should not access production is not equivalent to an environment in which production credentials and routes are technically unavailable.
 
-Harness Operations systems should describe enforcement honestly. Implementations may expose assurance categories such as technically enforced, mediated/advisory, or unknown, but Reference Model 0.1 does not prescribe a fixed taxonomy.
+Harness Operations systems should describe enforcement honestly. Implementations may expose assurance categories such as technically enforced, mediated/advisory, or unknown, but the Reference Model does not prescribe a fixed taxonomy.
 
 ## Principals and authority
 
@@ -149,7 +147,7 @@ Harnesses may expose permission prompts for tool calls, commands, file access, n
 
 Not every native permission request is necessarily a Harness Operations Approval. A low-level permission mechanism maps to Approval when it represents a governance decision with attributable Authority and scope. Otherwise it may remain an execution-level control.
 
-The Standards Landscape should preserve those native semantics rather than assuming every permission mechanism means the same thing.
+Standards and Boundaries should preserve those native semantics rather than assuming every permission mechanism means the same thing.
 
 ## Exceptions
 
@@ -216,7 +214,7 @@ Material changes should be attributable. Depending on risk, change control may i
 - effective dates;
 - evidence of who changed what and why.
 
-Reference Model 0.1 does not prescribe one version-control or deployment mechanism.
+The Reference Model does not prescribe one version-control or deployment mechanism.
 
 ## Human intervention and escalation
 
@@ -264,7 +262,7 @@ Separation of duties is especially useful when an agent can both create a propos
 
 **Accountability** is the ability to connect operational outcomes to the relevant Ownership, Authority, decisions, and execution evidence.
 
-Reference Model 0.1 does not require Accountability to be represented as a separate stored object. It emerges from sufficiently reliable identity, governance decisions, resolved execution facts, and audit evidence.
+The Reference Model does not require Accountability to be represented as a separate stored object. It emerges from sufficiently reliable identity, governance decisions, resolved execution facts, and audit evidence.
 
 An **Audit Record** may include or reference:
 
@@ -383,7 +381,7 @@ Background references include:
 - NIST, [AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
 - ISO, [ISO/IEC 42001 — AI management systems](https://www.iso.org/standard/42001)
 
-These frameworks are not normative dependencies of Harness Operations Reference Model 0.1.
+These frameworks are not normative dependencies of Harness Operations The Reference Model.
 
 ## What this document does not define
 

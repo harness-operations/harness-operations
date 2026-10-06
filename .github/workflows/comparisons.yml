@@ -4,14 +4,14 @@ on:
   pull_request:
     paths:
       - 'comparisons/**'
-      - 'mappings/**'
+      - 'tests/comparisons/**'
       - '.github/workflows/comparisons.yml'
   push:
     branches:
       - main
     paths:
       - 'comparisons/**'
-      - 'mappings/**'
+      - 'tests/comparisons/**'
       - '.github/workflows/comparisons.yml'
 
 permissions:
