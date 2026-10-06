@@ -14,20 +14,14 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: harness-operations-release
   cancel-in-progress: false
 
 jobs:
-  verify:
+  verify-and-publish:
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.meta.outputs.version }}
-      title: ${{ steps.meta.outputs.title }}
-      notes_file: ${{ steps.meta.outputs.notes_file }}
     steps:
       - name: Require main
         if: github.ref != 'refs/heads/main'
@@ -118,24 +112,10 @@ jobs:
         working-directory: site
         run: npm run test:smoke
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: site/dist
-
-  publish:
-    needs: verify
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout exact release commit
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
       - name: Create annotated release tag
         env:
-          VERSION: ${{ needs.verify.outputs.version }}
-          TITLE: ${{ needs.verify.outputs.title }}
+          VERSION: ${{ steps.meta.outputs.version }}
+          TITLE: ${{ steps.meta.outputs.title }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -145,53 +125,12 @@ jobs:
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ needs.verify.outputs.version }}
-          TITLE: ${{ needs.verify.outputs.title }}
-          NOTES_FILE: ${{ needs.verify.outputs.notes_file }}
+          VERSION: ${{ steps.meta.outputs.version }}
+          TITLE: ${{ steps.meta.outputs.title }}
+          NOTES_FILE: ${{ steps.meta.outputs.notes_file }}
         run: |
           if [[ -n "$NOTES_FILE" ]]; then
             gh release create "$VERSION" --verify-tag --title "$TITLE" --notes-file "$NOTES_FILE"
           else
             gh release create "$VERSION" --verify-tag --title "$TITLE" --generate-notes
           fi
-
-  deploy:
-    needs:
-      - verify
-      - publish
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
-
-  live-qa:
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout exact release commit
-        uses: actions/checkout@v7
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: site/package-lock.json
-
-      - name: Install site dependencies
-        working-directory: site
-        run: npm ci --no-audit --no-fund
-
-      - name: Install Chromium
-        working-directory: site
-        run: npx playwright install --with-deps chromium
-
-      - name: Smoke test production
-        working-directory: site
-        env:
-          LIVE_BASE_URL: https://harness-operations.com
-        run: npm run test:smoke

@@ -1,8 +1,6 @@
 # Harness Operations Site
 
-The documentation site is part of the Harness Operations monorepo.
-
-Canonical content lives in the repository root. The site renders the **same checkout**; it does not pin or fetch a separate specification release.
+The documentation site is part of the Harness Operations monorepo and renders canonical content from the same checkout.
 
 ## Development
 
@@ -22,8 +20,8 @@ npm run test:smoke
 
 `scripts/sync-content.mjs` copies canonical Markdown and data from the parent checkout into Astro's generated content/data directories before every build.
 
-## Release model
+## Deployment
 
-A Harness Operations release tags one monorepo commit. The release workflow validates the reference and site from that same commit, creates the GitHub Release, deploys Pages, and runs live-site QA.
+Every green push to the monorepo's `main` branch deploys `site/dist` to GitHub Pages and runs live QA against https://harness-operations.com.
 
-There is no website release pin or promotion PR.
+Formal GitHub Releases are separate: they tag immutable milestones, but the site does not wait for a release before deploying.
