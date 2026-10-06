@@ -1,38 +1,47 @@
 # Releasing Harness Operations
 
-Harness Operations uses one monorepo release workflow: [`.github/workflows/release.yml`](.github/workflows/release.yml).
+Harness Operations has two independent publication paths:
 
-A release is cut manually from a reviewed **`main` commit**. The workflow takes:
+- **Every merge to `main` deploys the website automatically.**
+- **A release is an explicit immutable tag + GitHub Release cut from `main`.**
 
-- `version` — an immutable tag such as `v0.7`;
-- `title` — the GitHub Release title.
+## Website deployment
 
-If `releases/<version>.md` exists, it is used as the release notes. Otherwise GitHub-generated notes are used.
+`.github/workflows/ci.yml` runs on pull requests and pushes to `main`.
 
-Before publishing, the workflow validates the exact commit end to end:
+Every pull request validates:
 
-1. Systems index/schema and validation cases;
-2. comparison data/schema;
-3. approved-artifact example tests and deterministic demo;
-4. exact-version Harness interface smoke tests;
-5. the website built from the same monorepo checkout;
-6. desktop/mobile browser smoke tests.
+1. workflow syntax;
+2. Systems and comparison data;
+3. executable examples;
+4. interface smoke checks;
+5. the complete site build and link checks;
+6. desktop/mobile browser tests.
 
-Only after verification does the workflow:
+After a pull request is merged, the resulting push to `main` runs the same validation and then:
 
-1. create the annotated release tag at that exact commit;
-2. publish the GitHub Release;
-3. deploy the already-verified `site/dist` artifact to GitHub Pages;
-4. run browser smoke tests against https://harness-operations.com.
+1. uploads the verified `site/dist` artifact;
+2. deploys it to GitHub Pages;
+3. runs live browser QA against https://harness-operations.com.
 
-There is no `RELEASE.json`, website pin, promotion PR, polling workflow, or cross-repository content fetch.
+So the production site always tracks the latest green `main` commit; cutting a formal release is not required to update the website.
 
 ## Cutting a release
 
-1. Merge the intended release content to `main`.
-2. Optionally add `releases/vX.Y.md` in a normal reviewed PR.
-3. Open **Actions → Release Harness Operations → Run workflow** on `main`.
-4. Enter the version and title.
-5. Treat a green **live-qa** job as the end-to-end publication signal.
+Use **Actions → Release Harness Operations → Run workflow** on `main`.
 
-A failed pre-release verification creates no tag or GitHub Release. A failure after publication should be repaired with a new release rather than mutating an existing tag.
+Inputs:
+
+- `version` — immutable tag such as `v0.7`;
+- `title` — GitHub Release title.
+
+If `releases/<version>.md` exists, it is used as release notes. Otherwise GitHub-generated notes are used.
+
+The release workflow revalidates the exact `main` commit before creating:
+
+1. the annotated tag;
+2. the GitHub Release.
+
+It does **not** deploy the website. That commit is already deployed through the normal merge-to-`main` pipeline.
+
+There is no release pin, promotion PR, polling workflow, or cross-repository content fetch.
