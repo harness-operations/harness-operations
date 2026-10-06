@@ -1,0 +1,188 @@
+---
+---
+
+<section class="ho-explainer" aria-labelledby="ho-explainer-title">
+  <div class="ho-explainer-copy">
+    <p class="ho-eyebrow">What is a harness?</p>
+    <h2 id="ho-explainer-title">The operating layer between a model and the real world.</h2>
+    <p>
+      The model proposes. The harness decides how work is actually run: what state persists,
+      which tools are reachable, what requires approval, how work is delegated, what happens
+      after failure, and what evidence survives.
+    </p>
+  </div>
+
+  <div class="ho-harness-diagram" role="img" aria-label="Operator directs a harness. The harness manages state, permissions, delegation, recovery, and evidence while connecting models to tools and environments.">
+    <div class="ho-diagram-node ho-diagram-node--operator">
+      <span class="ho-diagram-kicker">Intent</span>
+      <strong>Operator</strong>
+      <small>goal · constraints · intervention</small>
+    </div>
+
+    <div class="ho-diagram-arrow" aria-hidden="true">→</div>
+
+    <div class="ho-diagram-node ho-diagram-node--harness">
+      <span class="ho-diagram-kicker">Operating layer</span>
+      <strong>Harness</strong>
+      <div class="ho-diagram-chips">
+        <span>State</span>
+        <span>Permissions</span>
+        <span>Delegation</span>
+        <span>Recovery</span>
+        <span>Evidence</span>
+      </div>
+    </div>
+
+    <div class="ho-diagram-arrow" aria-hidden="true">→</div>
+
+    <div class="ho-diagram-world">
+      <div class="ho-diagram-node">
+        <span class="ho-diagram-kicker">Reasoning</span>
+        <strong>Model</strong>
+      </div>
+      <div class="ho-diagram-node">
+        <span class="ho-diagram-kicker">Action</span>
+        <strong>Tools & APIs</strong>
+      </div>
+      <div class="ho-diagram-node">
+        <span class="ho-diagram-kicker">Execution</span>
+        <strong>Environment</strong>
+      </div>
+    </div>
+  </div>
+
+  <p class="ho-explainer-punchline">
+    Same model. Different harness. <strong>Different operational system.</strong>
+  </p>
+</section>
+
+<style>
+  .ho-explainer {
+    margin: 1.5rem 0 4.5rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 1.2rem;
+    background:
+      radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--sl-color-accent) 12%, transparent), transparent 50%),
+      var(--sl-color-bg-nav);
+  }
+
+  .ho-explainer-copy {
+    max-width: 52rem;
+    margin-bottom: 2rem;
+  }
+
+  .ho-eyebrow,
+  .ho-diagram-kicker {
+    margin: 0;
+    color: var(--sl-color-gray-3);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .ho-explainer h2 {
+    margin: 0.35rem 0 0.65rem;
+    font-size: clamp(1.55rem, 3vw, 2.35rem);
+    letter-spacing: -0.025em;
+  }
+
+  .ho-explainer-copy > p:last-child {
+    margin: 0;
+    color: var(--sl-color-gray-2);
+    font-size: 1.03rem;
+    line-height: 1.65;
+  }
+
+  .ho-harness-diagram {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.8fr) auto minmax(15rem, 1.45fr) auto minmax(12rem, 1fr);
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .ho-diagram-node {
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.8rem;
+    background: var(--sl-color-bg);
+  }
+
+  .ho-diagram-node strong {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 1.05rem;
+  }
+
+  .ho-diagram-node small {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--sl-color-gray-3);
+    line-height: 1.35;
+  }
+
+  .ho-diagram-node--harness {
+    padding: 1.25rem;
+    border-color: var(--sl-color-accent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--sl-color-accent) 20%, transparent);
+  }
+
+  .ho-diagram-node--harness strong {
+    font-size: 1.35rem;
+  }
+
+  .ho-diagram-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.8rem;
+  }
+
+  .ho-diagram-chips span {
+    padding: 0.28rem 0.5rem;
+    border-radius: 999px;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-2);
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .ho-diagram-arrow {
+    color: var(--sl-color-gray-3);
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .ho-diagram-world {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .ho-explainer-punchline {
+    margin: 1.35rem 0 0;
+    text-align: center;
+    color: var(--sl-color-gray-2);
+  }
+
+  @media (max-width: 50rem) {
+    .ho-harness-diagram {
+      grid-template-columns: 1fr;
+    }
+
+    .ho-diagram-arrow {
+      transform: rotate(90deg);
+    }
+
+    .ho-diagram-world {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .ho-diagram-world {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

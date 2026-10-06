@@ -1,0 +1,347 @@
+---
+import comparison from '../data/systems.json';
+
+const harnessIds = new Set(
+  comparison.systems
+    .filter((system) => system.roles?.includes('harness'))
+    .map((system) => system.id),
+);
+
+const systemNames = Object.fromEntries(
+  comparison.systems.map((system) => [system.id, system.name]),
+);
+
+const rowsByScope = new Map();
+
+for (const observation of comparison.observations.filter((item) => harnessIds.has(item.system_id))) {
+  const scope = observation.scope;
+  const key = [
+    observation.system_id,
+    scope.interface,
+    scope.version,
+    scope.deployment_mode,
+    scope.platform ?? '',
+    scope.plan ?? '',
+    scope.configuration ?? '',
+  ].join('::');
+
+  if (!rowsByScope.has(key)) {
+    rowsByScope.set(key, {
+      systemId: observation.system_id,
+      name: systemNames[observation.system_id],
+      interface: scope.interface,
+      version: scope.version,
+      findings: [],
+      counts: {
+        available: 0,
+        partial: 0,
+        unsupported: 0,
+        unknown: 0,
+        not_applicable: 0,
+      },
+    });
+  }
+
+  const row = rowsByScope.get(key);
+  row.findings.push(observation.finding);
+  row.counts[observation.finding] += 1;
+}
+
+const capabilityCount = comparison.capabilities.length;
+
+const rows = [...rowsByScope.values()]
+  .sort((a, b) =>
+    b.counts.available - a.counts.available ||
+    b.counts.partial - a.counts.partial ||
+    a.name.localeCompare(b.name),
+  );
+
+const findingLabels = {
+  available: 'Available',
+  partial: 'Partial',
+  unsupported: 'Unsupported',
+  unknown: 'Unknown',
+  not_applicable: 'N/A',
+};
+
+const findingOrder = ['available', 'partial', 'unsupported', 'unknown', 'not_applicable'];
+---
+
+<section class="ho-coverage" aria-labelledby="ho-coverage-title">
+  <div class="ho-coverage-header">
+    <div>
+      <p class="ho-coverage-eyebrow">Current evidence snapshot</p>
+      <h2 id="ho-coverage-title">How much of the capability set is visible today?</h2>
+      <p>
+        {capabilityCount} operational capabilities, counted for each reviewed harness interface.
+        This is <strong>capability coverage</strong>, not a performance benchmark.
+      </p>
+    </div>
+    <a class="ho-coverage-link" href="/apply/matrix/">Open full comparison →</a>
+  </div>
+
+  <div class="ho-coverage-legend" aria-label="Finding legend">
+    {findingOrder.map((finding) => (
+      <span><i class={`ho-dot ho-dot--${finding}`}></i>{findingLabels[finding]}</span>
+    ))}
+  </div>
+
+  <div class="ho-coverage-chart">
+    {rows.map((row) => (
+      <a class="ho-coverage-row" href="/apply/matrix/" aria-label={`${row.name}: ${row.counts.available} available, ${row.counts.partial} partial, ${row.counts.unknown} unknown out of ${row.findings.length} assessed capabilities`}>
+        <div class="ho-coverage-label">
+          <strong>{row.name}</strong>
+          <small>{row.interface} · {row.version}</small>
+        </div>
+
+        <div class="ho-coverage-bar" style={`--ho-capability-count: ${row.findings.length}`} aria-hidden="true">
+          {findingOrder.flatMap((finding) =>
+            Array.from({ length: row.counts[finding] }, () => (
+              <span class={`ho-cap ho-cap--${finding}`}></span>
+            )),
+          )}
+        </div>
+
+        <div class="ho-coverage-score">
+          <strong>{row.counts.available}</strong>
+          <small>available</small>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <div class="ho-bench-callout">
+    <div>
+      <span class="ho-bench-mark">HO</span>
+      <div>
+        <strong>Harness Ops Bench is next.</strong>
+        <p>
+          The benchmark will measure repeated task completion, operational violations,
+          recovery, cost, latency, and evidence quality—not just feature count.
+        </p>
+      </div>
+    </div>
+    <a href="https://github.com/harness-operations/harness-operations/issues/57">Benchmark plan →</a>
+  </div>
+</section>
+
+<style>
+  .ho-coverage {
+    margin: 0 0 4.5rem;
+  }
+
+  .ho-coverage-header {
+    display: flex;
+    gap: 1.5rem;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 1.15rem;
+  }
+
+  .ho-coverage-header > div {
+    max-width: 46rem;
+  }
+
+  .ho-coverage-eyebrow {
+    margin: 0 0 0.3rem;
+    color: var(--sl-color-gray-3);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .ho-coverage h2 {
+    margin: 0;
+    font-size: clamp(1.45rem, 3vw, 2.2rem);
+    letter-spacing: -0.02em;
+  }
+
+  .ho-coverage-header p {
+    margin: 0.55rem 0 0;
+    color: var(--sl-color-gray-2);
+  }
+
+  .ho-coverage-link {
+    flex: none;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .ho-coverage-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem 1rem;
+    margin-bottom: 0.8rem;
+    color: var(--sl-color-gray-3);
+    font-size: 0.76rem;
+  }
+
+  .ho-coverage-legend span {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .ho-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+  }
+
+  .ho-coverage-chart {
+    overflow: hidden;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 1rem;
+    background: var(--sl-color-bg-nav);
+  }
+
+  .ho-coverage-row {
+    display: grid;
+    grid-template-columns: minmax(10rem, 1.1fr) minmax(12rem, 2fr) minmax(4.5rem, auto);
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.1rem;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+
+  .ho-coverage-row:last-child {
+    border-bottom: 0;
+  }
+
+  .ho-coverage-row:hover {
+    background: color-mix(in srgb, var(--sl-color-accent) 5%, transparent);
+  }
+
+  .ho-coverage-label strong,
+  .ho-coverage-score strong {
+    display: block;
+  }
+
+  .ho-coverage-label small,
+  .ho-coverage-score small {
+    color: var(--sl-color-gray-3);
+  }
+
+  .ho-coverage-label small {
+    display: block;
+    margin-top: 0.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ho-coverage-bar {
+    display: grid;
+    grid-template-columns: repeat(var(--ho-capability-count), minmax(0, 1fr));
+    gap: 0.22rem;
+  }
+
+  .ho-cap {
+    height: 1.15rem;
+    border-radius: 0.22rem;
+  }
+
+  .ho-coverage-score {
+    min-width: 4.2rem;
+    text-align: right;
+  }
+
+  .ho-coverage-score strong {
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+
+  .ho-dot--available,
+  .ho-cap--available {
+    background: var(--sl-color-green-high);
+  }
+
+  .ho-dot--partial,
+  .ho-cap--partial {
+    background: var(--sl-color-orange-high);
+  }
+
+  .ho-dot--unsupported,
+  .ho-cap--unsupported {
+    background: var(--sl-color-red-high);
+  }
+
+  .ho-dot--unknown,
+  .ho-cap--unknown {
+    background: var(--sl-color-gray-3);
+  }
+
+  .ho-dot--not_applicable,
+  .ho-cap--not_applicable {
+    background: var(--sl-color-gray-5);
+  }
+
+  .ho-bench-callout {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding: 1rem 1.1rem;
+    border: 1px dashed var(--sl-color-gray-4);
+    border-radius: 0.85rem;
+  }
+
+  .ho-bench-callout > div {
+    display: flex;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  .ho-bench-mark {
+    display: grid;
+    width: 2.3rem;
+    height: 2.3rem;
+    flex: none;
+    place-items: center;
+    border-radius: 0.55rem;
+    background: var(--sl-color-accent);
+    color: var(--sl-color-black);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .ho-bench-callout p {
+    margin: 0.15rem 0 0;
+    color: var(--sl-color-gray-3);
+    font-size: 0.86rem;
+    line-height: 1.45;
+  }
+
+  .ho-bench-callout > a {
+    flex: none;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  @media (max-width: 50rem) {
+    .ho-coverage-header,
+    .ho-bench-callout {
+      align-items: start;
+      flex-direction: column;
+    }
+
+    .ho-coverage-row {
+      grid-template-columns: 1fr auto;
+    }
+
+    .ho-coverage-bar {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .ho-coverage-score {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+</style>
