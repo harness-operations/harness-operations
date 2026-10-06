@@ -62,9 +62,10 @@ jobs:
         with:
           python-version: '3.13'
 
-      - name: Validate comparison dataset
+      - name: Validate Systems and comparison data
         run: |
           python -m pip install 'jsonschema>=4.23,<5'
+          python systems/validate.py
           python comparisons/validate.py
 
       - name: Run applied example tests
@@ -79,15 +80,16 @@ jobs:
           node-version: 22
 
       - name: Run exact-version Harness interface smoke
-        run: bash mappings/tests/interface-smoke.sh
+        run: bash tests/interface-smoke.sh
 
       - name: Create annotated release tag
         env:
           VERSION: ${{ steps.release.outputs.version }}
+          TITLE: ${{ steps.release.outputs.title }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -a "$VERSION" "$GITHUB_SHA" -m "Harness Operations Reference Model ${VERSION#v}"
+          git tag -a "$VERSION" "$GITHUB_SHA" -m "$TITLE"
           git push origin "$VERSION"
 
       - name: Publish GitHub release
