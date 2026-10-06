@@ -1,74 +1,92 @@
-name: Publish reference-model release
+name: Release Harness Operations
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - RELEASE.json
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release tag, for example v0.7
+        required: true
+        type: string
+      title:
+        description: Release title
+        required: true
+        type: string
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: harness-operations-release
+  cancel-in-progress: false
 
 jobs:
-  verify-and-release:
+  verify:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      title: ${{ steps.meta.outputs.title }}
+      notes_file: ${{ steps.meta.outputs.notes_file }}
     steps:
+      - name: Require main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "Releases must be cut from main." >&2
+          exit 1
+
       - name: Checkout exact release commit
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Read release request
-        id: release
-        run: |
-          version="$(jq -r '.version' RELEASE.json)"
-          title="$(jq -r '.title' RELEASE.json)"
-          notes_file="$(jq -r '.notes_file' RELEASE.json)"
-
-          if [[ ! "$version" =~ ^v[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
-            echo "Invalid version: $version" >&2
-            exit 1
-          fi
-          if [[ -z "$title" || "$title" == "null" ]]; then
-            echo "Release title is required" >&2
-            exit 1
-          fi
-          if [[ "$notes_file" == "null" || ! -f "$notes_file" ]]; then
-            echo "Release notes file is missing: $notes_file" >&2
-            exit 1
-          fi
-
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "title=$title" >> "$GITHUB_OUTPUT"
-          echo "notes_file=$notes_file" >> "$GITHUB_OUTPUT"
-
-      - name: Ensure tag and release do not already exist
+      - name: Validate release request
+        id: meta
         env:
+          VERSION: ${{ inputs.version }}
+          TITLE: ${{ inputs.title }}
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.release.outputs.version }}
         run: |
+          set -euo pipefail
+
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+            echo "Invalid version: $VERSION" >&2
+            exit 1
+          fi
+
           if git rev-parse "$VERSION" >/dev/null 2>&1; then
             echo "Tag already exists: $VERSION" >&2
             exit 1
           fi
+
           if gh release view "$VERSION" >/dev/null 2>&1; then
             echo "Release already exists: $VERSION" >&2
             exit 1
           fi
+
+          notes_file="releases/$VERSION.md"
+          if [[ ! -f "$notes_file" ]]; then
+            notes_file=""
+          fi
+
+          {
+            echo "version=$VERSION"
+            echo "title=$TITLE"
+            echo "notes_file=$notes_file"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
-      - name: Validate Systems and comparison data
+      - name: Validate canonical data
         run: |
           python -m pip install 'jsonschema>=4.23,<5'
           python systems/validate.py
           python comparisons/validate.py
 
-      - name: Run applied example tests
+      - name: Run approved handoff example
         working-directory: examples/approved-artifact-handoff
         run: |
           python -m unittest -v
@@ -78,14 +96,46 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
 
       - name: Run exact-version Harness interface smoke
         run: bash tests/interface-smoke.sh
 
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci --no-audit --no-fund
+
+      - name: Build site from release commit
+        working-directory: site
+        run: npm run build
+
+      - name: Install Chromium
+        working-directory: site
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser smoke tests
+        working-directory: site
+        run: npm run test:smoke
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/dist
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact release commit
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
       - name: Create annotated release tag
         env:
-          VERSION: ${{ steps.release.outputs.version }}
-          TITLE: ${{ steps.release.outputs.title }}
+          VERSION: ${{ needs.verify.outputs.version }}
+          TITLE: ${{ needs.verify.outputs.title }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -95,11 +145,53 @@ jobs:
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.release.outputs.version }}
-          TITLE: ${{ steps.release.outputs.title }}
-          NOTES_FILE: ${{ steps.release.outputs.notes_file }}
+          VERSION: ${{ needs.verify.outputs.version }}
+          TITLE: ${{ needs.verify.outputs.title }}
+          NOTES_FILE: ${{ needs.verify.outputs.notes_file }}
         run: |
-          gh release create "$VERSION" \
-            --verify-tag \
-            --title "$TITLE" \
-            --notes-file "$NOTES_FILE"
+          if [[ -n "$NOTES_FILE" ]]; then
+            gh release create "$VERSION" --verify-tag --title "$TITLE" --notes-file "$NOTES_FILE"
+          else
+            gh release create "$VERSION" --verify-tag --title "$TITLE" --generate-notes
+          fi
+
+  deploy:
+    needs:
+      - verify
+      - publish
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+
+  live-qa:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact release commit
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci --no-audit --no-fund
+
+      - name: Install Chromium
+        working-directory: site
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke test production
+        working-directory: site
+        env:
+          LIVE_BASE_URL: https://harness-operations.com
+        run: npm run test:smoke

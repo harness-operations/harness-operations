@@ -1,0 +1,21 @@
+{
+  "name": "@harness-operations/website",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync:content": "node scripts/sync-content.mjs",
+    "dev": "npm run sync:content && astro dev",
+    "build": "npm run sync:content && astro build && node scripts/check-built-links.mjs",
+    "preview": "astro preview",
+    "test:smoke": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "7.2.4",
+    "@astrojs/starlight": "0.41.7",
+    "astro": "7.2.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}

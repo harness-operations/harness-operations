@@ -31,6 +31,13 @@ The Reference Model remains available as deeper material:
 
 Shared scope and vocabulary are maintained in [Scope and Terminology](reference/terminology.md).
 
+## Website
+
+The production documentation site is part of this repository under [`site/`](site/). It renders canonical content from the **same checkout** being reviewed or released; there is no cross-repository content sync or release pin.
+
+- Production: https://harness-operations.com
+- Site source: [`site/`](site/)
+
 ## Scope
 
 Harness Operations does **not** define or require:
@@ -48,12 +55,15 @@ The reference material should become smaller when an existing standard or establ
 
 ## Development process
 
-Substantive design work begins in [GitHub Issues](https://github.com/harness-operations/specification/issues) and canonical content changes through Pull Requests.
+Substantive design work begins in [GitHub Issues](https://github.com/harness-operations/harness-operations/issues) and canonical content changes through Pull Requests.
 
-Published releases remain immutable. New Systems, specification, assessment, and benchmark work must preserve the scope and evidence of earlier releases rather than reinterpret them retroactively.
+Published releases remain immutable. New Systems, specification, assessment, benchmark, and site work must preserve the scope and evidence of earlier releases rather than reinterpret them retroactively.
+
+Pull requests run one monorepo CI graph across canonical data, executable examples, interface smoke tests, the static site build, link validation, and browser tests.
 
 - [Contribution guide](CONTRIBUTING.md)
-- [Releases](https://github.com/harness-operations/specification/releases)
+- [Release process](RELEASING.md)
+- [Releases](https://github.com/harness-operations/harness-operations/releases)
 
 ## License
 
