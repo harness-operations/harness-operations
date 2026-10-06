@@ -1,9 +1,18 @@
 import { test, expect } from '@playwright/test';
 
-test('homepage leads with Systems without horizontal overflow', async ({ page }) => {
+test('homepage explains Harness Operations and shows evidence-backed coverage', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Harness Operations', level: 1 })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Explore Systems', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'The operating layer between a model and the real world.', level: 2 })).toBeVisible();
+  await expect(page.getByText('Same model. Different harness.', { exact: false })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How much of the capability set is visible today?', level: 2 })).toBeVisible();
+  await expect(page.getByText('not a performance benchmark', { exact: false })).toBeVisible();
+  await expect(page.getByText('Harness Ops Bench is next.', { exact: true })).toBeVisible();
+
+  const coverageRows = page.locator('.ho-coverage-row');
+  expect(await coverageRows.count()).toBeGreaterThanOrEqual(4);
+  await expect(page.getByText('Anthropic Claude Code', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText('OpenAI Codex', { exact: true }).first()).toBeVisible();
 
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
