@@ -92,7 +92,7 @@ test('no-JavaScript visitors get working discovery links', async ({ browser, bas
   await expect(page.locator('noscript p')).toContainText('interactive chooser needs JavaScript');
   await expect(page.locator('noscript p')).toBeVisible();
   await expect(page.locator('[data-chooser]')).toBeHidden();
-  await page.locator('noscript a[href="/capabilities/"]').click();
+  await page.locator('[data-chooser-fallback] a[href="/capabilities/"]').click();
   await expect(page.getByRole('heading', { level: 1, name: 'Explore capabilities' })).toBeVisible();
   await context.close();
 });

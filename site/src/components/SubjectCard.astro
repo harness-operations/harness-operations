@@ -1,5 +1,5 @@
 ---
-import { kindLabel, safeUrl, subjectPath } from '../lib/discovery.mjs';
+import { kindLabel, safeUrl, subjectPath, isReviewedSource, scopeRows } from '../lib/discovery.mjs';
 const { subject } = Astro.props;
 ---
 <article class="ho-option" data-subject-id={subject.id}>
@@ -7,18 +7,15 @@ const { subject } = Astro.props;
   <h3><a href={subjectPath(subject)}>{subject.name}</a></h3>
   <p data-why hidden></p>
   <dl>
-    <dt>Reviewed interface</dt><dd>{subject.scope.interface}</dd>
-    <dt>Where it runs</dt><dd>{subject.scope.deployment_mode}</dd>
+    {scopeRows(subject).map(({ key, label, value }) => <><dt data-scope-key={key}>{label}</dt><dd>{value}</dd></>)}
     <dt>Reviewed</dt><dd><time datetime={subject.reviewed_at}>{subject.reviewed_at}</time></dd>
-    {subject.scope.version && <><dt>Version</dt><dd>{subject.scope.version}</dd></>}
-    {subject.scope.revision && <><dt>Revision / scope</dt><dd>{subject.scope.revision}</dd></>}
   </dl>
   <p class="ho-option-limit">{subject.notes || 'Read the system entry for setup, execution boundaries, and limitations.'}</p>
   <details>
     <summary>Sources and limitations</summary>
     <p>These links support the reviewed catalog entry. Inclusion is not a live-test result, a claim of current availability, or a guarantee about privacy, price, offline use, or compatibility.</p>
     <ul>
-      {subject.sources.filter((source) => safeUrl(source.url)).map((source) => <li><a href={safeUrl(source.url)}>{source.title || 'Source'}</a> <span>({source.type.replaceAll('_', ' ')})</span></li>)}
+      {subject.sources.filter(isReviewedSource).map((source) => <li><a href={safeUrl(source.url)}>{source.title || 'Source'}</a> <span>({source.type.replaceAll('_', ' ')})</span></li>)}
     </ul>
     <p><a href={subjectPath(subject)}>Read the full entry and its limitations →</a></p>
   </details>

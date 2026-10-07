@@ -5,21 +5,26 @@ import SubjectCard from './SubjectCard.astro';
 const subjects = index.subjects.filter(isReviewedSubject);
 const payload = JSON.stringify(subjects).replace(/</g, '\\u003c');
 ---
-<noscript><p>The interactive chooser needs JavaScript. You can still <a href="/capabilities/">explore capabilities</a>, <a href="/systems/">browse every reviewed system</a>, or <a href="/apply/matrix/">compare the evidence</a> without it.</p></noscript>
+<div data-chooser-fallback>
+  <p>Explore without the interactive chooser: <a href="/capabilities/">explore capabilities</a>, <a href="/systems/">browse every reviewed system</a>, or <a href="/apply/matrix/">compare the evidence</a>.</p>
+  <noscript><p>The interactive chooser needs JavaScript. These links work without it.</p></noscript>
+</div>
 <section data-chooser hidden data-pagefind-ignore>
-  <p class="ho-chooser-progress" data-progress aria-live="polite">Question 1 of 3</p>
-  <form novalidate>
-    <fieldset data-step="0">
+  <p class="ho-chooser-progress" data-progress aria-live="polite" aria-atomic="true">Question 1 of 3</p>
+  <form novalidate autocomplete="off">
+    <fieldset data-step="0" aria-describedby="chooser-goal-help">
       <legend><span tabindex="-1" data-step-heading>What are you trying to do?</span></legend>
+      <p id="chooser-goal-help">Choose one option to continue.</p>
       <div class="ho-choice-grid">{GOALS.map(({ id, label, hint }) => <label><input type="radio" name="goal" value={id} /><span><strong>{label}</strong><small>{hint}</small></span></label>)}</div>
     </fieldset>
-    <fieldset data-step="1" hidden>
+    <fieldset data-step="1" hidden aria-describedby="chooser-mode-help">
       <legend><span tabindex="-1" data-step-heading>How do you want to use it?</span></legend>
+      <p id="chooser-mode-help">Choose one option, or select “Not sure yet.”</p>
       <div class="ho-choice-grid">{MODES.map(({ id, label, hint }) => <label><input type="radio" name="mode" value={id} /><span><strong>{label}</strong><small>{hint}</small></span></label>)}</div>
     </fieldset>
-    <fieldset data-step="2" hidden>
+    <fieldset data-step="2" hidden aria-describedby="chooser-interest-help">
       <legend><span tabindex="-1" data-step-heading>What matters for your workflow?</span></legend>
-      <p>Optional: narrow the shortlist to entries with explicit metadata for these interests. Missing metadata may exclude relevant tools; these are not guarantees.</p>
+      <p id="chooser-interest-help">Optional: choose any interests, or skip. Each entry must have reviewed metadata for every selected interest. Missing metadata may exclude relevant tools; this does not combine several tools into a solution or guarantee that they work together.</p>
       <div class="ho-choice-grid">{PREFERENCES.map(({ id, label }) => <label data-preference={id}><input type="checkbox" name="preference" value={id} /><span><strong>{label}</strong></span></label>)}</div>
       <p data-preference-gap hidden>We do not yet have enough reviewed everyday-assistance coverage to ask useful follow-up questions. Continue for learning paths and an honest coverage summary.</p>
     </fieldset>
@@ -32,16 +37,20 @@ const payload = JSON.stringify(subjects).replace(/</g, '\\u003c');
   <section data-results hidden aria-labelledby="chooser-results-heading">
     <h2 id="chooser-results-heading" tabindex="-1">Options to investigate</h2>
     <p data-summary></p>
-    <p data-result-count role="status"></p>
+    <p data-result-count role="status" aria-atomic="true"></p>
     <p>Suggestions use reviewed catalog fields—not a live product test or a quality score. Entries are alphabetical, not ranked. Review dates are shown; newer releases may differ.</p>
     <div data-gap hidden>
       <h3>Our reviewed catalog does not yet cover this combination</h3>
-      <p>This does not mean no suitable tools exist. We will not substitute an API, a model, or an unrelated developer tool for the application you asked for.</p>
+      <p>This does not mean no suitable tools exist. No entry in our reviewed catalog matches all your choices; missing metadata can also prevent a match.</p>
+      <p data-gap-detail></p>
       <p><a href="/capabilities/">Learn what capabilities to look for</a> or <a href="/systems/">browse the reviewed catalog</a>.</p>
     </div>
     <div class="ho-options">{subjects.map((subject) => <div data-result-id={subject.id} hidden><SubjectCard subject={subject} /></div>)}</div>
     <button type="button" data-more hidden>Show all matching entries</button>
-    <div class="ho-chooser-actions"><button type="button" data-edit>Edit answers</button></div>
+    <div class="ho-chooser-actions">
+      <button type="button" data-clear-interests hidden>See options without these interests</button>
+      <button type="button" data-edit>Edit answers</button>
+    </div>
   </section>
   <button type="button" data-reset class="ho-reset">Start over</button>
   <p class="ho-chooser-note">No account or model call. Answers stay in this page and reset when you reload; the chooser does not save or send them.</p>
@@ -50,80 +59,98 @@ const payload = JSON.stringify(subjects).replace(/</g, '\\u003c');
 <script>
   import { discover, GOALS, MODES, PREFERENCES, preferencesForGoal } from '../lib/discovery.mjs';
   const root = document.querySelector<HTMLElement>('[data-chooser]');
+  const fallback = document.querySelector<HTMLElement>('[data-chooser-fallback]');
   if (root) {
-    const subjects = JSON.parse(root.querySelector('[data-subjects]')!.textContent || '[]');
-    const form = root.querySelector<HTMLFormElement>('form')!;
-    const steps = [...root.querySelectorAll<HTMLFieldSetElement>('[data-step]')];
-    const next = root.querySelector<HTMLButtonElement>('[data-next]')!;
-    const back = root.querySelector<HTMLButtonElement>('[data-back]')!;
-    const skip = root.querySelector<HTMLButtonElement>('[data-skip]')!;
-    const results = root.querySelector<HTMLElement>('[data-results]')!;
-    const more = root.querySelector<HTMLButtonElement>('[data-more]')!;
-    const cards = [...root.querySelectorAll<HTMLElement>('[data-result-id]')];
-    let step = 0;
-    let matches: ReturnType<typeof discover>['matches'] = [];
-    let expanded = false;
-    const value = (name: string) => form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value;
-    function syncInterests() {
-      const valid = preferencesForGoal(value('goal')).map(({ id }) => id);
-      root!.querySelectorAll<HTMLElement>('[data-preference]').forEach((label) => {
-        const hidden = !valid.includes(label.dataset.preference!);
-        label.hidden = hidden;
-        const input = label.querySelector<HTMLInputElement>('input')!;
-        input.disabled = hidden;
-        if (hidden) input.checked = false;
-      });
-      root!.querySelector<HTMLElement>('[data-preference-gap]')!.hidden = valid.length > 0;
+    try {
+      const subjects = JSON.parse(root.querySelector('[data-subjects]')!.textContent || '[]');
+      const form = root.querySelector<HTMLFormElement>('form')!;
+      const steps = [...root.querySelectorAll<HTMLFieldSetElement>('[data-step]')];
+      const next = root.querySelector<HTMLButtonElement>('[data-next]')!;
+      const back = root.querySelector<HTMLButtonElement>('[data-back]')!;
+      const skip = root.querySelector<HTMLButtonElement>('[data-skip]')!;
+      const results = root.querySelector<HTMLElement>('[data-results]')!;
+      const more = root.querySelector<HTMLButtonElement>('[data-more]')!;
+      const clearInterests = root.querySelector<HTMLButtonElement>('[data-clear-interests]')!;
+      const cards = [...root.querySelectorAll<HTMLElement>('[data-result-id]')];
+      const baseTitle = document.title;
+      let step = 0;
+      let matches: ReturnType<typeof discover>['matches'] = [];
+      let expanded = false;
+      const value = (name: string) => form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value;
+      const interests = () => [...form.querySelectorAll<HTMLInputElement>('input[name="preference"]:checked:not(:disabled)')].map((input) => input.value);
+      const clear = () => form.querySelectorAll<HTMLInputElement>('input[name="preference"]').forEach((input) => input.checked = false);
+      function syncInterests() {
+        const valid = preferencesForGoal(value('goal')).map(({ id }) => id);
+        root!.querySelectorAll<HTMLElement>('[data-preference]').forEach((label) => {
+          const hidden = !valid.includes(label.dataset.preference!);
+          label.hidden = hidden;
+          const input = label.querySelector<HTMLInputElement>('input')!;
+          input.disabled = hidden;
+          if (hidden) input.checked = false;
+        });
+        root!.querySelector<HTMLElement>('[data-preference-gap]')!.hidden = valid.length > 0;
+      }
+      function showStep(target: number, focus = true) {
+        step = target;
+        form.hidden = false; results.hidden = true;
+        steps.forEach((fieldset, index) => fieldset.hidden = index !== step);
+        back.hidden = step === 0; skip.hidden = step !== 2;
+        next.textContent = step === 2 ? 'Show options' : 'Continue';
+        next.disabled = step === 0 ? !value('goal') : step === 1 ? !value('mode') : false;
+        root!.querySelector('[data-progress]')!.textContent = `Question ${step + 1} of 3`;
+        document.title = `Question ${step + 1} of 3 — ${baseTitle}`;
+        syncInterests();
+        if (focus) steps[step].querySelector<HTMLElement>('[data-step-heading]')!.focus();
+      }
+      function renderMatches() {
+        const shown = expanded ? matches : matches.slice(0, 4);
+        cards.forEach((card) => {
+          const match = shown.find(({ id }) => id === card.dataset.resultId);
+          card.hidden = !match;
+          const why = card.querySelector<HTMLElement>('[data-why]')!;
+          why.hidden = !match; why.textContent = match?.why || '';
+        });
+        const list = root!.querySelector('.ho-options')!;
+        matches.forEach(({ id }) => { const card = cards.find((entry) => entry.dataset.resultId === id); if (card) list.append(card); });
+        root!.querySelector('[data-result-count]')!.textContent = `Showing ${shown.length} of ${matches.length} matching catalog entries.`;
+        root!.querySelector<HTMLElement>('[data-gap]')!.hidden = matches.length > 0;
+        more.hidden = expanded || matches.length <= 4;
+      }
+      function showResults() {
+        const answers = { goal: value('goal'), mode: value('mode'), preferences: interests() };
+        const result = discover(subjects, answers);
+        if (result.reason === 'invalid-answers') { showStep(0); return; }
+        matches = result.matches; expanded = false;
+        const labels = [GOALS.find(({ id }) => id === answers.goal)?.label, MODES.find(({ id }) => id === answers.mode)?.label, ...answers.preferences.map((id) => PREFERENCES.find((entry) => entry.id === id)?.label)];
+        root!.querySelector('[data-summary]')!.textContent = `Your choices: ${labels.filter(Boolean).join(' · ')}.`;
+        root!.querySelector('[data-gap-detail]')!.textContent = answers.mode === 'application'
+          ? 'We will not substitute an API, model, or unrelated developer tool for an application.'
+          : 'The catalog is selective. Browse related capability guides or edit your choices to investigate other paths.';
+        clearInterests.hidden = answers.preferences.length === 0 || discover(subjects, { ...answers, preferences: [] }).matches.length === 0;
+        form.hidden = true; results.hidden = false;
+        root!.querySelector('[data-progress]')!.textContent = 'Your shortlist';
+        document.title = `Your shortlist — ${baseTitle}`;
+        // New searches do not retain expanded source panels from an earlier shortlist.
+        cards.forEach((card) => card.querySelectorAll('details').forEach((details) => details.open = false));
+        renderMatches();
+        root!.querySelector<HTMLElement>('#chooser-results-heading')!.focus();
+      }
+      form.addEventListener('change', () => { syncInterests(); next.disabled = step === 0 ? !value('goal') : step === 1 ? !value('mode') : false; });
+      form.addEventListener('submit', (event) => { event.preventDefault(); if (next.disabled) return; step < 2 ? showStep(step + 1) : showResults(); });
+      back.addEventListener('click', () => showStep(Math.max(0, step - 1)));
+      skip.addEventListener('click', () => { clear(); showResults(); });
+      clearInterests.addEventListener('click', () => { clear(); showResults(); });
+      root.querySelector('[data-edit]')!.addEventListener('click', () => showStep(0));
+      root.querySelector('[data-reset]')!.addEventListener('click', () => { form.reset(); matches = []; expanded = false; clearInterests.hidden = true; renderMatches(); showStep(0); });
+      more.addEventListener('click', () => { expanded = true; renderMatches(); root!.querySelector<HTMLElement>('#chooser-results-heading')!.focus(); });
+      // Explicitly clear browser-restored controls on reload, before enabling the form.
+      form.reset(); showStep(0, false); root.hidden = false;
+      if (fallback) fallback.hidden = true;
+    } catch {
+      // Failed loading/initialization must leave a working static discovery path.
+      root.hidden = true;
+      if (fallback) fallback.hidden = false;
     }
-    function showStep(target: number, focus = true) {
-      step = target;
-      form.hidden = false;
-      results.hidden = true;
-      steps.forEach((fieldset, index) => fieldset.hidden = index !== step);
-      back.hidden = step === 0;
-      skip.hidden = step !== 2;
-      next.textContent = step === 2 ? 'Show options' : 'Continue';
-      next.disabled = step === 0 ? !value('goal') : step === 1 ? !value('mode') : false;
-      root!.querySelector('[data-progress]')!.textContent = `Question ${step + 1} of 3`;
-      syncInterests();
-      if (focus) steps[step].querySelector<HTMLElement>('[data-step-heading]')!.focus();
-    }
-    function renderMatches() {
-      const shown = expanded ? matches : matches.slice(0, 4);
-      cards.forEach((card) => {
-        const match = shown.find(({ id }) => id === card.dataset.resultId);
-        card.hidden = !match;
-        const why = card.querySelector<HTMLElement>('[data-why]')!;
-        why.hidden = !match;
-        why.textContent = match?.why || '';
-      });
-      const list = root!.querySelector('.ho-options')!;
-      // DOM order follows the same stable alphabetical rule as the matcher.
-      matches.forEach(({ id }) => { const card = cards.find((entry) => entry.dataset.resultId === id); if (card) list.append(card); });
-      root!.querySelector('[data-result-count]')!.textContent = `Showing ${shown.length} of ${matches.length} matching catalog entries.`;
-      root!.querySelector<HTMLElement>('[data-gap]')!.hidden = matches.length > 0;
-      more.hidden = expanded || matches.length <= 4;
-    }
-    function showResults() {
-      const answers = { goal: value('goal'), mode: value('mode'), preferences: [...form.querySelectorAll<HTMLInputElement>('input[name="preference"]:checked:not(:disabled)')].map((input) => input.value) };
-      const result = discover(subjects, answers);
-      if (result.reason === 'invalid-answers') { showStep(0); return; }
-      matches = result.matches; expanded = false;
-      const labels = [GOALS.find(({ id }) => id === answers.goal)?.label, MODES.find(({ id }) => id === answers.mode)?.label, ...answers.preferences.map((id) => PREFERENCES.find((entry) => entry.id === id)?.label)];
-      root!.querySelector('[data-summary]')!.textContent = `Your choices: ${labels.filter(Boolean).join(' · ')}.`;
-      form.hidden = true; results.hidden = false;
-      root!.querySelector('[data-progress]')!.textContent = 'Your shortlist';
-      renderMatches();
-      root!.querySelector<HTMLElement>('#chooser-results-heading')!.focus();
-    }
-    form.addEventListener('change', () => { syncInterests(); next.disabled = step === 0 ? !value('goal') : step === 1 ? !value('mode') : false; });
-    form.addEventListener('submit', (event) => { event.preventDefault(); if (next.disabled) return; step < 2 ? showStep(step + 1) : showResults(); });
-    back.addEventListener('click', () => showStep(Math.max(0, step - 1)));
-    skip.addEventListener('click', () => { form.querySelectorAll<HTMLInputElement>('input[name="preference"]').forEach((input) => input.checked = false); showResults(); });
-    root.querySelector('[data-edit]')!.addEventListener('click', () => showStep(0));
-    root.querySelector('[data-reset]')!.addEventListener('click', () => { form.reset(); matches = []; expanded = false; renderMatches(); showStep(0); });
-    more.addEventListener('click', () => { expanded = true; renderMatches(); root!.querySelector<HTMLElement>('#chooser-results-heading')!.focus(); });
-    showStep(0, false); root.hidden = false;
   }
 </script>
 <style>

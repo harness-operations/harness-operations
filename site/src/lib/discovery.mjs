@@ -1,6 +1,4 @@
-/** Discovery is a filter over the reviewed Systems index, not a product ranking.
- * Missing metadata never establishes a capability, readiness, or a guarantee.
- */
+/** Discovery filters reviewed catalog fields. It is not a product ranking or a guarantee. */
 export const GOALS = [
   { id: 'coding', label: 'Build software', hint: 'Write, test, and improve code.' },
   { id: 'automation', label: 'Automate work', hint: 'Work across websites, computers, and longer-running tasks.' },
@@ -15,8 +13,8 @@ export const MODES = [
   { id: 'any', label: 'Not sure yet', hint: 'Show the different options and explain what each one is.' },
 ];
 export const PREFERENCES = [
-  { id: 'browser', label: 'Work in a browser' },
-  { id: 'computer', label: 'Use a desktop or computer' },
+  { id: 'browser', label: 'Automate browser tasks' },
+  { id: 'computer', label: 'Control desktop applications' },
   { id: 'background', label: 'Run work in the background' },
   { id: 'coordination', label: 'Coordinate several agents' },
   { id: 'voice', label: 'Build a realtime voice experience' },
@@ -47,18 +45,22 @@ const GOAL_PREFERENCES = {
   explore: PREFERENCES.map(({ id }) => id),
 };
 const strings = (value) => Array.isArray(value) ? value.filter((v) => typeof v === 'string') : [];
+const text = (value) => typeof value === 'string' && value.trim().length > 0;
+const record = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+const own = (object, key) => typeof key === 'string' && Object.hasOwn(object, key);
 export function safeUrl(value) {
+  if (!text(value) || /[\u0000-\u001f\u007f]/.test(value)) return null;
   try {
     const url = new URL(value);
-    return ['https:', 'http:'].includes(url.protocol) ? url.href : null;
+    return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password ? url.href : null;
   } catch { return null; }
 }
 export function subjectPath(subject) {
-  return /^systems\/[a-z0-9-]+\.md$/.test(subject?.document_path || '')
+  return typeof subject?.document_path === 'string' && /^systems\/[a-z0-9-]+\.md$/.test(subject.document_path)
     ? '/' + subject.document_path.replace(/\.md$/, '/') : null;
 }
 export function preferencesForGoal(goal) {
-  return PREFERENCES.filter(({ id }) => (GOAL_PREFERENCES[goal] || []).includes(id));
+  return PREFERENCES.filter(({ id }) => own(GOAL_PREFERENCES, goal) && GOAL_PREFERENCES[goal].includes(id));
 }
 function matchingFields(subject, fields) {
   return Object.entries(fields).flatMap(([field, accepted]) =>
@@ -66,7 +68,7 @@ function matchingFields(subject, fields) {
   );
 }
 export function preferenceEvidence(subject, preference) {
-  return matchingFields(subject, PREFERENCE_FIELDS[preference] || {});
+  return matchingFields(subject, own(PREFERENCE_FIELDS, preference) ? PREFERENCE_FIELDS[preference] : {});
 }
 export function kindLabel(subject) {
   const kinds = strings(subject?.kinds);
@@ -76,19 +78,34 @@ export function kindLabel(subject) {
   if (kinds.includes('model')) return 'Model · needs a surrounding runtime';
   return 'Building block · integration required';
 }
-/** Fail closed on incomplete records. Source links are evidence, not live tests. */
-export function isReviewedSubject(subject) {
-  return Boolean(subject && typeof subject.id === 'string' && typeof subject.name === 'string'
-    && strings(subject.kinds).length && subjectPath(subject)
-    && typeof subject.scope?.interface === 'string' && subject.scope.interface
-    && typeof subject.scope?.deployment_mode === 'string' && subject.scope.deployment_mode
-    && /^\d{4}-\d{2}-\d{2}$/.test(subject.reviewed_at || '')
-    && Array.isArray(subject.sources) && subject.sources.some((source) => safeUrl(source?.url)));
+export function isReviewDate(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00Z`);
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
-/** All selected interests must have explicit matching metadata. Alphabetical, never scored. */
+export function isReviewedSource(source) {
+  return record(source) && text(source.type) && Boolean(safeUrl(source.url))
+    && (source.title === undefined || text(source.title));
+}
+/** Preserve every material scope field, including plan/platform/configuration and future fields. */
+export function scopeRows(subject) {
+  if (!record(subject?.scope)) return [];
+  const labels = { interface: 'Reviewed interface', deployment_mode: 'Where it runs', version: 'Version', revision: 'Revision / scope', platform: 'Platform', plan: 'Plan / edition', configuration: 'Configuration' };
+  return Object.entries(subject.scope).filter(([, value]) => text(value)).map(([key, value]) => ({
+    key, label: own(labels, key) ? labels[key] : key.replaceAll('_', ' '), value,
+  }));
+}
+/** Fail closed on malformed nested data before SSR or the chooser consumes it. */
+export function isReviewedSubject(subject) {
+  return Boolean(record(subject) && text(subject.id) && /^[a-z0-9][a-z0-9_-]*$/.test(subject.id)
+    && text(subject.name) && strings(subject.kinds).some(text) && subjectPath(subject)
+    && record(subject.scope) && text(subject.scope.interface) && text(subject.scope.deployment_mode)
+    && Object.values(subject.scope).every(text) && isReviewDate(subject.reviewed_at)
+    && Array.isArray(subject.sources) && subject.sources.length > 0 && subject.sources.every(isReviewedSource));
+}
+/** All selected interests need matching metadata on this same subject. Alphabetical, never scored. */
 export function discover(subjects, answers = {}) {
-  if (!answers || typeof answers !== 'object' || Array.isArray(answers)
-    || Object.keys(answers).some((key) => !['goal', 'mode', 'preferences'].includes(key))) {
+  if (!record(answers) || Object.keys(answers).some((key) => !['goal', 'mode', 'preferences'].includes(key))) {
     return { matches: [], reason: 'invalid-answers' };
   }
   const { goal, mode, preferences = [] } = answers;
@@ -100,7 +117,6 @@ export function discover(subjects, answers = {}) {
   const seen = new Set();
   for (const subject of Array.isArray(subjects) ? subjects : []) {
     if (!isReviewedSubject(subject) || seen.has(subject.id)) continue;
-    // Models and design documents are useful learning material, not executable recommendations.
     if (!strings(subject.kinds).some((kind) => ['harness', 'application', ...MODE_KINDS.component].includes(kind))) continue;
     let goalEvidence = goal === 'explore' ? [] : matchingFields(subject, { workloads: GOAL_WORKLOADS[goal] });
     if (goal === 'automation') goalEvidence = [...goalEvidence, ...preferenceEvidence(subject, 'background')];
