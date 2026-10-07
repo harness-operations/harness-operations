@@ -15,6 +15,13 @@ const findingLabels = { available: 'Available', partial: 'Partial', unsupported:
 const measurements = comparison.capabilities.filter(({ id }) => topic.capabilities.includes(id));
 ---
 <p class="ho-guide-lede">{topic.enables}</p>
+<nav class="ho-guide-nav" aria-label="In this guide">
+  <a href="#example">Example</a>
+  <a href="#tradeoffs">Trade-offs</a>
+  {related.length > 0 && <a href="#reviewed-examples">Reviewed options</a>}
+  {measurements.length > 0 && <a href="#related-measurements">Comparison evidence</a>}
+  {topic.further.length > 0 && <a href="#further-reading">Further reading</a>}
+</nav>
 <h2 id="example">A practical example</h2>
 <p>{topic.example}</p>
 <h2 id="tradeoffs">What to look out for</h2>
@@ -44,6 +51,8 @@ const measurements = comparison.capabilities.filter(({ id }) => topic.capabiliti
 <p><a href="/choose/">Find options for your task →</a> · <a href="/capabilities/">Explore all capabilities</a></p>
 <style>
   .ho-guide-lede { font-size: 1.15rem; }
+  .ho-guide-nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin: 1.25rem 0 2rem; font-size: .9rem; }
+  .ho-guide-nav a { padding-block: .35rem; }
   .ho-guide-options { display: grid; gap: 1rem; }
   .ho-observation { padding: .75rem 0; border-bottom: 1px solid var(--sl-color-hairline); overflow-wrap: anywhere; }
   .ho-observation summary { cursor: pointer; }

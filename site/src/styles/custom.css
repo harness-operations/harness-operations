@@ -11,6 +11,8 @@
 /* These are UI grids, not prose. Starlight's default sibling margins must not
    stagger controls or visually detach metadata labels from their values. */
 .ho-choice-grid > label, .ho-options > [data-result-id], .ho-guide-options > .ho-option { margin-top: 0; }
+.ho-chooser-actions > button, .ho-capability-grid > a, .ho-capability-grid > a > * { margin: 0; }
+.ho-guide-nav > a { margin: 0; }
 .ho-option dl > dt, .ho-option dl > dd { margin: 0; padding: 0; align-self: start; }
 /* Duplicate source titles are stripped during synchronization, not hidden with CSS. */
 @media (max-width: 50rem) { .hero { padding-block: 2.5rem; } }
