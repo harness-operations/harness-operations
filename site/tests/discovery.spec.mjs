@@ -89,7 +89,8 @@ test('no-JavaScript visitors get working discovery links', async ({ browser, bas
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   const page = await context.newPage();
   await page.goto('/choose/');
-  await expect(page.locator('noscript')).toContainText('interactive chooser needs JavaScript');
+  await expect(page.locator('noscript p')).toContainText('interactive chooser needs JavaScript');
+  await expect(page.locator('noscript p')).toBeVisible();
   await expect(page.locator('[data-chooser]')).toBeHidden();
   await page.locator('noscript a[href="/capabilities/"]').click();
   await expect(page.getByRole('heading', { level: 1, name: 'Explore capabilities' })).toBeVisible();
@@ -127,17 +128,21 @@ test('capability pages have a single primary heading, source links, and scoped e
 
 test('capture light and dark discovery layouts without overflow', async ({ page }, testInfo) => {
   for (const theme of ['light', 'dark']) {
+    // Test OS preference on mobile too, where the splash dropdown is hidden.
     await page.emulateMedia({ colorScheme: theme });
     await page.goto('/');
-    await page.locator('starlight-theme-select select').selectOption(theme);
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
     const hero = page.locator('img[src="/images/hero-use-cases-selected.avif"]');
     await expect(hero).toBeVisible();
-    expect(await hero.evaluate((img) => [img.naturalWidth, img.naturalHeight])).toEqual([1916, 821]);
+    await expect.poll(() => hero.evaluate((img) => [img.naturalWidth, img.naturalHeight])).toEqual([1916, 821]);
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
     await page.screenshot({ path: testInfo.outputPath(`home-${theme}.png`), fullPage: true });
     await choose(page);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
     await page.screenshot({ path: testInfo.outputPath(`chooser-${theme}.png`), fullPage: true });
+    await page.getByRole('button', { name: 'Skip interests' }).click();
+    await expect(page.locator('[data-results]')).toBeVisible();
+    await page.screenshot({ path: testInfo.outputPath(`shortlist-${theme}.png`), fullPage: true });
   }
 });

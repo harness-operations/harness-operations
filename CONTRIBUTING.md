@@ -1,92 +1,79 @@
 # Contributing to Harness Operations
 
-This project maintains a canonical reference for Harness Operations: concrete systems, operating patterns, comparisons, standards boundaries, and deeper conceptual material.
-
-Contributions should improve the accuracy of the Systems reference, the usefulness of the operating patterns, or the quality of the reference material without turning unlike systems into one architecture or product ranking.
+Help people learn what AI-agent capabilities exist, understand their trade-offs,
+and investigate reviewed tools. Contributions should improve accuracy, usefulness,
+or accessibility—not prescribe one architecture or rank unlike products.
 
 ## Where changes start
 
-Use a GitHub Issue when a proposed change:
+Use a GitHub Issue for changes to project scope, catalog inclusion, discovery rules,
+comparison methodology, multiple canonical documents, a substantial new system
+entry, or benchmark work. Small editorial fixes may go directly to a focused PR.
 
-- changes the project's scope, proposition, or inclusion rules;
-- introduces or changes a core reference concept;
-- changes the comparison or assessment methodology;
-- affects more than one canonical document;
-- changes the relationship to an external standard;
-- introduces a substantial new system entry, profile, benchmark, or proposal.
+## Pull requests
 
-Small editorial fixes that do not change semantics may go directly to a focused Pull Request.
+Link the issue, explain the meaningful change, keep the scope reviewable, identify
+affected evidence and external interfaces, and address material review findings
+before merge. Content, discovery rules, generated pages, and tests are reviewed
+together in this repository.
 
-## Pull Requests
+Material AI assistance should be disclosed in the PR description. The contributor
+remains responsible for accuracy, originality, licensing, and reviewability.
 
-Canonical content changes through Pull Requests.
+## Reviewed entries
 
-A Pull Request should:
+A subject belongs in the catalog when it teaches something material about how
+agent work is carried out. Do not add a product only because it contains an LLM.
 
-1. link the Issue or design discussion it implements when one exists;
-2. explain the semantic change, not only the file change;
-3. identify external standards or prior art affected by the change;
-4. keep the change focused enough to review meaningfully;
-5. separate documented, source-inspected, synthetic-test, and live-tested claims;
-6. resolve material review objections before merge.
+Describe the subject in its own terms. Identify whether it is an application,
+harness, model, tool interface, framework, or other component; do not imply these
+are interchangeable. Scope claims to the reviewed interface, version/revision or
+hosted observation date, deployment, configuration, and evidence. Keep documented
+relationships distinct from tested interoperability, and make unknowns explicit.
 
-## Systems reference guardrails
+Prefer first-party documentation, source, release notes, and reproducible tests.
+Label operator reports, inference, and untested claims. Use the
+[entry template](systems/TEMPLATE.md) as an editorial aid, not a product requirement.
 
-A subject belongs in Systems when it demonstrates or clarifies a material agent execution loop, specialization mechanism, operational constraint, coordination pattern, evidence boundary, or failure behavior.
+## Capability guides and discovery
 
-Do not include a product merely because it contains an LLM.
+Guides explain possibilities, examples, and trade-offs. They are not a checklist
+that every tool must satisfy. Link to canonical evidence rather than maintaining a
+second vendor-feature catalog.
 
-A reference entry should:
+Chooser suggestions must follow explicit, tested rules over reviewed metadata.
+Explain every match; keep exact interfaces and setup boundaries visible. Missing
+information does not establish a capability or satisfy a mandatory constraint.
+Reject unsupported constraints rather than silently ignoring them. No weighted
+quality scores, fit percentages, security grades, or universal winner.
 
-- identify what the subject actually is rather than labeling every subject a Harness;
-- describe the subject's native concepts before mapping them to Harness Operations vocabulary;
-- scope claims to the reviewed interface, release/commit or hosted observation date, deployment mode, configuration, and evidence;
-- distinguish a model's task quality from a Harness's operational behavior;
-- distinguish an agent Harness from benchmark/evaluation harnesses, fuzzing harnesses, workflow/render engines, models, and prompt/skill packages;
-- treat standalone and cooperative arrangements as different shapes, not maturity levels;
-- distinguish documented relationships from operation-specific tested interoperability;
-- make unknowns and material limitations explicit.
+Do not infer offline operation, local inference, privacy, pricing, licensing, or
+current availability from a product name, local CLI, or self-hosted runtime. A
+coverage gap means the catalog needs more evidence, not that no suitable tools exist.
 
-Use first-party documentation, source, release notes, or reproducible evidence for substantive external claims where practical. Community or operator reports can add context but should be labeled as such.
+## Comparisons and tests
 
-The [system reference template](systems/TEMPLATE.md) is the starting contract for new entries.
+Keep finding, mechanism, evidence type, test outcome, freshness, scope, and
+limitations distinct. Missing observations, unknown, unsupported, partial, and
+not-applicable are different states. More visible capabilities do not establish
+better performance or fit. A system entry need not have a complete comparison row.
 
-## Structured comparison guardrails
+Run canonical validators, unit tests, the site build/link checks, and browser tests
+for relevant changes. Include keyboard, focus, narrow-screen, and no-JavaScript
+behavior in interactive work. Preserve source links and historical routes.
 
-The structured comparison dataset exists to make scoped operational differences inspectable.
+## Historical material and new proposals
 
-Do not infer support from marketing categories, protocol names, or product-family branding. Keep capability, delivery mechanism, evidence type, test result, freshness, and limitations distinct.
+Earlier design notes are archived for provenance and existing links. New guides
+should not revive them as architecture or conformity requirements. Published
+releases and past evidence retain their original meaning.
 
-A Systems reference entry does not need a complete capability row merely to be published. Complete comparison rows remain a stricter data product and should be created only when the relevant scope has actually been reviewed.
+The `proposals/` directory is available for substantial designs. Any future
+implementation specification, profile assessment, or benchmark must be explicitly
+scoped and separately reviewed. Discovery does not depend on conformity assessment.
 
-## Reference-model guardrails
+## Licensing and project governance
 
-A concept belongs in the Reference Model only when it is justified by a cross-Harness operational need. Concepts that exist only because one product, vendor, deployment, domain, or architecture needs them should remain native system detail, an implementation pattern, or an example until broader evidence supports inclusion.
-
-Where an existing open standard already defines applicable semantics, Harness Operations should describe the relationship to that standard rather than create parallel semantics without a demonstrated gap.
-
-## AI-assisted contributions
-
-Material use of AI assistance should be disclosed in the Pull Request description. The contributor remains responsible for the accuracy, originality, licensing, and reviewability of the contribution regardless of the tools used to produce it.
-
-## Proposals
-
-The `proposals/` directory is reserved for changes that are too substantial to review effectively as an ordinary Issue and Pull Request.
-
-Harness Operations does not currently define a formal RFC process, voting system, working groups, or standards-body procedure. Those mechanisms should be introduced only if real contributor scale and decision pressure justify them.
-
-## Normative language
-
-The Harness Operations Reference Model is descriptive. Do not use RFC 2119 or RFC 8174 `MUST`, `SHOULD`, or similar keywords as Reference Model conformance requirements.
-
-Any implementation specification or use-case profiles must be separately identified, reviewed, and released. Do not silently turn descriptive Reference Model text into normative product requirements.
-
-## Licensing
-
-Unless explicitly stated otherwise, contributions to this repository are made under the Apache License, Version 2.0. By contributing, you affirm that you have the right to submit the contribution under that license.
-
-## Project governance and system governance
-
-This file describes how contributions to the project are reviewed.
-
-Governance of Harness Operations systems—authority, ownership, policy, delegation, approval, exceptions, budgets, change control, and accountability—is a separate subject described by the reference material.
+Contributions are under the Apache License, Version 2.0 unless stated otherwise.
+Contributors must have the right to submit their work. This document describes
+project review, not the authority or permission model of any agent system.

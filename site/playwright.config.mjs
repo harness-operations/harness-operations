@@ -5,6 +5,7 @@ const liveBaseURL = process.env.LIVE_BASE_URL || null;
 export default defineConfig({
   testDir: './tests',
   timeout: 30_000,
+  reporter: [['list'], ['json', { outputFile: 'test-results/results.json' }]],
   use: {
     baseURL: liveBaseURL || 'http://127.0.0.1:4321',
     trace: 'retain-on-failure',
@@ -18,13 +19,7 @@ export default defineConfig({
         timeout: 30_000,
       },
   projects: [
-    {
-      name: 'desktop-chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'mobile-chromium',
-      use: { ...devices['Pixel 7'] },
-    },
+    { name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'mobile-chromium', use: { ...devices['Pixel 7'] } },
   ],
 });
