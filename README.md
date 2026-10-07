@@ -1,65 +1,57 @@
 # Harness Operations
 
-This repository is the **canonical reference for Harness Operations**: the discipline of operating agent harnesses in real systems, individually or together.
+**Find the right way to put AI to work.**
 
-> **Understand how agent harnesses work—on their own and together.**
+Harness Operations is a practical guide to the tools and capabilities behind AI
+agents. Learn what is possible, understand trade-offs, compare reviewed interfaces,
+and find options that fit what you want to do.
 
-Agent harnesses are used for different kinds of work and expose different execution loops, state models, tools, permissions, deployment boundaries, artifacts, and cooperation mechanisms. This project documents those differences in their native terms before trying to normalize them.
+It is not a prescribed architecture, a maturity model, or a universal product ranking.
 
-The Systems reference may therefore include more than Harnesses themselves. A model, skill package, tool interface, tool service, execution runtime, client, application, control layer, or domain-specific specification may be relevant when it materially clarifies how agent work is executed or operated. Inclusion does **not** make every subject a Harness or imply that unlike systems should be ranked as direct competitors.
+## Start exploring
 
-The project also publishes the Harness Operations Reference Model as a deeper conceptual lens for implementation and analysis. It should help explain real systems without becoming a prerequisite for understanding concrete systems or forcing every system into one architecture.
+- [Explore capabilities](https://harness-operations.com/capabilities/) — practical examples and questions to investigate.
+- [Help me choose](https://harness-operations.com/choose/) — three questions and an explained, unranked shortlist.
+- [Browse reviewed systems](systems/) — concrete tools, applications, and components in their native terms.
+- [Compare evidence](comparisons/methodology.md) — scoped observations, review dates, sources, and limitations.
 
-## Start with Systems
+The chooser filters the canonical [Systems index](systems/index.json). It does not
+use a model, score products, infer unsupported capabilities, or save/send answers.
+Missing catalog coverage means we need more evidence—not that no suitable tools exist.
 
-- [Systems](systems/) — canonical reference entries for concrete Harnesses and adjacent systems in their native terms.
-- [System comparison methodology](comparisons/methodology.md) — how scoped capabilities, evidence, freshness, and interoperability observations are recorded.
-- [Operating arrangements](systems/operating-arrangements.md) — recurring ways Harnesses work independently and together.
-- [Standards and Boundaries](reference/standards.md) — boundaries with MCP, ACP, A2A, OpenTelemetry, Code Mode, and adjacent standards or practices.
+## What is a harness?
 
-A system can be valuable because it operates independently, because it specializes another Harness, because it participates in a larger workflow, or because it exposes a useful boundary to other systems. These are operating arrangements, not maturity levels.
+A harness is the software around an AI model that gives it tools, context, and a
+way to get work done. Different tools suit different goals. Applications, models,
+tool interfaces, runtimes, and frameworks can help explain those differences;
+including them does not make them interchangeable products.
 
-## Reference material
+Capability guides are a map of possibilities, not a checklist every system should satisfy.
+Optional [operating arrangements](systems/operating-arrangements.md),
+[patterns](patterns/), and [standards and boundaries](reference/standards.md)
+provide deeper reading. Earlier design material is [archived](reference/README.md)
+for historical links and provenance; it no longer defines the project direction.
 
-The Reference Model remains available as deeper material:
+## Evidence and scope
 
-1. [What is Harness Operations?](reference/overview.md)
-2. [Principles](reference/principles.md)
-3. [Reference Model](reference/model.md)
-4. [Governance](reference/governance.md)
-5. [Standards and Boundaries](reference/standards.md)
+Coverage is selective. Entries identify the reviewed interface and deployment
+boundary, version or revision where available, review date, sources, and limitations.
+Documentation/source review is not a live product test. Capability coverage,
+performance, model quality, and interoperability are different questions.
 
-Shared scope and vocabulary are maintained in [Scope and Terminology](reference/terminology.md).
+No universal lifecycle, required implementation schema, protocol, registry, SDK,
+security grade, or conformity assessment is implied by this project.
 
-## Website
+## Website and development
 
-The production documentation site is part of this repository under [`site/`](site/). It renders canonical content from the **same checkout** being reviewed or released; there is no cross-repository content sync or release pin.
+The site lives in [`site/`](site/) and renders canonical content from the same
+checkout. Substantive work begins in [GitHub Issues](https://github.com/harness-operations/harness-operations/issues)
+and changes are reviewed through pull requests. Content, discovery rules, tests,
+and website changes are reviewed together.
 
-- Production: https://harness-operations.com
-- Site source: [`site/`](site/)
-
-## Scope
-
-Harness Operations does **not** define or require:
-
-- a universal Harness architecture or lifecycle;
-- a single Agent Session, Run, workflow, or control-plane model;
-- a Harness Operations wire protocol, registry, or SDK;
-- a universal maturity ladder, weighted product ranking, or security grade;
-- a replacement for MCP, ACP, A2A, OpenTelemetry, AgentOps, DevOps/SRE, or native Harness interfaces;
-- a generic directory of products that merely contain an LLM.
-
-The inclusion rule for Systems is narrower: a subject should teach something material about agent execution, specialization, operation, coordination, evidence, or failure behavior.
-
-The reference material should become smaller when an existing standard or established discipline already expresses a concern faithfully.
-
-## Development process
-
-Substantive design work begins in [GitHub Issues](https://github.com/harness-operations/harness-operations/issues) and canonical content changes through Pull Requests.
-
-Published releases remain immutable. New Systems, specification, assessment, benchmark, and site work must preserve the scope and evidence of earlier releases rather than reinterpret them retroactively.
-
-Pull requests run one monorepo CI graph across canonical data, executable examples, interface smoke tests, the static site build, link validation, and browser tests.
+Published releases remain immutable. New work must not reinterpret earlier evidence.
+CI validates canonical data, executable examples, interface smoke tests, discovery
+rules, the static build, links, and browser behavior.
 
 - [Contribution guide](CONTRIBUTING.md)
 - [Release process](RELEASING.md)
@@ -67,4 +59,4 @@ Pull requests run one monorepo CI graph across canonical data, executable exampl
 
 ## License
 
-Specification and reference content in this repository is licensed under the [Apache License 2.0](LICENSE).
+Content and code are licensed under the [Apache License 2.0](LICENSE).

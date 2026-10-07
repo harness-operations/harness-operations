@@ -1,0 +1,63 @@
+/** Editorial explanations; vendor/interface claims remain in the canonical datasets. */
+export const topics = [
+  {
+    id: 'tools', title: 'Connect tools and services', short: 'Give an agent useful ways to act.',
+    enables: 'An agent can call a tool to look something up or carry out a bounded action, rather than only describe what you could do.',
+    example: 'Ask an assistant to collect project updates and prepare a draft. Reading the updates and sending the draft are different permissions.',
+    tradeoffs: 'A connector does not automatically grant every permission, make two agents interoperable, or prove an integration works. Check what the interface exposes and who executes each action.',
+    capabilities: ['access.machine_control', 'credentials.mediation'],
+    further: [{ href: '/standards/#code-mode', label: 'Code Mode and related interfaces' }],
+  },
+  {
+    id: 'context', title: 'Work with context and memory', short: 'Understand what work can carry forward.',
+    enables: 'Context supplies information for the current task. Retained state can let later work pick up where an earlier interaction left off.',
+    example: 'Continue a coding task after closing the client. Ask what was saved, which files were retained, and whether the resumed task has the same permissions.',
+    tradeoffs: 'A stable session identifier or a resume feature is not proof of long-term memory, accurate recall, or a particular data-retention policy. Those are separate questions.',
+    capabilities: ['identity.stable_session', 'lifecycle.resume'], further: [],
+  },
+  {
+    id: 'code', title: 'Write and run code', short: 'Explore coding, testing, and execution.',
+    enables: 'An agent workflow can propose changes, use development tools, and observe test results. The exact tool determines where the work runs and what it can change.',
+    example: 'Ask for a small bug fix, inspect the diff, and run the relevant tests. A passing test is evidence about that test—not a guarantee that the whole change is correct.',
+    tradeoffs: 'A local command-line interface does not imply local model inference or offline operation. Check credentials, filesystem access, execution boundaries, and the actual reviewed interface.',
+    goal: 'coding', capabilities: [], further: [],
+  },
+  {
+    id: 'browser-computer', title: 'Use a browser or computer', short: 'Work with pages, forms, and applications.',
+    enables: 'Some tools interact with web pages or a desktop. Others provide only the control interface and rely on your application to execute the actions.',
+    example: 'Collect details from a website and prepare a form. Deciding to submit it is a separate action with potentially different consequences.',
+    tradeoffs: 'A browser API, a hosted agent, and a desktop-control tool are not interchangeable products. Check who owns the environment, authenticated sessions, and consequential actions.',
+    goal: 'automation', preferences: ['browser'], includeComputer: true, capabilities: [], further: [],
+  },
+  {
+    id: 'background', title: 'Run tasks in the background', short: 'Learn what happens after you disconnect.',
+    enables: 'Some execution surfaces let work continue without keeping the initiating connection open.',
+    example: 'Start a long task and return later to inspect its progress or result. Check how cancellation, retention, and failure are reported.',
+    tradeoffs: 'Background execution is not automatically durable scheduling, crash recovery, or unlimited execution. Review those properties separately.',
+    preference: 'background', capabilities: ['lifecycle.cancel', 'lifecycle.resume'], further: [],
+  },
+  {
+    id: 'coordination', title: 'Coordinate multiple agents', short: 'Explore delegation and parallel work.',
+    enables: 'Work can be split between agents or handed from one system to another. Different arrangements expose different boundaries and shared state.',
+    example: 'One worker investigates a bug while another prepares tests. Someone or something still needs to reconcile their changes and check the outcome.',
+    tradeoffs: 'More agents are not inherently better. Consider coordination overhead, overlapping edits, inherited permissions, and what happens when only part of the work finishes.',
+    preference: 'coordination', capabilities: ['coordination.parallel', 'coordination.delegation'],
+    further: [{ href: '/systems/operating-arrangements/', label: 'Examples of operating arrangements' }],
+  },
+  {
+    id: 'permissions', title: 'Control permissions and approvals', short: 'Understand what an agent is allowed to do.',
+    enables: 'Permissions and approval mechanisms can limit access or put a decision point before a consequential action.',
+    example: 'Allow an agent to read a repository and draft a change while treating deployment as a separate permission.',
+    tradeoffs: 'A request in a prompt is not the same as a technical boundary. Review which component enforces a decision, what it covers, and what can bypass it. No particular approval pattern is required for every use case.',
+    capabilities: ['governance.pre_execution_gate', 'governance.attributed_decision', 'isolation.execution_boundary'],
+    further: [{ href: '/apply/patterns/approval-valid-at-execution-time/', label: 'An optional approval pattern' }],
+  },
+  {
+    id: 'evidence', title: 'Inspect, recover, and evaluate', short: 'See what happened and check the result.',
+    enables: 'Logs, cancellation, recovery mechanisms, and evaluations answer different questions about an agent workflow.',
+    example: 'When a task stops halfway through, inspect which actions completed before deciding whether a retry could duplicate them.',
+    tradeoffs: 'A trace is not proof of correctness. Feature coverage is not performance, and an evaluator can add behavior that the underlying tool does not provide on its own.',
+    capabilities: ['evidence.event_export', 'evidence.resolved_facts', 'lifecycle.cancel'],
+    further: [{ href: '/systems/agent-evaluation/', label: 'Reviewed evaluation systems' }, { href: '/apply/patterns/stop-revoke-and-recover/', label: 'An optional recovery pattern' }],
+  },
+];

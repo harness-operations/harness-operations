@@ -1,0 +1,61 @@
+---
+import index from '../data/systems-index.json';
+import comparison from '../data/systems.json';
+import { topics } from '../lib/guide-topics.mjs';
+import { discover, preferenceEvidence, isReviewedSubject, safeUrl } from '../lib/discovery.mjs';
+import SubjectCard from './SubjectCard.astro';
+const topic = topics.find(({ id }) => id === Astro.props.topicId);
+if (!topic) throw new Error('Unknown capability topic');
+const subjects = index.subjects.filter(isReviewedSubject);
+let related = topic.goal ? discover(subjects, { goal: topic.goal, mode: 'any', preferences: topic.preferences || [] }).matches.map(({ subject }) => subject) : [];
+if (topic.preference) related = subjects.filter((subject) => preferenceEvidence(subject, topic.preference).length);
+if (topic.includeComputer) related = [...related, ...subjects.filter((subject) => preferenceEvidence(subject, 'computer').length)];
+related = [...new Map(related.map((subject) => [subject.id, subject])).values()].sort((a, b) => a.name.localeCompare(b.name, 'en'));
+const findingLabels = { available: 'Available', partial: 'Partial', unsupported: 'Unsupported', unknown: 'Unknown', not_applicable: 'Not applicable' };
+const measurements = comparison.capabilities.filter(({ id }) => topic.capabilities.includes(id));
+---
+<p class="ho-guide-lede">{topic.enables}</p>
+<nav class="ho-guide-nav" aria-label="In this guide">
+  <a href="#example">Example</a>
+  <a href="#tradeoffs">Trade-offs</a>
+  {related.length > 0 && <a href="#reviewed-examples">Reviewed options</a>}
+  {measurements.length > 0 && <a href="#related-measurements">Comparison evidence</a>}
+  {topic.further.length > 0 && <a href="#further-reading">Further reading</a>}
+</nav>
+<h2 id="example">A practical example</h2>
+<p>{topic.example}</p>
+<h2 id="tradeoffs">What to look out for</h2>
+<p>{topic.tradeoffs}</p>
+{related.length > 0 && <section aria-labelledby="reviewed-examples">
+  <h2 id="reviewed-examples">Related reviewed tools and components</h2>
+  <p>Selected from the catalog's explicit workload and operating-arrangement fields. These are starting points, not interchangeable products or a ranking.</p>
+  <div class="ho-guide-options">{related.map((subject) => <SubjectCard subject={subject} />)}</div>
+</section>}
+{measurements.length > 0 && <section aria-labelledby="related-measurements">
+  <h2 id="related-measurements">Related comparison questions</h2>
+  <p>These narrower observations help you investigate this topic. They do not, by themselves, establish every capability described above. Scope, findings, and evidence come directly from the comparison dataset.</p>
+  {measurements.map((capability) => <section>
+    <h3>{capability.name}</h3><p>{capability.definition}</p>
+    {comparison.observations.filter((observation) => observation.capability_id === capability.id).map((observation) => <details class="ho-observation">
+      <summary>{comparison.systems.find(({ id }) => id === observation.system_id)?.name || observation.system_id} — {observation.scope.interface} {observation.scope.version || ''} — <strong>{findingLabels[observation.finding] || observation.finding}</strong></summary>
+      <dl>{Object.entries(observation.scope).map(([key, value]) => <><dt>{key.replaceAll('_', ' ')}</dt><dd>{value}</dd></>)}</dl>
+      <p>Reviewed: {observation.reviewed_at}. Mechanism: {observation.mechanism.replaceAll('_', ' ')}.</p>
+      {observation.prerequisites?.length > 0 && <><h4>Prerequisites</h4><ul>{observation.prerequisites.map((text) => <li>{text}</li>)}</ul></>}
+      {observation.limitations?.length > 0 && <><h4>Limitations</h4><ul>{observation.limitations.map((text) => <li>{text}</li>)}</ul></>}
+      <h4>Evidence</h4><ul>{observation.evidence.map((source) => <li>{safeUrl(source.url) ? <a href={safeUrl(source.url)}>{source.title}</a> : source.title} — {source.type.replaceAll('_', ' ')}; result: {source.result ? source.result.replaceAll('_', ' ') : 'not recorded'}. {source.notes}</li>)}</ul>
+    </details>)}
+  </section>)}
+  <p><a href="/apply/comparison-methodology/">How the comparison evidence is classified →</a></p>
+</section>}
+{topic.further.length > 0 && <section><h2 id="further-reading">Go deeper</h2><ul>{topic.further.map(({ href, label }) => <li><a href={href}>{label}</a></li>)}</ul></section>}
+<p><a href="/choose/">Find options for your task →</a> · <a href="/capabilities/">Explore all capabilities</a></p>
+<style>
+  .ho-guide-lede { font-size: 1.15rem; }
+  .ho-guide-nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin: 1.25rem 0 2rem; font-size: .9rem; }
+  .ho-guide-nav a { padding-block: .35rem; }
+  .ho-guide-options { display: grid; gap: 1rem; }
+  .ho-observation { padding: .75rem 0; border-bottom: 1px solid var(--sl-color-hairline); overflow-wrap: anywhere; }
+  .ho-observation summary { cursor: pointer; }
+  .ho-observation dt { font-weight: 600; text-transform: capitalize; }
+  .ho-observation dd { margin: 0 0 .5rem; }
+</style>

@@ -1,74 +1,18 @@
-:root {
-  --sl-content-width: 54rem;
-}
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding-block: clamp(4.5rem, 10vw, 8rem);
-}
-
-.hero::before {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(circle at 22% 20%, color-mix(in srgb, var(--sl-color-accent) 13%, transparent), transparent 34%),
-    radial-gradient(circle at 78% 65%, color-mix(in srgb, var(--sl-color-accent) 7%, transparent), transparent 28%);
-  content: '';
-  pointer-events: none;
-}
-
-.hero h1 {
-  max-width: 14ch;
-  letter-spacing: -0.04em;
-}
-
-.hero .tagline {
-  max-width: 50rem;
-  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
-  line-height: 1.4;
-}
-
-.ho-home-lede {
-  max-width: 49rem;
-  margin: 0 0 2rem;
-  color: var(--sl-color-gray-2);
-  font-size: clamp(1.08rem, 1.8vw, 1.3rem);
-  line-height: 1.65;
-}
-
-.ho-home-footer {
-  display: flex;
-  gap: 0.55rem;
-  align-items: center;
-  margin-top: 3.5rem;
-  color: var(--sl-color-gray-3);
-  font-size: 0.88rem;
-}
-
-.ho-home-footer a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.ho-home-footer a:hover {
-  color: var(--sl-color-text-accent);
-}
-
-/* Canonical reference files already contain their own H1. Starlight renders
-   the generated frontmatter title, so hide only the duplicate source H1 while
-   leaving the synchronized Markdown body untouched. */
-.sl-markdown-content > h1:first-child {
-  display: none;
-}
-
-@media (max-width: 50rem) {
-  .hero {
-    padding-block: 3.5rem 4.5rem;
-  }
-
-  .ho-home-lede {
-    margin-bottom: 1.5rem;
-  }
-}
+:root { --sl-content-width: 54rem; }
+.hero { position: relative; padding-block: clamp(2.75rem, 6vw, 4.5rem); }
+.hero h1 { max-width: 21ch; letter-spacing: -.04em; text-wrap: balance; }
+.hero .tagline { max-width: 47rem; font-size: clamp(1.1rem, 2vw, 1.45rem); line-height: 1.5; }
+.ho-home-lede { max-width: 49rem; margin: 0 0 2.5rem; color: var(--sl-color-gray-2); font-size: clamp(1.05rem, 1.8vw, 1.2rem); line-height: 1.65; }
+.ho-home-footer { display: flex; flex-wrap: wrap; gap: .55rem; align-items: center; margin-top: 3rem; color: var(--sl-color-gray-2); font-size: .9rem; }
+.ho-home-footer a { color: inherit; text-decoration: none; }
+.ho-home-footer a:hover { text-decoration: underline; }
+.ho-home-next { margin: 2rem 0; }
+:focus-visible { outline: 2px solid var(--sl-color-text-accent); outline-offset: 3px; }
+/* These are UI grids, not prose. Starlight's default sibling margins must not
+   stagger controls or visually detach metadata labels from their values. */
+.ho-choice-grid > label, .ho-options > [data-result-id], .ho-guide-options > .ho-option { margin-top: 0; }
+.ho-chooser-actions > button, .ho-capability-grid > a, .ho-capability-grid > a > * { margin: 0; }
+.ho-guide-nav > a { margin: 0; }
+.ho-option dl > dt, .ho-option dl > dd { margin: 0; padding: 0; align-self: start; }
+/* Duplicate source titles are stripped during synchronization, not hidden with CSS. */
+@media (max-width: 50rem) { .hero { padding-block: 2.5rem; } }

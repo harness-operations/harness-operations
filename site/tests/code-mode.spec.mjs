@@ -23,7 +23,13 @@ test('Code Mode reference is canonical, complete, and linked', async ({ page }) 
     await expect(table.getByRole('link', { name, exact: true })).toHaveCount(1);
   }
 
-  await expect(main).toContainText('Source-backed harness integration, not a live compatibility test.');
+  // Assert the evidence limitation on its exact implementation row, rather
+  // than requiring architecture-oriented wording somewhere on the page.
+  const codexRow = table.locator('tbody tr').filter({
+    has: page.getByRole('link', { name: 'Codex code-mode tool adaptation', exact: true }),
+  });
+  await expect(codexRow).toContainText('Source-backed integration, not a live compatibility test.');
+  await expect(codexRow).toContainText('67727e7');
   await expect(main).toContainText('complete: false');
 
   expect(

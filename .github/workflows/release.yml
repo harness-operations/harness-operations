@@ -100,13 +100,17 @@ jobs:
         working-directory: site
         run: npm ci --no-audit --no-fund
 
+      - name: Test discovery rules, catalog links, and artwork integrity
+        working-directory: site
+        run: npm run test:unit
+
       - name: Build site from release commit
         working-directory: site
         run: npm run build
 
-      - name: Install Chromium
+      - name: Install Chromium and WebKit
         working-directory: site
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Browser smoke tests
         working-directory: site

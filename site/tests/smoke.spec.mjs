@@ -2,10 +2,10 @@ import { test, expect } from '@playwright/test';
 
 test('homepage explains Harness Operations and shows evidence-backed coverage', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Harness Operations', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Find the right way to put AI to work.', level: 1 })).toBeVisible();
   const hero = page.getByRole('img', { name: /Different goals\. A more human future\./i });
   await expect(hero).toBeVisible();
-  await expect(hero).toHaveAttribute('src', '/images/hero-use-cases.webp');
+  await expect(hero).toHaveAttribute('src', '/images/hero-use-cases-selected.avif');
   expect(await hero.evaluate((img) => img.complete && img.naturalWidth > 0)).toBe(true);
   await expect(page.getByRole('heading', { name: 'How much of the capability set is visible today?', level: 2 })).toBeVisible();
   await expect(page.getByText('not a performance benchmark', { exact: false })).toBeVisible();

@@ -1,17 +1,14 @@
-# Harness Operations Reference Model
+# Historical design notes and standards
 
-The `reference/` directory contains the conceptual reference model for Harness Operations.
+The earlier overview, principles, model, governance, and terminology documents in
+this directory are **archived design material**. They are retained for historical
+links and provenance, not as the active architecture or requirements for Harness
+Operations. Published releases remain unchanged.
 
-The foundational documents are:
+The website marks these historical pages as archived, excludes them from search,
+and keeps their original routes and section anchors useful. New readers should
+start with [capabilities](https://harness-operations.com/capabilities/) or the
+[reviewed systems](../systems/README.md), not the old design material.
 
-1. `overview.md` — What is Harness Operations?
-2. `principles.md` — design principles
-3. `model.md` — core concepts and relationships
-4. `governance.md` — authority, policy, delegation, approvals, exceptions, and accountability
-5. `standards.md` — standards and interoperability boundaries
-
-Supporting shared vocabulary lives in `terminology.md`.
-
-The reference model is descriptive. It does not define a Harness Operations wire protocol, conformance program, registry, or certification scheme.
-
-Release versions belong to repository tags and release metadata rather than this living index.
+[Standards and Boundaries](standards.md) remains active, optional background reading.
+There is no required Harness Operations architecture or feature checklist.

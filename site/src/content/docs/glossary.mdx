@@ -1,0 +1,39 @@
+---
+title: Glossary
+description: Plain-language terms for exploring AI-agent tools and capabilities.
+---
+
+These are reading aids, not objects every system must implement. Individual tools
+may use the same word differently; their own documented interface takes priority.
+
+**Model:** the component that produces outputs from inputs. A model by itself is
+not a complete application or a guarantee about what actions can be executed.
+
+**Agent:** software that uses a model and available actions to work toward a goal.
+What it can do depends on its surrounding tools, permissions, and execution loop.
+
+**Harness:** the software around a model that supplies context, tools, and a way
+to get work done. There is no required architecture or feature set here.
+
+**Tool:** an interface for an action or lookup. The component executing a tool may
+be separate from the model that requested it.
+
+**Context:** information supplied for the current interaction or task. It is not
+necessarily saved or recalled later.
+
+**State and memory:** information retained across steps or interactions. Check
+what is retained, where, for how long, and how it can be removed.
+
+**Runtime:** the environment in which work executes. An API, command-line client,
+and hosted service may expose different runtimes even within one product family.
+
+**Permissions and approvals:** ways to control or authorize actions. A stated
+instruction and a technical enforcement boundary are different things.
+
+**Delegation:** giving a piece of work to another worker or system. It does not
+necessarily imply shared memory, permissions, or lifecycle.
+
+**Evidence:** the documentation, source inspection, or executed test supporting a
+specific observation. Check the exact interface, configuration, date, and limitations.
+
+[Explore capabilities](/capabilities/) · [How evidence is reviewed](/apply/comparison-methodology/)

@@ -58,17 +58,40 @@ jobs:
         working-directory: site
         run: npm ci --no-audit --no-fund
 
+      - name: Test discovery rules, catalog links, and artwork integrity
+        working-directory: site
+        run: npm run test:unit
+
       - name: Build site from this checkout
         working-directory: site
         run: npm run build
 
-      - name: Install Chromium
+      - name: Include exact tracked source for reproducible PR review
+        if: github.event_name == 'pull_request'
+        run: |
+          git archive --format=tar --output=site/review-source.tar HEAD
+          git rev-parse HEAD > site/review-source-commit.txt
+
+      - name: Install Chromium and WebKit
         working-directory: site
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Browser smoke tests
         working-directory: site
         run: npm run test:smoke
+
+      - name: Upload PR review build and screenshots
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-review
+          path: |
+            site/dist
+            site/test-results
+            site/review-source.tar
+            site/review-source-commit.txt
+          retention-days: 7
+          if-no-files-found: ignore
 
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -113,9 +136,9 @@ jobs:
         working-directory: site
         run: npm ci --no-audit --no-fund
 
-      - name: Install Chromium
+      - name: Install Chromium and WebKit
         working-directory: site
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Smoke test production
         working-directory: site
