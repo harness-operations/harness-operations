@@ -8,6 +8,7 @@
     "dev": "npm run sync:content && astro dev",
     "build": "npm run sync:content && astro build && node scripts/check-built-links.mjs",
     "preview": "astro preview",
+    "test:unit": "node --test unit-tests/*.test.mjs",
     "test:smoke": "playwright test"
   },
   "dependencies": {
@@ -15,7 +16,5 @@
     "@astrojs/starlight": "0.41.7",
     "astro": "7.2.6"
   },
-  "devDependencies": {
-    "@playwright/test": "1.63.0"
-  }
+  "devDependencies": { "@playwright/test": "1.63.0" }
 }

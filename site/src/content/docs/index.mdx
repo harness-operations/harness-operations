@@ -1,107 +1,51 @@
 ---
 title: Harness Operations
-description: Understand, compare, and benchmark the systems that turn models into agents.
+description: Explore AI-agent capabilities, compare reviewed tools, and find options for your goals.
 template: splash
 hero:
-  title: Harness Operations
-  tagline: Understand, compare, and benchmark the systems that turn models into agents.
+  title: Find the right way to put AI to work.
+  tagline: Explore the tools and capabilities behind AI agents. Understand the trade-offs and find options that fit what you want to do.
   actions:
-    - text: Compare harnesses
+    - text: Help me choose
+      link: /choose/
+      icon: right-arrow
+    - text: Explore capabilities
+      link: /capabilities/
+      variant: secondary
+    - text: Compare tools
       link: /apply/matrix/
-      icon: right-arrow
-    - text: Explore Systems
-      link: /systems/
-      icon: right-arrow
       variant: minimal
 ---
 
-import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 import HarnessExplainer from '../../components/HarnessExplainer.astro';
 import CapabilityCoverage from '../../components/CapabilityCoverage.astro';
-
-<p className="ho-home-lede">
-  Models get the attention. Harnesses determine how agent work actually runs:
-  state, tools, permissions, delegation, recovery, and evidence.
-  Harness Operations makes those differences visible.
-</p>
+import CapabilityCards from '../../components/CapabilityCards.astro';
 
 <HarnessExplainer />
 
+<p className="ho-home-lede">
+  A <strong>harness</strong> is the software around an AI model that gives it
+  tools, context, and a way to get work done. Different tools suit different
+  goals. This is a guide to the possibilities—not a checklist every tool has to meet.
+</p>
+
 <CapabilityCoverage />
 
-## Use the reference
+## What could you do with an agent?
 
-<CardGrid>
-  <LinkCard
-    title="Understand a system"
-    href="/systems/"
-    description="See how Codex, Claude Code, Claude Projects, Browser Use, Computer Use, realtime agents, evaluation runtimes, and adjacent systems actually operate."
-  />
-  <LinkCard
-    title="Compare capabilities"
-    href="/apply/matrix/"
-    description="Inspect exact interfaces and versions across lifecycle, coordination, governance, isolation, resources, and evidence."
-  />
-  <LinkCard
-    title="Follow Harness Ops Bench"
-    href="https://github.com/harness-operations/harness-operations/issues/57"
-    description="The next step: reproducible trials measuring useful completion, operational reliability, recovery, cost, latency, and evidence quality."
-  />
-</CardGrid>
+Start with something useful. Each guide explains a capability, gives a practical
+example, and links to reviewed tools and their limitations.
 
-## Different shapes, different boundaries
+<CapabilityCards />
 
-A harness is not one architecture. These examples show why placement and orchestration matter.
-
-<CardGrid>
-  <LinkCard
-    title="Claude Projects"
-    href="/systems/claude-projects/"
-    description="One coordinator, parallel Claude Code workers, and configurable cloud or machine execution."
-  />
-  <LinkCard
-    title="Computer Use"
-    href="/systems/computer-use/"
-    description="The same computer-control capability can live in the client, a hosted runtime, or an outer Harness."
-  />
-  <LinkCard
-    title="Realtime Voice"
-    href="/systems/realtime-voice/"
-    description="Streaming, interruption, transport, and live tool calls change the execution lifecycle."
-  />
-  <LinkCard
-    title="Agent Evaluation"
-    href="/systems/agent-evaluation/"
-    description="An evaluator can add sandboxing, approvals, recovery, and scoring that must not be credited to the Harness under test."
-  />
-</CardGrid>
-
-## Go deeper when you need to
-
-The Reference Model is a **descriptive lens**, not the prerequisite for using Harness Operations.
-
-<CardGrid>
-  <LinkCard
-    title="Operating arrangements"
-    href="/systems/operating-arrangements/"
-    description="Standalone execution, embedded specialists, coordinator–worker threads, shared-state workers, handoffs, and independent services."
-  />
-  <LinkCard
-    title="Standards and Boundaries"
-    href="/standards/"
-    description="Where MCP, ACP, A2A, Code Mode, telemetry, and adjacent standards fit—and where they do not."
-  />
-  <LinkCard
-    title="Reference Model"
-    href="/model/"
-    description="Concepts for execution, identity, evidence, governance, authority, and intervention."
-  />
-</CardGrid>
+<p className="ho-home-next">
+  Already have a tool in mind? <a href="/systems/">Browse the reviewed catalog →</a>
+</p>
 
 <p className="ho-home-footer">
+  <a href="/about/">About this project</a>
+  <span aria-hidden="true">·</span>
   <a href="https://github.com/harness-operations/harness-operations">GitHub</a>
   <span aria-hidden="true">·</span>
-  <a href="https://github.com/harness-operations/harness-operations/releases">Releases</a>
-  <span aria-hidden="true">·</span>
-  <a href="https://github.com/harness-operations/harness-operations/issues">Issues</a>
+  <a href="https://github.com/harness-operations/harness-operations/issues">Contribute</a>
 </p>
