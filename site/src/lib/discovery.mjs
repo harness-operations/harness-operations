@@ -3,7 +3,7 @@ export const GOALS = [
   { id: 'coding', label: 'Build software', hint: 'Write, test, and improve code.' },
   { id: 'automation', label: 'Automate work', hint: 'Work across websites, computers, and longer-running tasks.' },
   { id: 'creative', label: 'Create content', hint: 'Explore creative and video workflows.' },
-  { id: 'everyday', label: 'Get everyday help', hint: 'Find out where our coverage can help—and where it cannot yet.' },
+  { id: 'everyday', label: 'Get everyday help', hint: 'Explore personal assistants for questions, web research, and documents.' },
   { id: 'explore', label: 'Just explore', hint: 'See the range of reviewed tools and building blocks.' },
 ];
 export const MODES = [
@@ -18,6 +18,9 @@ export const PREFERENCES = [
   { id: 'background', label: 'Run work in the background' },
   { id: 'coordination', label: 'Coordinate several agents' },
   { id: 'voice', label: 'Build a realtime voice experience' },
+  { id: 'web-research', label: 'Find information on the web' },
+  { id: 'documents', label: 'Ask about uploaded documents' },
+  { id: 'personal-memory', label: 'Use context from past chats' },
 ];
 const GOAL_WORKLOADS = {
   coding: ['coding', 'software engineering', 'software testing', 'test generation', 'test repair'],
@@ -36,12 +39,15 @@ const PREFERENCE_FIELDS = {
   background: { operational_characteristics: ['background', 'asynchronous'] },
   coordination: { operating_arrangements: ['coordinator_worker_threads', 'shared_state_workers'] },
   voice: { workloads: ['realtime voice', 'multimodal conversation'] },
+  'web-research': { workloads: ['web research'] },
+  documents: { workloads: ['document assistance'] },
+  'personal-memory': { operational_characteristics: ['cross-chat-memory'] },
 };
 const GOAL_PREFERENCES = {
   coding: ['coordination', 'background'],
   automation: ['browser', 'computer', 'background', 'coordination'],
   creative: ['background', 'coordination'],
-  everyday: [],
+  everyday: ['web-research', 'documents', 'personal-memory'],
   explore: PREFERENCES.map(({ id }) => id),
 };
 const strings = (value) => Array.isArray(value) ? value.filter((v) => typeof v === 'string') : [];

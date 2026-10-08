@@ -1,4 +1,9 @@
 const systemFiles = new Set([
+  'chatgpt-consumer-web.md',
+  'claude-consumer-web.md',
+  'gemini-consumer-web.md',
+  'perplexity-consumer-web.md',
+
   'antares-cli.md',
   'antares-models.md',
   'anthropic-claude-code.md',

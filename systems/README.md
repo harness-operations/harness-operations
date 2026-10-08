@@ -12,6 +12,10 @@ Coverage is selective, not a complete market survey or an endorsement.
 
 | Area | Read about | What you are comparing |
 | --- | --- | --- |
+| Everyday help | [ChatGPT (personal web)](chatgpt-consumer-web.md) | Hosted chat, web lookup, uploaded documents, and optional memory; not Codex or agent actions. |
+| Everyday help | [Claude (personal web)](claude-consumer-web.md) | Personal chat, search, documents, and memory; not Claude Code or Cowork. |
+| Everyday help | [Gemini (personal web)](gemini-consumer-web.md) | An adult personal-account scope with explicit activity and memory prerequisites; not Workspace or device actions. |
+| Everyday help | [Perplexity (personal web)](perplexity-consumer-web.md) | Cited web answers and file conversations; cross-chat memory unassessed, not unsupported. |
 | Coding | [Codex App Server](openai-codex.md) | A reviewed machine-control interface, not every Codex product surface. |
 | Coding | [Claude Code CLI](anthropic-claude-code.md) | The reviewed command-line interface and its operational boundaries. |
 | Coordination | [Claude Projects](claude-projects.md) | The reviewed project and worker-thread arrangement. |

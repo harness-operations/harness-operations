@@ -26,6 +26,12 @@ export default defineConfig({
       ] },
       { label: 'Capabilities', collapsed: true, items: topics.map(({ id, title }) => ({ label: title, slug: `capabilities/${id}` })) },
       { label: 'Explore tools', collapsed: true, items: [
+        { label: 'Everyday assistance', collapsed: true, items: [
+          { label: 'ChatGPT (personal web)', slug: 'systems/chatgpt-consumer-web' },
+          { label: 'Claude (personal web)', slug: 'systems/claude-consumer-web' },
+          { label: 'Gemini (personal web)', slug: 'systems/gemini-consumer-web' },
+          { label: 'Perplexity (personal web)', slug: 'systems/perplexity-consumer-web' },
+        ] },
         { label: 'Coding & coordination', collapsed: true, items: [
           { label: 'OpenAI Codex', slug: 'systems/openai-codex' },
           { label: 'Anthropic Claude Code', slug: 'systems/anthropic-claude-code' },

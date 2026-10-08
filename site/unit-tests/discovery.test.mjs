@@ -76,7 +76,7 @@ test('ordering is alphabetical, deduplicated, and does not mutate the catalog', 
   assert.equal(JSON.stringify(input), before);
 });
 test('changing goals only offers relevant interests', () => {
-  assert.equal(preferencesForGoal('everyday').length, 0);
+  assert.deepEqual(preferencesForGoal('everyday').map(({ id }) => id), ['web-research', 'documents', 'personal-memory']);
   assert.equal(preferencesForGoal('coding').some(({ id }) => id === 'browser'), false);
   assert.equal(preferencesForGoal('explore').some(({ id }) => id === 'voice'), true);
 });

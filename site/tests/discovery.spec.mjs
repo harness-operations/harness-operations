@@ -38,9 +38,9 @@ test('chooser preserves focus, supports back/edit/reset, and explains suggestion
   await expect(page.locator('[data-next]')).toBeDisabled();
 });
 
-test('everyday application requests expose a coverage gap instead of developer substitutes', async ({ page }) => {
-  await choose(page, 'everyday', 'application');
-  await expect(page.locator('[data-preference-gap]')).toBeVisible();
+test('uncovered everyday building-block requests still expose an honest catalog gap', async ({ page }) => {
+  await choose(page, 'everyday', 'component');
+  await expect(page.locator('[data-preference-gap]')).toBeHidden();
   await page.getByRole('button', { name: 'Show options' }).click();
   await expect(page.locator('[data-gap]')).toBeVisible();
   await expect(page.locator('[data-result-id]:visible')).toHaveCount(0);
@@ -115,7 +115,7 @@ test('legacy pages remain archived with useful original fragments and no search 
 });
 
 test('capability pages have a single primary heading, source links, and scoped evidence', async ({ page }) => {
-  for (const topic of ['tools', 'context', 'code', 'browser-computer', 'background', 'coordination', 'permissions', 'evidence']) {
+  for (const topic of ['everyday', 'tools', 'context', 'code', 'browser-computer', 'background', 'coordination', 'permissions', 'evidence']) {
     await page.goto(`/capabilities/${topic}/`);
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
     await expect(page.getByRole('heading', { name: 'A practical example' })).toBeVisible();
