@@ -1,6 +1,14 @@
 /** Editorial explanations; vendor/interface claims remain in the canonical datasets. */
 export const topics = [
   {
+    id: 'everyday', title: 'Get everyday help', short: 'Explore personal assistants, not developer APIs.',
+    enables: 'Use a personal web application to investigate a question or discuss a document without building an agent yourself. Start with a small task and inspect the result.',
+    example: 'Try a non-sensitive event schedule: ask for a summary, check the important dates against the file, and open any web sources the assistant uses. This is an example to try, not a live-tested product outcome.',
+    tradeoffs: 'These are selected personal web applications, not a complete market survey. Search is not browser control; chat history is not cross-chat memory. Eligibility, model, limits, and settings matter. The source-linked entries explain what was reviewed and what was left unassessed. A match does not promise that every feature works together in every mode. Review memory, training, sharing, and deletion controls separately before providing personal information.',
+    goal: 'everyday', capabilities: [],
+    further: [{ href: '/capabilities/context/', label: 'Understand context and memory' }, { href: '/capabilities/permissions/', label: 'Understand permissions and approvals' }],
+  },
+  {
     id: 'tools', title: 'Connect tools and services', short: 'Give an agent useful ways to act.',
     enables: 'An agent can call a tool to look something up or carry out a bounded action, rather than only describe what you could do.',
     example: 'Ask an assistant to collect project updates and prepare a draft. Reading the updates and sending the draft are different permissions.',

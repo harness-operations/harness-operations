@@ -656,6 +656,212 @@
         }
       ],
       "notes": "Redesigned Projects beta. Worker threads are Claude Code sessions whose execution placement can be cloud or a user's machine via Remote Control; those placements have different tools, context, permissions, network reachability, and lifetime."
+    },
+    {
+      "id": "chatgpt-consumer-web",
+      "name": "ChatGPT (personal web app)",
+      "kinds": [
+        "application"
+      ],
+      "workloads": [
+        "everyday assistance",
+        "web research",
+        "document assistance"
+      ],
+      "operational_characteristics": [
+        "cross-chat-memory"
+      ],
+      "scope": {
+        "interface": "ChatGPT signed-in personal web chat, search, and uploaded documents",
+        "deployment_mode": "OpenAI-hosted application accessed through a web browser",
+        "configuration": "Personal account; supported plan, region, model, and file type. Memory requires available personalization controls to be enabled. Normal chats, not custom GPTs, agent actions, or managed workspaces."
+      },
+      "reviewed_at": "2026-10-08",
+      "homepage": "https://chatgpt.com/",
+      "document_path": "systems/chatgpt-consumer-web.md",
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "ChatGPT capabilities overview",
+          "url": "https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Searching the web with ChatGPT",
+          "url": "https://help.openai.com/en/articles/9237897-searching-the-web-with-chatgpt"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Memory in ChatGPT",
+          "url": "https://help.openai.com/en/articles/8590148-memory-in-chatgpt"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Data controls in ChatGPT",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Chat and file retention in ChatGPT",
+          "url": "https://help.openai.com/en/articles/8983778-chat-and-file-retention-in-chatgpt"
+        }
+      ],
+      "notes": "Investigate for explanations, drafting, web lookups, and questions about uploaded documents. Memory is optional and account-dependent; it is not complete recall. Training controls, chat history, and saved memories are separate. This review does not cover autonomous actions."
+    },
+    {
+      "id": "claude-consumer-web",
+      "name": "Claude (personal web app)",
+      "kinds": [
+        "application"
+      ],
+      "workloads": [
+        "everyday assistance",
+        "web research",
+        "document assistance"
+      ],
+      "operational_characteristics": [
+        "cross-chat-memory"
+      ],
+      "scope": {
+        "interface": "Claude signed-in personal web chat, web search, and file uploads",
+        "deployment_mode": "Anthropic-hosted application accessed through a web browser",
+        "configuration": "Personal Free, Pro, or Max account; supported model and file format within usage limits. Current memory experience enabled for normal chats outside projects. Not Claude Code, Cowork, or organizational accounts."
+      },
+      "reviewed_at": "2026-10-08",
+      "homepage": "https://claude.ai/",
+      "document_path": "systems/claude-consumer-web.md",
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Enable and use web search",
+          "url": "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Upload files to Claude",
+          "url": "https://support.claude.com/en/articles/8241126-upload-files-to-claude"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Chat search and memory in Claude",
+          "url": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Use incognito chats",
+          "url": "https://support.claude.com/en/articles/12260368-use-incognito-chats"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Consumer model-training policy",
+          "url": "https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training"
+        }
+      ],
+      "notes": "Investigate for discussing documents, everyday questions, and source-linked web answers. Memory can carry context between chats; searching past chats has separate paid-plan eligibility. Deleting a chat does not automatically remove its saved memory topics. Incognito behaves differently from normal chat."
+    },
+    {
+      "id": "gemini-consumer-web",
+      "name": "Gemini (personal web app)",
+      "kinds": [
+        "application"
+      ],
+      "workloads": [
+        "everyday assistance",
+        "web research",
+        "document assistance"
+      ],
+      "operational_characteristics": [
+        "cross-chat-memory"
+      ],
+      "scope": {
+        "interface": "Gemini personal web text chats, file analysis, and web research",
+        "deployment_mode": "Google-hosted application accessed through a web browser",
+        "configuration": "Signed-in personal Google Account, age 18+ for the reviewed memory and Deep Research features; eligible country/language and usage limits. Cross-chat memory requires Keep Activity and Memory on; not Gems, Live, Spark, or work/school accounts."
+      },
+      "reviewed_at": "2026-10-08",
+      "homepage": "https://gemini.google.com/",
+      "document_path": "systems/gemini-consumer-web.md",
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "Use Gemini Apps",
+          "url": "https://support.google.com/gemini/answer/13275745?hl=en"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Upload and analyze files in Gemini Apps",
+          "url": "https://support.google.com/gemini/answer/14903178?hl=en"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Use Deep Research in Gemini Apps",
+          "url": "https://support.google.com/gemini/answer/15719111?hl=en"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Memory of past Gemini chats (web)",
+          "url": "https://support.google.com/gemini/answer/16598469?hl=en&co=GENIE.Platform%3DDesktop"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "View related sources and double-check responses",
+          "url": "https://support.google.com/gemini/answer/14143489?hl=en"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Gemini Apps Privacy Hub",
+          "url": "https://support.google.com/gemini/answer/13594961?hl=en"
+        }
+      ],
+      "notes": "Investigate for planning, document summaries, and web research. Memory requires an eligible adult personal account with Keep Activity and Memory enabled; it is not available in every mode. Local file upload and connecting a Google app are different permissions. Consumer privacy settings are not Workspace protections."
+    },
+    {
+      "id": "perplexity-consumer-web",
+      "name": "Perplexity (personal web app)",
+      "kinds": [
+        "application"
+      ],
+      "workloads": [
+        "everyday assistance",
+        "web research",
+        "document assistance"
+      ],
+      "scope": {
+        "interface": "Perplexity personal web search and conversations with uploaded files",
+        "deployment_mode": "Perplexity-hosted application accessed through a web browser",
+        "configuration": "Personal account; search mode, file support, and limits depend on plan. Ordinary search/file conversations only, not Computer, Comet, mobile assistant actions, Sonar API, or Enterprise."
+      },
+      "reviewed_at": "2026-10-08",
+      "homepage": "https://www.perplexity.ai/",
+      "document_path": "systems/perplexity-consumer-web.md",
+      "sources": [
+        {
+          "type": "primary_documentation",
+          "title": "What is Perplexity?",
+          "url": "https://www.perplexity.ai/help-center/en/articles/10352155-what-is-perplexity"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Typing a question versus uploading a file or image",
+          "url": "https://www.perplexity.ai/help-center/en/articles/10354939-what-s-the-difference-between-typing-a-question-and-uploading-a-file-or-image"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Data Collection at Perplexity",
+          "url": "https://www.perplexity.ai/help-center/en/articles/11564572-data-collection-at-perplexity"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Security and privacy with file uploads",
+          "url": "https://www.perplexity.ai/help-center/en/articles/10354810-security-and-privacy-with-file-uploads"
+        },
+        {
+          "type": "primary_documentation",
+          "title": "Search history and personal-information retention",
+          "url": "https://www.perplexity.ai/help-center/en/articles/10354873-how-long-does-perplexity-retain-my-search-history-profile-data-and-personal-information"
+        }
+      ],
+      "notes": "Investigate for cited web answers and follow-up questions about files. Verify the cited pages, not just the generated summary. Consumer AI Data Retention is on by default; opt-out and deletion do different things. Cross-chat memory is unassessed in this review, not recorded as unsupported."
     }
   ],
   "relationships": [

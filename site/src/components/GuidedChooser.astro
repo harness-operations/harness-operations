@@ -11,6 +11,7 @@ const payload = JSON.stringify(subjects).replace(/</g, '\\u003c');
 </div>
 <section data-chooser hidden data-pagefind-ignore>
   <p class="ho-chooser-progress" data-progress aria-live="polite" aria-atomic="true">Question 1 of 3</p>
+  <p data-everyday-scope hidden>Everyday suggestions cover selected <strong>personal web applications</strong>, not developer APIs or device-control agents. Features depend on account eligibility and settings; missing metadata means unassessed, not unsupported. <a href="/capabilities/everyday/">Read the everyday-help guide</a>.</p>
   <form novalidate autocomplete="off">
     <fieldset data-step="0" aria-describedby="chooser-goal-help">
       <legend><span tabindex="-1" data-step-heading>What are you trying to do?</span></legend>
@@ -26,7 +27,7 @@ const payload = JSON.stringify(subjects).replace(/</g, '\\u003c');
       <legend><span tabindex="-1" data-step-heading>What matters for your workflow?</span></legend>
       <p id="chooser-interest-help">Optional: choose any interests, or skip. Each entry must have reviewed metadata for every selected interest. Missing metadata may exclude relevant tools; this does not combine several tools into a solution or guarantee that they work together.</p>
       <div class="ho-choice-grid">{PREFERENCES.map(({ id, label }) => <label data-preference={id}><input type="checkbox" name="preference" value={id} /><span><strong>{label}</strong></span></label>)}</div>
-      <p data-preference-gap hidden>We do not yet have enough reviewed everyday-assistance coverage to ask useful follow-up questions. Continue for learning paths and an honest coverage summary.</p>
+      <p data-preference-gap hidden>There are no reviewed follow-up interests for this goal yet. Continue to see matching entries or learning paths.</p>
     </fieldset>
     <div class="ho-chooser-actions">
       <button type="button" data-back hidden>Back</button>
@@ -89,6 +90,7 @@ const payload = JSON.stringify(subjects).replace(/</g, '\\u003c');
           if (hidden) input.checked = false;
         });
         root!.querySelector<HTMLElement>('[data-preference-gap]')!.hidden = valid.length > 0;
+        root!.querySelector<HTMLElement>('[data-everyday-scope]')!.hidden = value('goal') !== 'everyday';
       }
       function showStep(target: number, focus = true) {
         step = target;
@@ -158,6 +160,7 @@ const payload = JSON.stringify(subjects).replace(/</g, '\\u003c');
   [data-chooser] { margin: 1.5rem 0; }
   fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   legend { font-weight: 650; font-size: 1.35rem; margin-bottom: 1rem; }
+  [data-everyday-scope] { font-size: .9rem; color: var(--sl-color-gray-2); }
   .ho-chooser-progress { color: var(--sl-color-gray-2); font-size: .9rem; }
   .ho-choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
   label { display: flex; align-items: flex-start; gap: .7rem; border: 1px solid var(--sl-color-hairline); border-radius: .7rem; padding: 1rem; cursor: pointer; }
